@@ -1,10 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Camera, Menu, User, X } from 'lucide-react';
+import { Menu, User, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/themes/theme-toggle';
+import Image from 'next/image';
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -33,9 +34,14 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Camera className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold">ObjectVision</span>
+          <div className="flex items-center space-x-1">
+            <Image
+              src={'/logo.png'}
+              alt="Object Vision Logo"
+              width={40}
+              height={40}            
+            />
+            <span className="text-2xl font-bold text-blue-500">bjectVision</span>
           </div>
 
           {/* Desktop Navigation */}

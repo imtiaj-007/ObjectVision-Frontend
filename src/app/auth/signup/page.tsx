@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import { z } from 'zod';
 import { useState, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,13 +10,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { SignupFormData, SignupFormDataSchema } from '@/interfaces/auth';
+import { signup } from '@/services/auth_service';
 
-interface SignupFormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
 
 
 const SignupPage: React.FC = () => {
@@ -27,9 +24,10 @@ const SignupPage: React.FC = () => {
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { id, value } = e.target;
@@ -39,46 +37,30 @@ const SignupPage: React.FC = () => {
     }));
   };
 
-  const validateForm = (): string | null => {
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      return 'Please fill in all fields';
-    }
-
-    const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      return 'Please enter a valid email address';
-    }
-
-    if (formData.password.length < 8) {
-      return 'Password must be at least 8 characters long';
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      return 'Passwords do not match';
-    }
-
-    return null;
-  };
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setError('');
+    setError([]);
     setLoading(true);
 
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      setLoading(false);
-      return;
-    }
-
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      localStorage.setItem('token', 'user-logged-in');
-      console.log('Signup successful', formData);
-      router.push('/user/dashboard');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error creating account');
+      SignupFormDataSchema.parse(formData);
+
+      try {
+        const response = await signup(formData);
+        console.log(response)
+        router.push('/user/dashboard');
+      } catch (signupError) {
+        setError(signupError instanceof Error ? [signupError.message] : ['Signup failed, Please try again.']);
+      }
+    } catch (validationError) {
+      if (validationError instanceof z.ZodError) {
+        setError(validationError instanceof z.ZodError
+          ? validationError.errors.map(error => error.message)
+          : ['An unexpected error occurred']
+        );
+      } else {
+        setError(['An unexpected error occurred']);
+      }
     } finally {
       setLoading(false);
     }
@@ -178,8 +160,8 @@ const SignupPage: React.FC = () => {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button 
-              className="w-full" 
+            <Button
+              className="w-full"
               type="submit"
               disabled={loading}
             >
