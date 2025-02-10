@@ -1,5 +1,6 @@
 export const config = {
     ENV: process.env.NEXT_PUBLIC_ENV || 'development',
+    SECRET_KEY: process.env.NEXT_PUBLIC_SECRET_KEY,
     API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
     GOOGLE_OAUTH_URL: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL,
 };
