@@ -3,15 +3,16 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { 
-  LayoutDashboard, 
-  Image as ImageIcon, 
-  Video, 
-  Radio, 
+import {
+  LayoutDashboard,
+  Image as ImageIcon,
+  Video,
+  Radio,
   MenuIcon,
   X
 } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 interface SidebarProps {
   className?: string;
@@ -63,15 +64,21 @@ export default function Sidebar({ className }: SidebarProps) {
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed top-0 left-0 z-40 h-screen w-64 flex-col bg-background border-r",
+          "fixed top-0 left-0 z-40 h-screen w-60 flex-col bg-background border-r",
           "transition-transform duration-200 ease-in-out md:translate-x-0",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
           className
         )}
       >
-        {/* Logo Area */}
-        <div className="h-16 flex items-center justify-center border-b">
-          <h1 className="text-xl font-bold">AI Processing Hub</h1>
+        {/* Logo */}
+        <div className="flex items-center justify-center space-x-1 py-4 border-b-2">
+          <Image
+            src={'/logo.png'}
+            alt="Object Vision Logo"
+            width={40}
+            height={40}
+          />
+          <span className="text-2xl font-bold text-blue-500">bjectVision</span>
         </div>
 
         {/* Navigation */}
@@ -98,7 +105,7 @@ export default function Sidebar({ className }: SidebarProps) {
               </Link>
             );
           })}
-        </nav>        
+        </nav>
       </div>
     </>
   );
