@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -78,7 +79,7 @@ const HomePage: React.FC = () => {
               Join thousands of users who trust our platform for object detection
             </p>
             <Link href="auth/signup">
-              <Button size="lg" className="text-lg dark:bg-orange-500 dark:text-zinc-700 px-8">
+              <Button size="lg" className="text-lg dark:bg-blue-600 dark:text-white px-8">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
