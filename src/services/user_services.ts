@@ -3,7 +3,7 @@ import axiosHandler from "@/utils/axios";
 import { 
     AuthResponse, 
     SignupFormData, 
-} from "@/interfaces/auth";
+} from "@/types/auth";
 
 
 export const signup = async (data: SignupFormData): Promise<AuthResponse> => {

@@ -1,32 +1,37 @@
-'use client'
-import React, { useEffect } from 'react';
+'use client';
+import React from 'react';
 import Link from 'next/link';
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-
-import { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
-
 import { z } from 'zod';
+
+import { Eye, EyeOff } from 'lucide-react';
+import { FcGoogle } from "react-icons/fc";
+import { BsGithub } from "react-icons/bs";
+
+// Components
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
-
-import { Eye, EyeOff } from 'lucide-react';
-import { FcGoogle } from "react-icons/fc";
-import { BsGithub } from "react-icons/bs";
-
-import { config } from '@/configuration/config';
-import { LoginFormData, LoginFormDataSchema } from '@/interfaces/auth';
-import { login } from '@/services/auth_service';
 import DeviceLoginModal from '@/components/modals/device-modal';
 
+// Services & helpers
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { LoginFormData } from '@/types/auth';
+import { LoginFormDataSchema } from '@/schemas/auth';
+import { config } from '@/configuration/config';
+import { isCustomError } from '@/types/general';
 
 
 const LoginPage: React.FC = () => {
+    const router = useRouter();
+    const { login, loading, clearAuthErrors } = useAuth();
+    const { toast } = useToast();
+
     const [formData, setFormData] = useState<LoginFormData>({
         user_key: '',
         password: '',
@@ -34,11 +39,8 @@ const LoginPage: React.FC = () => {
         new_device: false
     });
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [shouldSubmit, setShouldSubmit] = useState<boolean>(false);
-    const [error, setError] = useState<string[]>([]);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [showDeviceModal, setShowDeviceModal] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const router = useRouter();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { id, value } = e.target;
@@ -50,65 +52,87 @@ const LoginPage: React.FC = () => {
 
     const handleGoogleLogin = (): void => {
         const url: string | undefined = config.GOOGLE_OAUTH_URL;
-
         if (!url) {
-            toast.error("Google OAUth URL is not Defined");
+            toast({
+                variant: "destructive",
+                title: "Enviornment Error: OAuth URL Missing",
+                description: "Google OAuth URL is not found.",
+            });
             return;
         }
-        router.push(url)
-    }
+        router.push(url);
+    };
 
-    const handleNewDeviceLogin = (): void => {
-        setFormData((prevState) => ({
-            ...prevState,
-            new_device: true
-        }))
-        setShouldSubmit(true);
-    }
+    const handleGithubLogin = (): void => {
+        const url: string | undefined = undefined;
+        if (!url) {
+            toast({
+                variant: "info",
+                title: "Coming Soon",
+                description: "Github OAuth will be implemented soon.",
+            });
+            return;
+        }
+        router.push(url);
+    };
+
+    const handleNewDeviceLogin = async (): Promise<void> => {
+        try {
+            await login({
+                ...formData,
+                new_device: true
+            });
+            router.push('/user/dashboard');
+        } catch (err: unknown) {
+            if (isCustomError(err))
+                console.error(err);
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: "Failed to login with new device",
+            });
+        }
+    };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement> | null): Promise<void> => {
         e?.preventDefault();
-        setError([]);
-        setLoading(true);
+        setValidationErrors([]);
+        clearAuthErrors();
 
         try {
             LoginFormDataSchema.parse(formData);
 
             try {
-                const response = await login(formData);
-                if (response)
-                    router.push('/user/dashboard');
-            } catch (loginError: unknown) {
-                const err = loginError instanceof AxiosError
-                    ? loginError
-                    : null;
-                if (err?.response?.status === 409) {
-                    setShowDeviceModal(true);
-                } else {
-                    toast.error(err?.message);
+                await login(formData);
+                router.push('/user/dashboard');
+            } catch (err: unknown) {
+                if (isCustomError(err)) {
+                    if (err.status_code === 409) {
+                        setShowDeviceModal(true);
+                    } else {
+                        toast({
+                            variant: "destructive",
+                            title: "Uh oh! Something went wrong.",
+                            description: err.message || "Login failed",
+                        });
+                    }
                 }
             }
         } catch (validationError) {
             if (validationError instanceof z.ZodError) {
-                setError(validationError.errors.map(error => error.message));
+                setValidationErrors(validationError.errors.map(error => error.message));
             } else {
-                toast.error("An unexpected Error has occured");
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: "An unexpected error has occurred",
+                });
             }
-        } finally {
-            setLoading(false);
         }
     };
 
-    useEffect(() => {
-        if (shouldSubmit) {
-            handleSubmit(null);
-            setShouldSubmit(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [formData]);
-
     return (
-        <div className="h-[85vh] flex items-center justify-center bg-gray-100 dark:bg-background dark:shadow-slate-600 transition-shadow p-4">
+        <div className="h-[100vh] flex items-center justify-center bg-gray-100 dark:bg-background dark:shadow-slate-600 transition-shadow p-4">
             <Card className="w-full max-w-md dark:shadow-slate-900">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold">Login</CardTitle>
@@ -118,9 +142,11 @@ const LoginPage: React.FC = () => {
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
                     <CardContent className="space-y-4">
-                        {error?.length > 0 && (
+                        {validationErrors?.length > 0 && (
                             <Alert variant="destructive">
-                                <AlertDescription>{error}</AlertDescription>
+                                <AlertDescription>
+                                    {validationErrors}
+                                </AlertDescription>
                             </Alert>
                         )}
                         <div className="space-y-2">
@@ -167,7 +193,10 @@ const LoginPage: React.FC = () => {
                                 <Checkbox
                                     id="remember_me"
                                     checked={formData.remember_me}
-                                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, remember_me: checked ? true : false }))}
+                                    onCheckedChange={(checked) => setFormData(prev => ({
+                                        ...prev,
+                                        remember_me: checked ? true : false
+                                    }))}
                                 />
                                 <Label
                                     htmlFor="rememberMe"
@@ -217,7 +246,7 @@ const LoginPage: React.FC = () => {
                                 type="button"
                                 variant="outline"
                                 className="w-full flex items-center gap-2 [&_svg]:size-auto"
-                                onClick={() => {/* Add GitHub login logic */ }}
+                                onClick={handleGithubLogin}
                             >
                                 Login with <BsGithub size={20} />
                             </Button>
@@ -233,13 +262,13 @@ const LoginPage: React.FC = () => {
                 </form>
             </Card>
 
-            {showDeviceModal &&
+            {showDeviceModal && (
                 <DeviceLoginModal
                     isOpen={showDeviceModal}
                     onClose={() => setShowDeviceModal(false)}
                     onProceed={handleNewDeviceLogin}
                 />
-            }
+            )}
         </div>
     );
 };
