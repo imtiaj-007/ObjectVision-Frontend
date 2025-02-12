@@ -1,29 +1,37 @@
 'use client'
-import React, { useState, FormEvent } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-
 import { z } from 'zod';
+
+import { Eye, EyeOff } from 'lucide-react';
+import { FcGoogle } from "react-icons/fc";
+import { BsGithub } from "react-icons/bs";
+
+// Components
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-import { Eye, EyeOff } from 'lucide-react';
-import { FcGoogle } from "react-icons/fc";
-import { BsGithub } from "react-icons/bs";
-
+// Services & helpers
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { SignupFormData } from '@/types/auth';
+import { SignupFormDataSchema } from '@/schemas/auth';
 import { config } from '@/configuration/config';
-import { SignupFormData, SignupFormDataSchema } from '@/interfaces/auth';
-import { signup } from '@/services/auth_service';
-import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
+import { isCustomError } from '@/types/general';
 import { base64Hash } from '@/utils/hash';
 
 
 
 const SignupPage: React.FC = () => {
+    const router = useRouter();
+    const { signup, loading, clearAuthErrors } = useAuth();
+    const { toast } = useToast()
+
     const [formData, setFormData] = useState<SignupFormData>({
         name: '',
         email: '',
@@ -32,9 +40,7 @@ const SignupPage: React.FC = () => {
     });
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-    const [error, setError] = useState<string[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const router = useRouter();
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -47,18 +53,34 @@ const SignupPage: React.FC = () => {
 
     const handleGoogleLogin = (): void => {
         const url: string | undefined = config.GOOGLE_OAUTH_URL;
-
         if (!url) {
-            toast.error("Google OAUth URL is not Defined");
+            toast({
+                variant: "destructive",
+                title: "Enviornment Error: OAuth URL Missing",
+                description: "Google OAuth URL is not found.",
+            });
             return;
         }
         router.push(url);
-    }
+    };
+
+    const handleGithubLogin = (): void => {
+        const url: string | undefined = undefined;
+        if (!url) {
+            toast({
+                variant: "info",
+                title: "Coming Soon",
+                description: "Github OAuth will be implemented soon.",
+            });
+            return;
+        }
+        router.push(url);
+    };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
-        e.preventDefault();
-        setError([]);
-        setLoading(true);
+        e?.preventDefault();
+        setValidationErrors([]);
+        clearAuthErrors();
 
         try {
             SignupFormDataSchema.parse(formData);
@@ -72,19 +94,23 @@ const SignupPage: React.FC = () => {
                     router.push(encoded_url);
                 }
             } catch (signupError: unknown) {
-                const err = signupError instanceof AxiosError
-                    ? signupError
-                    : { "message": "An unexpected error occured during signup" };
-                toast.error(err?.message);
+                if (isCustomError(signupError))
+                    toast({
+                        variant: "destructive",
+                        title: "Uh oh! Something went wrong.",
+                        description: (signupError.message) || "Login failed",
+                    });
             }
         } catch (validationError) {
             if (validationError instanceof z.ZodError) {
-                setError(validationError.errors.map(error => error.message));
+                setValidationErrors(validationError.errors.map(error => error.message));
             } else {
-                toast.error("An unexpected Error has occured");
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: "An unexpected error has occurred",
+                });
             }
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -99,11 +125,11 @@ const SignupPage: React.FC = () => {
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
                     <CardContent className="space-y-4">
-                        {error?.length > 0 && (
+                        {validationErrors?.length > 0 && (
                             <Alert variant="destructive">
-                                {error.map((err, index) => (
-                                    <AlertDescription key={`validationerr_${index}`}>{err}</AlertDescription>
-                                ))}
+                                <AlertDescription>
+                                    {validationErrors}
+                                </AlertDescription>
                             </Alert>
                         )}
                         <div className="space-y-2">
@@ -216,7 +242,7 @@ const SignupPage: React.FC = () => {
                                 type="button"
                                 variant="outline"
                                 className="w-full flex items-center gap-2 [&_svg]:size-auto"
-                                onClick={() => {/* Add GitHub login logic */ }}
+                                onClick={handleGithubLogin}
                             >
                                 Signup with <BsGithub size={20} />
                             </Button>

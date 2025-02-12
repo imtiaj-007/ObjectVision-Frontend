@@ -1,31 +1,38 @@
 'use client'
 import React, { useState, useRef, createRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { toast } from 'react-toastify';
 import { z } from 'zod';
+import { Timer } from 'lucide-react';
+
+// Components
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+// Services & helpers
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { OTPUrlObj } from '@/types/auth';
+import { OTPUrlSchema, OTPVerifySchema } from '@/schemas/auth';
 import { base64Decode } from '@/utils/hash';
-import { OTPUrlObj, OTPUrlSchema, OTPVerifySchema } from '@/interfaces/auth';
-import { resend_otp, verify_otp } from '@/services/auth_service';
-import { Timer } from 'lucide-react';
+import { isCustomError } from '@/types/general';
 
 
 const OTPVerification: React.FC = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { resendOTP, loading, verifyOTP } = useAuth();
+    const { toast } = useToast();
 
     const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [canResend, setCanResend] = useState<boolean>(true);
-    const [isLoading, setIsLoading] = useState(false);
     const [resendLoading, setResendLoading] = useState<boolean>(false);
     const [urlData, setUrlData] = useState<OTPUrlObj | null>(null);
     const inputRefs = useRef(new Array(6).fill(null).map(() => createRef<HTMLInputElement>()));
 
 
-    const handleOtpChange = (index: number, value: string) => {
+    const handleOtpChange = (index: number, value: string): void => {
         const newOtp = [...otp];
 
         // Only allow numeric input
@@ -38,7 +45,11 @@ const OTPVerification: React.FC = () => {
                 inputRefs.current[index + 1].current?.focus();
             }
         } else {
-            toast.error("Only numeric values are allowed, i.e. 0-9")
+            toast({
+                variant: "default",
+                title: "Invalid OTP Character",
+                description: "Only numeric values are allowed, i.e. 0-9",
+            });
         }
     };
 
@@ -53,7 +64,7 @@ const OTPVerification: React.FC = () => {
         }
     };
 
-    const handleVerify = async () => {
+    const handleVerify = async (): Promise<void> => {
         try {
             const otpCode = otp.join('');
             const payload = OTPVerifySchema.parse({
@@ -61,49 +72,68 @@ const OTPVerification: React.FC = () => {
                 otp: otpCode
             });
 
-            setIsLoading(true);
             try {
-                const res = await verify_otp(payload);
+                const res = await verifyOTP(payload);
 
                 if (res) {
                     router.push('/auth/success?otpVerified=true');
                 } else {
                     setOtp(new Array(6).fill(""));
-                    toast.error('Invalid OTP. Please try again.');
+                    toast({
+                        variant: "destructive",
+                        title: "OTP Mismatch",
+                        description: "Invalid OTP. Please try again.",
+                    });
                 }
 
             } catch (error: unknown) {
                 console.log(error)
-                toast.error('Verification failed. Please try again.');
-
-            } finally {
-                setIsLoading(false);
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: "An unexpected error has occurred",
+                });
             }
 
         } catch (validationError) {
             if (validationError instanceof z.ZodError) {
-                toast.error(validationError.errors.map(error => error.message));
+                toast({
+                    variant: "destructive",
+                    title: "Validation Error",
+                    description: validationError.errors.map(error => error.message).join("\n"),
+                });
             } else {
-                toast.error("An unexpected Error has occured");
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: "An unexpected error has occurred",
+                });
             }
         }
     };
 
-    const handleResendOTP = async () => {
+    const handleResendOTP = async (): Promise<void> => {
         if (!urlData || !canResend) return;
         try {
-            const res = await resend_otp(urlData);
-            toast.success(res.message);
+            const res = await resendOTP(urlData);
+            toast({
+                variant: "default",
+                title: "Success:",
+                description: res.message || "New OTP has been sent successfully",
+            });
 
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error
-                ? error.message
-                : "Some error occurred, please try again later.";
-            toast.error(errorMessage);
-        } 
+            if (isCustomError(error)) {
+                toast({
+                    variant: error.status_code === 429 ? "warning" : "destructive",
+                    title: error.status_code === 429 ? "Too Many Requests:" : "Uh oh! Something went wrong.",
+                    description: error.message || "Failed to resend OTP",
+                });
+            }
+        }
     };
 
-    const handleClick = async () => {
+    const handleClick = async (): Promise<void> => {
         if (!canResend) return;
 
         try {
@@ -192,16 +222,16 @@ const OTPVerification: React.FC = () => {
                         <Button
                             onClick={handleVerify}
                             className="w-full"
-                            disabled={isLoading}
+                            disabled={loading}
                         >
-                            {isLoading ? 'Verifying...' : 'Verify OTP'}
+                            {loading ? 'Verifying...' : 'Verify OTP'}
                         </Button>
 
                         <div className="flex justify-center items-center">
                             <Button
                                 variant="ghost"
                                 onClick={handleClick}
-                                disabled={!canResend || isLoading || resendLoading}
+                                disabled={!canResend || loading || resendLoading}
                                 className={`
                                     relative group flex items-center justify-center gap-2
                                     ${canResend ? 'text-blue-600 hover:text-blue-700' : 'text-gray-600'}
