@@ -13,7 +13,7 @@ import { Laptop2, Shield } from "lucide-react";
 
 
 const DeviceLoginModal = ({ isOpen, onClose, onProceed }) => {
-    const getDeviceType = ()=> {
+    const getDeviceType = () => {
         const userAgent = navigator.userAgent;
 
         if (/Mobi|Android/i.test(userAgent)) {
@@ -38,21 +38,21 @@ const DeviceLoginModal = ({ isOpen, onClose, onProceed }) => {
                         <AlertDialogTitle>New Device Detected</AlertDialogTitle>
                     </div>
                     <AlertDialogDescription className="space-y-4">
-                        <div className="bg-slate-50 p-4 rounded-lg space-y-3">
-                            <div className="flex items-center gap-2">
+                        <span className="block bg-slate-50 p-4 rounded-lg space-y-3">
+                            <span className="inline-flex items-center gap-2">
                                 <Laptop2 className="h-5 w-5 text-slate-600" />
                                 <span className="font-medium text-slate-900">Current Device</span>
-                            </div>
-                            <div className="text-sm space-y-1 text-slate-600 ml-7">
-                                <p>Device: {deviceInfo.deviceType}</p>
-                                <p>Browser: {deviceInfo.browser}</p>
-                            </div>
-                        </div>
+                            </span>
+                            <span className="block text-sm space-y-1 text-slate-600 ml-7">
+                                <span className="block">Device: {deviceInfo.deviceType}</span>
+                                <span className="block">Browser: {deviceInfo.browser}</span>
+                            </span>
+                        </span>
 
-                        <p className="text-slate-600">
+                        <span className="block text-slate-600">
                             We&apos;ve noticed you&apos;re trying to log in from a new device.
                             Please confirm if you want to proceed with this device.
-                        </p>
+                        </span>
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

@@ -6,7 +6,7 @@ import Sidebar from "./sidebar";
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <aside className="w-60 min-h-screen">
+      <aside className="hidden lg:block w-60 min-h-screen">
         <Sidebar />
       </aside>
       <main className="flex-1 p-3">

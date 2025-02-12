@@ -13,7 +13,6 @@ const Header = () => {
 
     return (
         <header className="h-16 bg-background border-b flex items-center justify-between py-2 px-4 z-50 rounded-xl border-2 border-slate-200 dark:border-slate-800 mb-2">
-            {/* Left section - Brand/Logo */}
             <div className="flex items-center">
                 <Menu className="h-5 w-5 text-muted-foreground hover:text-foreground cursor-pointer lg:hidden" />
                 <span className="text-xl font-semibold ml-4">Dashboard</span>
