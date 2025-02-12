@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ObjectVision Frontend
 
-## Getting Started
+ObjectVision is a cutting-edge object detection platform that leverages advanced machine learning techniques for real-time object identification and analysis. The frontend of ObjectVision is built using **Next.js 15**, **TypeScript**, and **ShadCN** for the UI components, making it a modern and robust solution for interacting with the platform.
 
-First, run the development server:
+## Table of Contents
+
+- [Installation](#installation)
+- [Development Setup](#development-setup)
+- [Project Structure](#project-structure)
+- [Technologies Used](#technologies-used)
+- [Building for Production](#building-for-production)
+- [License](#license)
+
+## Installation
+
+To get started with the frontend of ObjectVision, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/objectvision-frontend.git
+   cd objectvision-frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+   This will install the necessary dependencies listed in the `package.json`, including **Next.js**, **TypeScript**, and **ShadCN** components.
+
+3. For generating TypeDoc documentation (if required), run:
+   ```bash
+   npx typedoc --out docs
+   ```
+
+## Development Setup
+
+1. To start the development server:
+   ```bash
+   npm run dev
+   ```
+
+   This will launch the frontend app at `http://localhost:3000`. Any changes you make will be automatically reflected in the browser.
+
+2. For TypeScript development, ensure your IDE has TypeScript support enabled to get benefits like auto-completion and type safety.
+
+3. If you need to install additional ShadCN components, you can run the following command:
+   ```bash
+   npx shadcn@latest
+   ```
+
+   This will allow you to install or update components as needed.
+
+## Project Structure
+
+The frontend project follows a clean and modular structure:
+
+- **pages/** - Contains Next.js route-based pages.
+- **components/** - Reusable components built with ShadCN UI.
+- **public/** - Static assets like images and fonts.
+- **styles/** - Global styles for the application.
+- **types/** - TypeScript type definitions for the project.
+- **utils/** - Utility functions for the project.
+- **docs/** - Generated TypeDoc documentation files (if applicable).
+
+## Technologies Used
+
+- **Next.js 15**: A powerful React framework for building fast, static, and dynamic websites.
+- **TypeScript**: Provides type safety for JavaScript, ensuring fewer bugs and better tooling.
+- **ShadCN**: A collection of customizable and reusable UI components that help create beautiful user interfaces quickly.
+- **TypeDoc**: A documentation generator for TypeScript projects that can be used to automatically generate project documentation.
+
+## Building for Production
+
+To create an optimized production build, run the following command:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will generate an optimized build in the `.next` directory. To serve the production build locally, you can run:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## License
 
-## Learn More
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Feel free to contribute to the project or open issues if you encounter any problems.
