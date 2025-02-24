@@ -17,7 +17,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 // Services & helpers
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { SignupFormData } from '@/types/auth';
 import { SignupFormDataSchema } from '@/schemas/auth';
@@ -115,7 +115,7 @@ const SignupPage: React.FC = () => {
     };
 
     return (
-        <div className="h-[92vh] flex items-center justify-center bg-gray-100 dark:shadow-slate-600 hover:shadow-lg transition-shadow  p-4">
+        <div className="h-screen flex items-center justify-center bg-gray-100 dark:shadow-slate-600 hover:shadow-lg transition-shadow  p-4">
             <Card className="w-full max-w-md">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold">Create an account</CardTitle>

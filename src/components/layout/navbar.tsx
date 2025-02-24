@@ -6,7 +6,6 @@ import Link from 'next/link';
 
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/themes/theme-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     DropdownMenu,
@@ -38,18 +37,18 @@ const Navbar: React.FC = () => {
     }, [router]);
 
     return (
-        <nav className="fixed w-full bg-background/80 backdrop-blur-md border-b border-border z-50">
+        <nav className="fixed w-full bg-slate-900 text-white backdrop-blur-md border-b border-slate-700 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <div className="flex items-center space-x-1">
                         <Image
-                            src={'/logo.png'}
+                            src={'/object-vision-logo.png'}
                             alt="Object Vision Logo"
-                            width={40}
-                            height={40}
-                        />
-                        <span className="text-2xl font-bold text-blue-500">bjectVision</span>
+                            width={150}
+                            height={80}
+                            className="h-auto object-contain"
+                        />                        
                     </div>
 
                     {/* Desktop Navigation */}
@@ -58,16 +57,15 @@ const Navbar: React.FC = () => {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`text-sm font-medium transition-colors hover:text-primary ${isActiveLink(item.href)
-                                        ? 'text-primary'
-                                        : 'text-muted-foreground'
+                                className={`font-medium transition-colors hover:text-gray-50 ${isActiveLink(item.href)
+                                        ? 'text-green-500 text-base'
+                                        : 'text-gray-400 text-sm'
                                     }`}
                             >
                                 {item.label}
                             </Link>
                         ))}
                         <div className="flex items-center space-x-4">
-                            <ThemeToggle />
                             {isLoggedIn ? (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger className="focus:outline-none">
@@ -85,10 +83,10 @@ const Navbar: React.FC = () => {
                             ) : (
                                 <>
                                     <Link href="/auth/login">
-                                        <Button variant="ghost">Login</Button>
+                                        <Button className='border-2 rounded-lg hover:bg-gray-300 hover:text-neutral-700'>Login</Button>
                                     </Link>
                                     <Link href="/auth/signup">
-                                        <Button>Sign Up</Button>
+                                        <Button className='bg-green-600 text-gray-900 font-semibold hover:bg-green-500'>Sign Up</Button>
                                     </Link>
                                 </>
                             )}
@@ -97,7 +95,6 @@ const Navbar: React.FC = () => {
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden flex items-center space-x-4">
-                        <ThemeToggle />
                         <Button
                             variant="ghost"
                             size="icon"
