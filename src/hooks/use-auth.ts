@@ -1,30 +1,15 @@
 'use client';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, clearErrors } from '@/store/features/auth/authSlice';
-import {
-    loginUser,
-    signupUser,
-    verifyOtp,
-    resendOtp
-} from '@/store/features/auth/authThunk';
+import { loginUser, signupUser, verifyOtp, resendOtp } from '@/store/features/auth/authThunk';
 import type { AppDispatch, RootState } from '@/store/store';
-import type {
-    SignupFormData,
-    LoginFormData,
-    OTPVerify,
-    OTPUrlObj
-} from '@/types/auth';
+import type { SignupFormData, LoginFormData, OTPVerify, OTPUrlObj } from '@/types/auth';
 
 
 export const useAuth = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const {
-        isAuthenticated,
-        loading,
-        error,
-        signupSuccess
-    } = useSelector((state: RootState) => state.auth);
+    const authState = useSelector((state: RootState) => state.auth);
 
     // Signup handler
     const signup = useCallback(async (data: SignupFormData) => {
@@ -66,21 +51,6 @@ export const useAuth = () => {
         }
     }, [dispatch]);
 
-    // Logout handler
-    const logoutUser = useCallback(() => {
-        dispatch(logout());
-    }, [dispatch]);
-
-    // Clear any auth-related errors
-    const clearAuthErrors = useCallback(() => {
-        dispatch(clearErrors());
-    }, [dispatch]);
-
-    // Check if user is authenticated
-    const checkAuth = useCallback(() => {
-        return isAuthenticated;
-    }, [isAuthenticated]);
-
     // Get access token
     const getAccessToken = useCallback(() => {
         if (typeof window !== 'undefined') {
@@ -89,21 +59,12 @@ export const useAuth = () => {
         return null;
     }, []);
 
-    return {
-        // State
-        isAuthenticated,
-        loading,
-        error,
-        signupSuccess,
-
-        // Methods
-        signup,
-        login,
-        verifyOTP,
-        resendOTP,
-        logoutUser,
-        clearAuthErrors,
-        checkAuth,
+    return useMemo(() => ({
+        ...authState,
+        signup, login, verifyOTP, resendOTP,
+        logoutUser: ()=> dispatch(logout()),
+        clearAuthErrors: ()=> dispatch(clearErrors()),
+        checkAuth: ()=> authState.isAuthenticated,
         getAccessToken,
-    };
+    }), [authState, signup, login, verifyOTP, resendOTP, getAccessToken, dispatch]);
 };

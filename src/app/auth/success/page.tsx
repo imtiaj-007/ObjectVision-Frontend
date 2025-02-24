@@ -56,12 +56,12 @@ const OAuthSuccessPage = () => {
 
             } catch (error) {
                 console.error('Error processing token:', error);
-                router.push('/login?error=invalid_token');
+                router.push('/auth/login?error=invalid_token');
             }
         } else {
             const isVerified = searchParams.get('otpVerified');
             if (!isVerified) {
-                router.push('/login?error=no_token');
+                router.push('/auth/login?error=no_token');
             } else {
                 setOtpVerified(true);
                 timer = startCountdownAndRedirect('/auth/login');
@@ -78,7 +78,7 @@ const OAuthSuccessPage = () => {
 
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+        <div className="h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
             <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
                 <div className="flex justify-center mb-6">
                     <CheckCircle className="w-16 h-16 text-green-500" />

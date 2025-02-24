@@ -19,7 +19,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import DeviceLoginModal from '@/components/modals/device-modal';
 
 // Services & helpers
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { LoginFormData } from '@/types/auth';
 import { LoginFormDataSchema } from '@/schemas/auth';
@@ -132,7 +132,7 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="h-[100vh] flex items-center justify-center bg-gray-100 dark:bg-background dark:shadow-slate-600 transition-shadow p-4">
+        <div className="h-screen flex items-center justify-center bg-gray-100 dark:bg-background dark:shadow-slate-600 transition-shadow p-4">
             <Card className="w-full max-w-md dark:shadow-slate-900">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold">Login</CardTitle>
