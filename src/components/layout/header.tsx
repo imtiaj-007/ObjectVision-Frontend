@@ -12,10 +12,10 @@ import { ThemeToggle } from '../themes/theme-toggle';
 const Header = () => {
 
     return (
-        <header className="h-16 bg-background border-b flex items-center justify-between py-2 px-4 z-50 rounded-xl border-2 border-slate-200 dark:border-slate-800 mb-2">
+        <header className="h-16 bg-background border-b flex items-center justify-between py-2 px-8 z-50 rounded-xl border-2 border-slate-200 dark:border-slate-800 mb-2">
             <div className="flex items-center">
                 <Menu className="h-5 w-5 text-muted-foreground hover:text-foreground cursor-pointer lg:hidden" />
-                <span className="text-xl font-semibold ml-4">Dashboard</span>
+                <span className="text-xl font-semibold">Dashboard</span>
             </div>
 
             {/* Middle section - Search */}
@@ -36,7 +36,7 @@ const Header = () => {
 
                 <DropdownMenu>
                     <DropdownMenuTrigger className="focus:outline-none">
-                        <Avatar className="h-8 w-8">
+                        <Avatar className="h-12 w-12">
                             <AvatarImage src="/api/placeholder/32/32" alt="User" />
                             <AvatarFallback>UN</AvatarFallback>
                         </Avatar>

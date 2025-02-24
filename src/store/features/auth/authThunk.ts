@@ -3,14 +3,14 @@ import { AuthResponse, LoginFormData, OTPSuccess, OTPUrlObj, OTPVerify, SignupFo
 import { CustomError } from '@/types/general';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
+import { setUser } from '../user/userSlice';
 
 
-export const signupUser = createAsyncThunk< SignupResponse, SignupFormData, { rejectValue: CustomError } >(
+export const signupUser = createAsyncThunk<SignupResponse, SignupFormData, { rejectValue: CustomError }>(
     'auth/signup',
-    async (data: SignupFormData, { rejectWithValue }) => {
+    async (data, { rejectWithValue }) => {
         try {
-            const response = await authService.signup(data);
-            return response;
+            return await authService.signup(data);
         } catch (error) {
             if (isAxiosError(error)) {
                 return rejectWithValue({
@@ -26,15 +26,18 @@ export const signupUser = createAsyncThunk< SignupResponse, SignupFormData, { re
     }
 );
 
-export const loginUser = createAsyncThunk< AuthResponse, LoginFormData, { rejectValue: CustomError } >(
+export const loginUser = createAsyncThunk<AuthResponse, LoginFormData, { rejectValue: CustomError }>(
     'auth/login',
-    async (data: LoginFormData, { rejectWithValue }) => {
+    async (data, { rejectWithValue, dispatch }) => {
         try {
             const response = await authService.login(data);
             if (response.access_token) {
-                localStorage.setItem("access_token", response.access_token);
-                if (response.token_type)
-                    localStorage.setItem("token_type", response.token_type);
+                localStorage.setItem("access_token", response.access_token ?? '');
+                localStorage.setItem("token_type", response.token_type ?? '');
+                localStorage.setItem("refresh_token", response.refresh_token ?? '');
+
+                // Update Redux store
+                dispatch(setUser(response.user));
             }
             return response;
         } catch (error) {
@@ -52,12 +55,11 @@ export const loginUser = createAsyncThunk< AuthResponse, LoginFormData, { reject
     }
 );
 
-export const verifyOtp = createAsyncThunk< OTPSuccess, OTPVerify, { rejectValue: CustomError } >(
+export const verifyOtp = createAsyncThunk<OTPSuccess, OTPVerify, { rejectValue: CustomError }>(
     'auth/verifyOtp',
-    async (data: OTPVerify, { rejectWithValue }) => {
+    async (data, { rejectWithValue }) => {
         try {
-            const response = await authService.verifyOtp(data);
-            return response;
+            return await authService.verifyOtp(data);
         } catch (error) {
             if (isAxiosError(error)) {
                 return rejectWithValue({
@@ -73,12 +75,11 @@ export const verifyOtp = createAsyncThunk< OTPSuccess, OTPVerify, { rejectValue:
     }
 );
 
-export const resendOtp = createAsyncThunk< OTPSuccess, OTPUrlObj, { rejectValue: CustomError } >(
+export const resendOtp = createAsyncThunk<OTPSuccess, OTPUrlObj, { rejectValue: CustomError }>(
     'auth/resendOtp',
-    async (data: OTPUrlObj, { rejectWithValue }) => {
+    async (data, { rejectWithValue }) => {
         try {
-            const response = await authService.resendOtp(data);
-            return response;
+            return await authService.resendOtp(data);
         } catch (error) {
             if (isAxiosError(error)) {
                 return rejectWithValue({

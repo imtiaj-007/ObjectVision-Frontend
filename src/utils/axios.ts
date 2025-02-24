@@ -7,17 +7,28 @@ import axios, {
 } from "axios";
 import { config } from "@/configuration/config";
 
-
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+    _retry?: boolean;
+}
 const baseURL: string | undefined = config.API_BASE_URL;
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL,
+    withCredentials: true,
     headers: {
         "Content-Type": "application/json",
     },
 });
 
-// Before sending request, add token and Headers as required
+const refreshInstance = axios.create({
+    baseURL,  
+    withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
+// Request interceptor
 axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
         const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
@@ -41,7 +52,7 @@ axiosInstance.interceptors.request.use(
     (error: AxiosError) => Promise.reject(error)
 );
 
-// Response interceptor to check and store new access token
+// Response interceptor
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse): AxiosResponse => {
         const newAccessToken = response.headers["authorization"];
@@ -55,18 +66,42 @@ axiosInstance.interceptors.response.use(
 
         return response;
     },
-    async (error: AxiosError) => {
-        if (error.response?.status === 401) {
-            if (typeof window !== "undefined") {
-                localStorage.clear();
-                window.location.href = "/auth/login";
+    async (error: unknown) => {
+        // Check if the error is an AxiosError
+        if (!axios.isAxiosError(error) || !error.config) {
+            return Promise.reject(error);
+        }
+
+        const originalRequest = error.config as CustomAxiosRequestConfig;
+
+        // Check if the error is a 401 and the request hasn't been retried yet
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            try {
+                // Attempt to refresh the access token
+                const refreshResponse = await refreshInstance.get("/auth/refresh_token");
+                const newAccessToken = refreshResponse.data.access_token;
+
+                if (newAccessToken) {
+                    localStorage.setItem("access_token", newAccessToken);
+                    originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                    return axiosInstance(originalRequest); // Retry the original request
+                }
+            } catch (refreshError: unknown) {
+                // If refresh fails, redirect to login
+                if (typeof window !== "undefined") {
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                    window.location.href = "/auth/login";
+                    return Promise.reject(refreshError);
+                }
             }
         }
 
         return Promise.reject(error);
     }
 );
-
 
 // Axios request handlers
 const axiosHandler = {

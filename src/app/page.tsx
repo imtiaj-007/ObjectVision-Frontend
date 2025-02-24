@@ -1,95 +1,205 @@
 'use client'
 import React from 'react';
+import { motion } from "framer-motion";
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Camera, Search, Zap, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import {
+    Camera, Search, Zap, ArrowRight,
+    ChevronRight, Image, BadgeCheck, CloudLightning, 
+    FileImage, Film, File, FileVideo, ImagePlay
+} from 'lucide-react';
 
 const HomePage: React.FC = () => {
-  return (
-    <div className="min-h-screen dark:bg-gradient-dark bg-gradient-light">
-      
-      {/* Hero Section */}
-      <main className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-8 py-12">
-            <h1 className="text-5xl font-bold dark:text-gray-200 text-gray-900 sm:text-6xl">
-              Advanced Object Detection
-              <span className="block text-blue-600 mt-3">Made Simple</span>
-            </h1>
-            <p className="max-w-2xl mx-auto text-xl dark:text-gray-300 text-gray-600">
-              Transform your images into intelligent insights with our state-of-the-art
-              object detection technology. Fast, accurate, and easy to use.
-            </p>
-            <div className="flex justify-center">
-              <Link href="auth/signup">
-                <Button size="lg" className="text-lg dark:bg-gray-300 px-8 py-6 rounded-full">
-                  Get Started Now
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
-          </div>
 
-          {/* Features Section */}
-          <div className="grid md:grid-cols-3 gap-8 py-12">
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <div className="space-y-4">
-                <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Camera className="h-6 w-6 text-blue-600" />
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+            {/* Hero Section */}
+            <section className="pt-32 pb-20 px-4">
+                <div className="max-w-7xl mx-auto text-center">
+                    <div className="inline-block mb-4 px-4 py-1 bg-blue-600/20 rounded-full text-blue-400 text-sm">
+                        Introducing ObjectVision AI
+                    </div>
+                    <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">
+                        Transform Your Images with AI-Powered Object Detection
+                    </h1>
+                    <p className="text-xl text-slate-300 mt-6 mb-8 max-w-3xl mx-auto">
+                        Instantly detect, classify, and analyze objects in your images with enterprise-grade accuracy.
+                        Built for developers, designed for everyone.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                        <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6">
+                            Start Free Trial
+                            <ArrowRight className="ml-2" />
+                        </Button>
+                        <Button size="lg" className="bg-white text-lg text-gray-700 px-8 py-6">
+                            Live Demo
+                            <ChevronRight className="ml-2" />
+                        </Button>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                        <div className="text-center">
+                            <div className="text-4xl font-bold text-white mb-2">99.9%</div>
+                            <div className="text-slate-400">Accuracy Rate</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-4xl font-bold text-white mb-2">50ms</div>
+                            <div className="text-slate-400">Processing Time</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-4xl font-bold text-white mb-2">5M+</div>
+                            <div className="text-slate-400">Images Processed</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-4xl font-bold text-white mb-2">1000+</div>
+                            <div className="text-slate-400">Happy Users</div>
+                        </div>
+                    </div>
                 </div>
-                <h3 className="text-xl font-semibold">Real-time Detection</h3>
-                <p className="text-gray-400">
-                  Instantly detect and classify objects in images with high accuracy
-                </p>
-              </div>
-            </Card>
+            </section>
 
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <div className="space-y-4">
-                <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Search className="h-6 w-6 text-blue-600" />
+            {/* Features Grid */}
+            <section className="py-20 px-4" id="features">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl font-bold mb-4">Everything You Need</h2>
+                        <p className="text-slate-400 text-xl">Powerful features to supercharge your object detection workflow</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                icon: Camera,
+                                title: "Real-time Detection",
+                                description: "Process images in real-time with our advanced AI models"
+                            },
+                            {
+                                icon: CloudLightning,
+                                title: "Fast Processing",
+                                description: "Lightning-fast detection speeds of 50ms or less"
+                            },
+                            {
+                                icon: BadgeCheck,
+                                title: "High Accuracy",
+                                description: "Industry-leading 99.9% accuracy rate"
+                            },
+                            {
+                                icon: Image,
+                                title: "Batch Processing",
+                                description: "Process thousands of images simultaneously"
+                            },
+                            {
+                                icon: Search,
+                                title: "Advanced Analytics",
+                                description: "Get detailed insights for each detected object"
+                            },
+                            {
+                                icon: Zap,
+                                title: "API Integration",
+                                description: "Simple REST API for seamless integration"
+                            }
+                        ].map((feature, index) => (
+                            <Card key={index} className="p-6 bg-slate-800/50 hover:bg-slate-800 transition-colors border-slate-700">
+                                <div className="h-12 w-12 rounded-lg bg-blue-600/20 flex items-center justify-center mb-4">
+                                    <feature.icon className="h-6 w-6 text-blue-400" />
+                                </div>
+                                <h3 className="text-xl text-white font-semibold mb-2">{feature.title}</h3>
+                                <p className="text-slate-400">{feature.description}</p>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
-                <h3 className="text-xl font-semibold">Advanced Analytics</h3>
-                <p className="text-gray-400">
-                  Get detailed insights and analysis for each detected object
-                </p>
-              </div>
-            </Card>
+            </section>
 
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <div className="space-y-4">
-                <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Zap className="h-6 w-6 text-blue-600" />
+            {/* Supported Formats Section */}
+            <section className="py-20 px-4 bg-slate-800/50">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <motion.h2
+                            initial={{ opacity: 0, y: -20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
+                            className="text-4xl font-bold mb-4"
+                        >
+                            Supported Formats
+                        </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, y: -20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            viewport={{ once: true }}
+                            className="text-slate-400 text-xl"
+                        >
+                            Process any type of image or video format with ease
+                        </motion.p>
+                    </div>
+
+                    <motion.div
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
+                        initial="hidden"
+                        whileInView="visible"
+                        variants={{
+                            visible: { transition: { staggerChildren: 0.1 } },
+                        }}
+                    >
+                        {[
+                            { icon: FileImage, title: "JPEG/JPG", description: "High-quality compressed images" },
+                            { icon: File, title: "PNG", description: "Lossless compression with transparency" },
+                            { icon: FileVideo, title: "MP4", description: "Industry standard video format" },
+                            { icon: Film, title: "RAW", description: "Uncompressed image data" },
+                            { icon: ImagePlay, title: "ImagePlay", description: "Animated image sequences" },
+                            { icon: Film, title: "MOV", description: "High-quality video format" },
+                            { icon: FileImage, title: "WEBP", description: "Modern web-optimized format" },
+                            { icon: FileVideo, title: "AVI", description: "Windows video format" },
+                            { icon: File, title: "TIFF", description: "Professional image format" },
+                            { icon: FileVideo, title: "MKV", description: "Versatile video container" },
+                            { icon: FileImage, title: "BMP", description: "Uncompressed bitmap format" },
+                            { icon: FileVideo, title: "WMV", description: "Windows media format" }
+                        ].map((format, index) => (
+                            <motion.div
+                                key={index}
+                                className="bg-slate-800/30 rounded-lg p-6 hover:bg-slate-700/50 transition-colors text-center"
+                                variants={{
+                                    hidden: { opacity: 0, y: 20 },
+                                    visible: { opacity: 1, y: 0 },
+                                }}
+                                whileHover={{ scale: 1.05 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <div className="h-12 w-12 mx-auto rounded-lg bg-blue-600/20 flex items-center justify-center mb-4">
+                                    <format.icon className="h-6 w-6 text-blue-400" />
+                                </div>
+                                <h3 className="text-lg font-semibold mb-2">{format.title}</h3>
+                                <p className="text-sm text-slate-400">{format.description}</p>
+                            </motion.div>
+                        ))}
+                    </motion.div>
                 </div>
-                <h3 className="text-xl font-semibold">Lightning Fast</h3>
-                <p className="text-gray-400">
-                  Process images quickly with our optimized detection algorithms
-                </p>
-              </div>
-            </Card>
-          </div>
+            </section>
 
-          {/* CTA Section */}
-          <div className="bg-blue-50 dark:bg-blue-200 rounded-2xl p-8 mt-12 text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Ready to get started?
-            </h2>
-            <p className="text-lg text-gray-600 mb-6">
-              Join thousands of users who trust our platform for object detection
-            </p>
-            <Link href="auth/signup">
-              <Button size="lg" className="text-lg dark:bg-blue-600 dark:text-white px-8">
-                Start Free Trial
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
+            {/* CTA Section */}
+            <section className="py-20 px-4">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h2 className="text-4xl font-bold mb-4">Ready to Get Started?</h2>
+                    <p className="text-xl text-slate-400 mb-8">
+                        Start your free trial today. No credit card required.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg text-white px-8 py-6">
+                            Start Free Trial
+                            <ArrowRight className="ml-2" />
+                        </Button>
+                        <Button size="lg" className="bg-white text-lg text-gray-700 px-8 py-6">
+                            Contact Sales
+                            <ChevronRight className="ml-2" />
+                        </Button>
+                    </div>
+                </div>
+            </section>
         </div>
-      </main>
-      
-    </div>
-  );
+    );
 };
 
 export default HomePage;

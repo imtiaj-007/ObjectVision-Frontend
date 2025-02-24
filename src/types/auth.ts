@@ -1,4 +1,5 @@
 import { CustomError } from './general';
+import { UserDetails } from './user';
 
 // Auth State for Internal Use
 export interface AuthState {
@@ -21,7 +22,9 @@ export interface SignupResponse {
 // Auth Response Type
 export interface AuthResponse {
     access_token: string;
-    token_type?: string;
+    token_type: string;
+    refresh_token: string;
+    user: UserDetails | null;
 }
 
 // Signup Form Data Type
