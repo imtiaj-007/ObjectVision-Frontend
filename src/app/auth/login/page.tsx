@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { z } from 'zod';
 
 import { Eye, EyeOff } from 'lucide-react';
@@ -29,6 +29,7 @@ import { isCustomError } from '@/types/general';
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { login, loading, clearAuthErrors } = useAuth();
     const { toast } = useToast();
 
@@ -82,7 +83,9 @@ const LoginPage: React.FC = () => {
                 ...formData,
                 new_device: true
             });
-            router.push('/user/dashboard');
+            const redirectURL = searchParams.get('redirectURL') as string || '/user/dashboard';
+            router.push(redirectURL);
+
         } catch (err: unknown) {
             if (isCustomError(err))
                 console.error(err);
@@ -104,7 +107,9 @@ const LoginPage: React.FC = () => {
 
             try {
                 await login(formData);
-                router.push('/user/dashboard');
+                const redirectURL = searchParams.get('redirectURL') as string || '/user/dashboard';
+                router.push(redirectURL);
+                
             } catch (err: unknown) {
                 if (isCustomError(err)) {
                     if (err.status_code === 409) {

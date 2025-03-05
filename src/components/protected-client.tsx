@@ -12,7 +12,7 @@ import UserInfoModal from './modals/user-info-modal';
 
 export default function ProtectedClient({ children }: { children: React.ReactNode }) {
     const { isAuthenticated } = useAuth();
-    const { user, loading: userLoader } = useUser();
+    const { user_details, loading: userLoader } = useUser();
     const dispatch = useDispatch<AppDispatch>();
     const [showUserInfoModal, setShowUserInfoModal] = useState<boolean>(false);
 
@@ -20,13 +20,13 @@ export default function ProtectedClient({ children }: { children: React.ReactNod
         if (!isAuthenticated) {
             redirect('/auth/login');
         }
-        else if (!user) {
+        else if (!user_details) {
             dispatch(getUserProfile());
         }
-        else if (!user.username) {
+        else if (!user_details?.user?.username) {
             setShowUserInfoModal(true);
-        }
-    }, [isAuthenticated, dispatch, user]);
+        }        
+    }, [isAuthenticated, dispatch, user_details]);
 
     return (
         <>

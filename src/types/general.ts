@@ -1,14 +1,12 @@
-// Enum for Address and PhoneNumber Types
-export enum ContactType {
-        HOME = "HOME",
-        WORK = "WORK",
-        OTHER = "OTHER",
-}
+import { ContactTypeEnum } from "./enums";
+import { RazorpayPaymentDetails } from "./payment";
+
 
 // General Success Response
 export interface SuccessResponse {
     message: string | undefined;
     status?: number;
+    extra_data?: RazorpayPaymentDetails | Record<string, unknown> | null;
 }
 
 // Address Structure
@@ -22,7 +20,7 @@ export interface Address {
     country_code: string;
     latitude?: string | undefined | null;
     longitude?: string | undefined | null;
-    type: ContactType;
+    type: ContactTypeEnum;
 }
 
 // Update Address Structure
@@ -31,7 +29,7 @@ export interface AddressUpdate {
     address_line_2?: string | undefined;    
     latitude?: string | undefined | null;
     longitude?: string | undefined | null;
-    type: ContactType;
+    type: ContactTypeEnum;
 }
 
 // Response structure of addresses
@@ -53,7 +51,7 @@ export interface AddressState {
 export interface PhoneNumber {
     phone_number: string;
     country_code: string;
-    type: ContactType;
+    type: ContactTypeEnum;
     is_primary: boolean;
 }
 

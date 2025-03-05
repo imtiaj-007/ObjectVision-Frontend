@@ -12,9 +12,9 @@ import { ThemeToggle } from '../themes/theme-toggle';
 const Header = () => {
 
     return (
-        <header className="h-16 bg-background border-b flex items-center justify-between py-2 px-8 z-50 rounded-xl border-2 border-slate-200 dark:border-slate-800 mb-2">
+        <header className="h-16 bg-background flex items-center justify-between p-2 lg:px-8 z-50 rounded-xl border-2 mb-2">
             <div className="flex items-center">
-                <Menu className="h-5 w-5 text-muted-foreground hover:text-foreground cursor-pointer lg:hidden" />
+                <Menu className="h-5 w-5 text-muted-foreground hover:text-foreground cursor-pointer lg:hidden mr-4" />
                 <span className="text-xl font-semibold">Dashboard</span>
             </div>
 
@@ -25,7 +25,7 @@ const Header = () => {
                     <input
                         type="text"
                         placeholder="Search..."
-                        className="w-full pl-10 pr-4 py-2 rounded-full bg-muted/50 border focus:outline-none focus:ring-2 focus:ring-ring"
+                        className="w-full pl-10 pr-4 py-2 rounded-full bg-muted/50 dark:bg-black/10 border focus:outline-none focus:ring-2 focus:ring-ring"
                     />
                 </div>
             </div>

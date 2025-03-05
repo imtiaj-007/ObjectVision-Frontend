@@ -27,7 +27,7 @@ interface UserInfoModalProps {
 }
 
 const UserInfoModal: React.FC<UserInfoModalProps> = ({ open, onClose }) => {
-    const { user } = useUser();
+    const { user_details } = useUser();
     const {
         step, userName, phoneNumber, countries, selectedCountry,
         address, loading, error, countrySelectOpen, searchQuery,
@@ -313,7 +313,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ open, onClose }) => {
                         </span>
                     </div>
                     <DialogTitle>
-                        <p className="text-2xl mb-1">Hi {user?.name}</p>
+                        <p className="text-2xl mb-1">Hi {user_details?.user?.name}</p>
                         <p className="text-gray-600 dark:text-gray-400 mb-5 text-sm">
                             Before we proceed, please fill in these details.
                         </p>

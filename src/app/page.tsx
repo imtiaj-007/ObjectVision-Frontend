@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
     Camera, Search, Zap, ArrowRight,
-    ChevronRight, Image, BadgeCheck, CloudLightning, 
+    ChevronRight, Image, BadgeCheck, CloudLightning,
     FileImage, Film, File, FileVideo, ImagePlay
 } from 'lucide-react';
 
@@ -27,11 +27,11 @@ const HomePage: React.FC = () => {
                         Built for developers, designed for everyone.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                        <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6">
+                        <Button size="lg">
                             Start Free Trial
                             <ArrowRight className="ml-2" />
                         </Button>
-                        <Button size="lg" className="bg-white text-lg text-gray-700 px-8 py-6">
+                        <Button size="lg" className='bg-neutral-200 text-gray-900/90 hover:bg-neutral-100 hover:text-gray-900'>
                             Live Demo
                             <ChevronRight className="ml-2" />
                         </Button>
@@ -59,54 +59,86 @@ const HomePage: React.FC = () => {
                 </div>
             </section>
 
-            {/* Features Grid */}
+            {/* Features Card Section */}
             <section className="py-20 px-4" id="features">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-bold mb-4">Everything You Need</h2>
-                        <p className="text-slate-400 text-xl">Powerful features to supercharge your object detection workflow</p>
+                        <p className="text-slate-400 text-xl">
+                            Powerful features to supercharge your object detection workflow
+                        </p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
                         {[
                             {
                                 icon: Camera,
-                                title: "Real-time Detection",
-                                description: "Process images in real-time with our advanced AI models"
+                                title: 'Real-time Detection',
+                                description: 'Process images in real-time with AI models',
                             },
                             {
                                 icon: CloudLightning,
-                                title: "Fast Processing",
-                                description: "Lightning-fast detection speeds of 50ms or less"
+                                title: 'Fast Processing',
+                                description: 'Lightning-fast detection speed of ~50ms',
                             },
                             {
                                 icon: BadgeCheck,
-                                title: "High Accuracy",
-                                description: "Industry-leading 99.9% accuracy rate"
+                                title: 'High Accuracy',
+                                description: 'Industry-leading 99.9% accuracy rate',
                             },
                             {
                                 icon: Image,
-                                title: "Batch Processing",
-                                description: "Process thousands of images simultaneously"
+                                title: 'Batch Processing',
+                                description: 'Process thousands of images simultaneously',
                             },
                             {
                                 icon: Search,
-                                title: "Advanced Analytics",
-                                description: "Get detailed insights for each detected object"
+                                title: 'Advanced Analytics',
+                                description: 'Get detailed insights for each detected object',
                             },
                             {
                                 icon: Zap,
-                                title: "API Integration",
-                                description: "Simple REST API for seamless integration"
-                            }
+                                title: 'API Integration',
+                                description: 'Simple REST API for seamless integration',
+                            },
                         ].map((feature, index) => (
-                            <Card key={index} className="p-6 bg-slate-800/50 hover:bg-slate-800 transition-colors border-slate-700">
-                                <div className="h-12 w-12 rounded-lg bg-blue-600/20 flex items-center justify-center mb-4">
-                                    <feature.icon className="h-6 w-6 text-blue-400" />
-                                </div>
-                                <h3 className="text-xl text-white font-semibold mb-2">{feature.title}</h3>
-                                <p className="text-slate-400">{feature.description}</p>
-                            </Card>
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                animate={{
+                                    scale: [1, 1.03, 1],
+                                }}
+                                transition={{
+                                    y: {
+                                        duration: 4,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        repeatType: "mirror"
+                                    },
+                                    scale: {
+                                        duration: 4,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        repeatType: "mirror"
+                                    },
+                                    opacity: {
+                                        duration: 0.8,
+                                        delay: index * 0.1
+                                    }
+                                }}
+                            >
+                                <Card className="p-6 bg-slate-800/50 hover:bg-slate-800 transition-colors border-slate-700">
+                                    {/* Icon */}
+                                    <div className="h-12 w-12 rounded-lg bg-blue-600/20 flex items-center justify-center mb-4">
+                                        <feature.icon className="h-6 w-6 text-blue-400" />
+                                    </div>
+
+                                    {/* Title and Description */}
+                                    <h3 className="text-xl text-white font-semibold mb-2">{feature.title}</h3>
+                                    <p className="text-slate-400">{feature.description}</p>
+                                </Card>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
@@ -166,7 +198,7 @@ const HomePage: React.FC = () => {
                                     visible: { opacity: 1, y: 0 },
                                 }}
                                 whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 0.3 }}
+                                transition={{ duration: 1.0 }}
                             >
                                 <div className="h-12 w-12 mx-auto rounded-lg bg-blue-600/20 flex items-center justify-center mb-4">
                                     <format.icon className="h-6 w-6 text-blue-400" />
@@ -191,7 +223,7 @@ const HomePage: React.FC = () => {
                             Start Free Trial
                             <ArrowRight className="ml-2" />
                         </Button>
-                        <Button size="lg" className="bg-white text-lg text-gray-700 px-8 py-6">
+                        <Button size="lg" className='bg-neutral-200 text-gray-900/90 hover:bg-neutral-100 hover:text-gray-900'>
                             Contact Sales
                             <ChevronRight className="ml-2" />
                         </Button>

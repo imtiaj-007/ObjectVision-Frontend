@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { AppDispatch, RootState } from '@/store/store';
 import { clearErrors, setUser } from '@/store/features/user/userSlice';
 import { getUserProfile } from '@/store/features/user/userThunk';
-import { UserDetails } from '@/types/user';
+import { UserProfileDetails } from '@/types/user';
 import { useMemo } from 'react';
 
 
@@ -13,7 +13,7 @@ const useUser = () => {
 
     return useMemo(() => ({
         ...user,
-        setUserProfile: (payload: UserDetails) => dispatch(setUser(payload)),
+        setUserProfile: (payload: UserProfileDetails) => dispatch(setUser(payload)),
         fetchUserProfile: ()=> dispatch(getUserProfile()), 
         clearUserErrors: () => dispatch(clearErrors()),
     }), [user]);
