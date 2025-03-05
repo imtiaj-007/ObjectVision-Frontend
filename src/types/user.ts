@@ -1,20 +1,15 @@
-import { Address, Country, CustomError, PhoneNumber } from './general';
+import { UserRoleEnum } from './enums';
+import { Address, PhoneNumber } from './general';
 
 // User Details 
 export interface UserDetails {
+    id: number;
     username: string;
     name: string;
     email: string;
     is_active: boolean;
     is_blocked: boolean;
-    role: number;
-}
-
-// User State for Internal Use
-export interface UserState {
-    loading: boolean;
-    error: CustomError | string | null;
-    user: UserDetails | null;
+    role: UserRoleEnum;
 }
 
 // User Profile
@@ -29,21 +24,6 @@ export interface UserUpdateProfile {
     username: string;
     phone_number: PhoneNumber;
     address: Address;
-}
-
-// User Info state for Internal use
-export interface UserInfoState {
-    step: number;
-    userName: string;
-    userNames: Array<string>;
-    phoneNumber: PhoneNumber;
-    countries: Country[];
-    selectedCountry: Country | null;
-    address: Address;
-    loading: boolean;
-    error: CustomError | string | null;
-    countrySelectOpen: boolean;
-    searchQuery: string;
 }
 
 // Submit User Info Structure

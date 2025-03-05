@@ -1,7 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Country, CustomError, PhoneNumber, Address, ContactType } from '@/types/general';
-import { UserInfoState } from '@/types/user';
+import { Country, CustomError, PhoneNumber, Address } from '@/types/general';
 import { getAllUsernames, submitNewUserInfo } from './userThunk';
+import { ContactTypeEnum } from '@/types/enums';
+
+
+export interface UserInfoState {
+    step: number;
+    userName: string;
+    userNames: Array<string>;
+    phoneNumber: PhoneNumber;
+    countries: Country[];
+    selectedCountry: Country | null;
+    address: Address;
+    loading: boolean;
+    error: CustomError | string | null;
+    countrySelectOpen: boolean;
+    searchQuery: string;
+}
+
 
 const initialState: UserInfoState = {
     step: 1,
@@ -10,7 +26,7 @@ const initialState: UserInfoState = {
     phoneNumber: {
         phone_number: '',
         country_code: '',
-        type: ContactType.HOME,
+        type: ContactTypeEnum.HOME,
         is_primary: true,
     },
     countries: [],
@@ -25,7 +41,7 @@ const initialState: UserInfoState = {
         country_code: '',
         latitude: null,
         longitude: null,
-        type: ContactType.HOME,
+        type: ContactTypeEnum.HOME,
     },
     loading: false,
     error: null,

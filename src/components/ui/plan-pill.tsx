@@ -1,14 +1,15 @@
 import { cn } from "@/lib/utils";
+import { SubscriptionPlansEnum } from "@/types/enums";
 
 interface PlanPillProps {
-    plan: "FREE" | "SILVER" | "GOLD";
+    plan: SubscriptionPlansEnum;
     className?: string;
 }
 
 const PlanPill: React.FC<PlanPillProps> = ({ plan, className }) => {
     // Styles for each plan
     const planStyles = {
-        FREE: "bg-gray-100 text-gray-800",
+        BASIC: "bg-green-200 text-gray-900",
         SILVER: "bg-blue-100 text-blue-800",
         GOLD: "bg-yellow-100 text-yellow-800",
     };
@@ -21,7 +22,7 @@ const PlanPill: React.FC<PlanPillProps> = ({ plan, className }) => {
                 className
             )}
         >
-            {plan.charAt(0).toUpperCase() + plan.slice(1)}
+            {plan.charAt(0) + plan.substring(1).toLowerCase()}
         </span>
     );
 };

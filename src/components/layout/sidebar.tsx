@@ -72,13 +72,15 @@ const Sidebar: React.FC = ({ className }: SidebarProps) => {
             >
                 {/* Logo */}
                 <div className="flex items-center justify-center space-x-1 py-2 border-b-2">
+                    <Link href={'/'}>
                     <Image
                         src={'/object-vision-logo.png'}
                         alt="Object Vision Logo"
                         width={150}
-                        height={80}
+                        height={0}
                         className="h-auto object-contain"
                     />
+                    </Link>
                 </div>
 
                 {/* Navigation */}
