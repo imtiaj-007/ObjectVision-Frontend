@@ -9,7 +9,7 @@ interface TokenData {
 }
 type TimerFunction = (redirectPath: string) => NodeJS.Timeout;
 
-const OAuthSuccessPage = () => {
+const OAuthSuccessPage: React.FC = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [countdown, setCountdown] = useState<number>(5);
@@ -59,12 +59,16 @@ const OAuthSuccessPage = () => {
                 router.push('/auth/login?error=invalid_token');
             }
         } else {
-            const isVerified = searchParams.get('otpVerified');
-            if (!isVerified) {
+            const otpVerified = searchParams.get('otpVerified') === 'true';
+            const paymentVerified = searchParams.get('paymentVerified') === 'true';
+
+            if (!otpVerified && !paymentVerified) {
                 router.push('/auth/login?error=no_token');
-            } else {
+            } else if (otpVerified) {
                 setOtpVerified(true);
                 timer = startCountdownAndRedirect('/auth/login');
+            } else {
+                timer = startCountdownAndRedirect('/user/dashboard');
             }
         }
 
@@ -90,7 +94,7 @@ const OAuthSuccessPage = () => {
 
                 <p className="text-gray-600 mb-4">
                     Your account has been successfully verified.
-                    Redirecting to {otpVerified ? 'Login Page' : 'dashboard'} in {countdown} seconds...
+                    Redirecting to {otpVerified ? 'Login Page' : 'Dashboard'} in {countdown} seconds...
                 </p>
 
                 <div className="w-full bg-gray-200 rounded-full h-2 mb-4">

@@ -1,4 +1,5 @@
-import { ContactType } from "@/types/general";
+
+import { ContactTypeEnum } from "@/types/enums";
 import { z } from "zod";
 
 export const usernameSchema = z
@@ -32,7 +33,7 @@ export const addressSchema = z.object({
     country_code: z.string().length(2).nonempty("Country_code is required"),
     latitude: z.string().optional().nullable(),
     longitude: z.string().optional().nullable(),
-    type: z.nativeEnum(ContactType).default(ContactType.HOME),
+    type: z.nativeEnum(ContactTypeEnum).default(ContactTypeEnum.HOME),
 });
 
 export const submitUserInfoSchema = z.object({

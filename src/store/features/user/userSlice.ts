@@ -1,29 +1,40 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CustomError } from '@/types/general';
 import { getUserProfile } from './userThunk';
-import { UserDetails, UserState } from '@/types/user';
+import { UserProfileDetails } from '@/types/user';
+
+
+export interface UserState {
+    loading: boolean;
+    error: CustomError | string | null;
+    user_details: UserProfileDetails | null;
+    user_activity: Record<string, unknown> | null;
+}
+
 
 const initialState: UserState = {    
     loading: false,
     error: null,
-    user: typeof window !== 'undefined' ? (() => {
+    user_details: typeof window !== 'undefined' ? (() => {
         try {
-            const storedUser = localStorage.getItem('user');
+            const storedUser = localStorage.getItem('user_details');
             return storedUser ? JSON.parse(storedUser) : null;
         } catch (error) {
             console.log("Error parsing user from localStorage:", error);
             return null;
         }
     })() : null,
+    user_activity: null,
 };
+
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {        
-        setUser: (state, action: PayloadAction<UserDetails | null>) => {
-            state.user = action.payload;
-            localStorage.setItem("user", JSON.stringify(action.payload));
+        setUser: (state, action: PayloadAction<UserProfileDetails | null>) => {
+            state.user_details = action.payload;
+            localStorage.setItem("user_details", JSON.stringify(action.payload));
         },
         clearErrors: (state) => {
             state.error = null;
@@ -38,8 +49,8 @@ export const userSlice = createSlice({
             })
             .addCase(getUserProfile.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload.user;
-                localStorage.setItem("user", JSON.stringify(action.payload.user));
+                state.user_details = action.payload;
+                localStorage.setItem("user_details", JSON.stringify(action.payload));
             })
             .addCase(getUserProfile.rejected, (state, action) => {
                 state.loading = false;
