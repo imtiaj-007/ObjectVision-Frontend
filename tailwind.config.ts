@@ -24,6 +24,8 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        nav: "hsl(var(--nav))",
+        "nav-foreground": "hsl(var(--nav-foreground))",
         "gradient-light": 'linear-gradient(to bottom, #f9fafb, #ffffff)',
         "gradient-dark": 'linear-gradient(to bottom, #1f2937, #4b5563)',
         primary: {

@@ -64,7 +64,7 @@ const Sidebar: React.FC = ({ className }: SidebarProps) => {
             {/* Sidebar */}
             <div
                 className={cn(
-                    "fixed top-0 left-0 z-40 h-screen w-60 flex-col bg-background border-r",
+                    "fixed top-0 left-0 z-40 h-screen w-60 flex-col border-r",
                     "transition-transform duration-200 ease-in-out md:translate-x-0",
                     isMobileOpen ? "translate-x-0" : "-translate-x-full",
                     className

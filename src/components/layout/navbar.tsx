@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
                                 {item.label}
                             </Link>
                         ))}
-                        {isAuthenticated
+                        {typeof window !== "undefined" && isAuthenticated
                             ? (
                                 <Link href="/user/dashboard">
                                     <Button variant='success'>Go to Dashboard</Button>
@@ -106,7 +106,7 @@ const Navbar: React.FC = () => {
                             </Link>
                         ))}
                         <div className="flex flex-col space-y-2 pt-2 pb-3">
-                            {isAuthenticated
+                            {typeof window !== "undefined" && isAuthenticated
                                 ? (
                                     <Link href="/user/dashboard">
                                         <Button variant='success'>Go to Dashboard</Button>

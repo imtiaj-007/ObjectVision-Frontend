@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from "@/store/store"
 import { createOrder, verifyPayment } from "@/store/features/payment/paymentThunk";
 import { toast } from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
-import { config } from "@/configuration/config";
+import { settings } from "@/configuration/config";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -132,7 +132,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
         }
 
         const options: RazorpayOptions = {
-            key: config.RAZORPAY_KEY as string,
+            key: settings.RAZORPAY_KEY as string,
             amount: finalAmount * 100,
             currency: "INR",
             name: "Object Vision",

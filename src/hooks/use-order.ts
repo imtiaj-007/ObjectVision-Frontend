@@ -4,6 +4,7 @@ import { createOrder, getOrders, getOrdersOfUser } from "@/store/features/order/
 import { PaymentOrderRequest } from "@/types/payment";
 import { clearErrors } from "@/store/features/order/orderSlice";
 
+
 export const useOrder = () => {
     const dispatch = useDispatch<AppDispatch>();
 
@@ -19,9 +20,9 @@ export const useOrder = () => {
         await dispatch(createOrder(orderData));
     };    
 
-    const fetchUserOrders = async () => {
-        await dispatch(getOrdersOfUser({}));
-    }
+    const fetchUserOrders = async (user_id: number) => {
+        await dispatch(getOrdersOfUser({ user_id }));
+    };
 
     const fetchAllOrders = async () => {
         await dispatch(getOrders({}));

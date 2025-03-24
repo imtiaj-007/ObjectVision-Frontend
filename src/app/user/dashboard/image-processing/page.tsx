@@ -1,64 +1,42 @@
 'use client'
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+
+import { Image as ImageIcon, UploadCloud, X, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
-import { Image as ImageIcon, UploadCloud, X, ArrowRight, Zap, Feather, Sparkles, BicepsFlexed, Rocket } from "lucide-react";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
 import PlanPill from "@/components/ui/plan-pill";
 
-const AVAILABLE_MODELS = [
-    {
-        id: "ov-model-n",
-        name: "Model oV-N",
-        icon: <Zap className="h-4 w-4" />,
-        description: "Fastest inference, suitable for basic tasks"
-    },
-    {
-        id: "ov-model-s",
-        name: "Model oV-S",
-        icon: <Feather className="h-4 w-4" />,
-        description: "Balanced performance for simple scenarios"
-    },
-    {
-        id: "ov-model-m",
-        name: "Model oV-M",
-        icon: <Sparkles className="h-4 w-4" />,
-        description: "Recommended for most use cases"
-    },
-    {
-        id: "ov-model-l",
-        name: "Model oV-L",
-        icon: <BicepsFlexed className="h-4 w-4" />,
-        description: "High accuracy, complex scene analysis"
-    },
-    {
-        id: "ov-model-x",
-        name: "Model oV-X",
-        icon: <Rocket className="h-4 w-4" />,
-        description: "Maximum precision, resource intensive"
-    }
-];
+import { cn } from "@/lib/utils";
+import { useSubscriptionActivity } from "@/hooks/use-subscription-activity";
+import { AVAILABLE_MODELS, DetectionOperation, ModelResponse, OPERATIONS } from "@/types/detection";
+import { ActivityTypeEnum, ModelSizeEnum, SubscriptionPlansEnum } from "@/types/enums";
+import { UserActivityResponse } from "@/types/subscription_activity";
+import { toast } from "@/hooks/use-toast";
+import { DetectionRequestSchema } from "@/schemas/detection";
+import { useDetection } from "@/hooks/use-detection";
+import Loader from "@/components/ui/loader";
+import { base64Hash } from "@/utils/hash";
+import { File_Storage } from "../../../../../cache/file_storage";
 
-const OPERATIONS = [
-    { id: "detection", label: "Object Detection", description: "Locate and identify objects in the image" },
-    { id: "segmentation", label: "Segmentation", description: "Pixel-level object separation" },
-    { id: "classification", label: "Classification", description: "Categorize main objects in the scene" },
-    { id: "pose", label: "Pose Estimation", description: "Detect human body keypoints" }
-];
 
-const SUBSCRIPTION_PLANS = ["BASIC", "SILVER", "GOLD"] as const;
-type SubscriptionPlan = typeof SUBSCRIPTION_PLANS[number];
 
-export default function ImageProcessing() {
-    const [image, setImage] = useState<string | null>(null);
+const ImageProcessing: React.FC = () => {
+    const router = useRouter();
+    const path = usePathname();
+    const { activePlans, userActivity } = useSubscriptionActivity();
+    const { storeImageFormData, loading: detectionLoading } = useDetection();
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
-    const [selectedModel, setSelectedModel] = useState<string>("ov-model-n");
-    const [selectedOps, setSelectedOps] = useState<string[]>(["detection", "segmentation", "classification", "pose"]);
+    const [selectedModel, setSelectedModel] = useState<ModelResponse>();
+    const [selectedOps, setSelectedOps] = useState<string[]>([]);
     const [confidence, setConfidence] = useState<number>(0.5);
-    const [subscriptionPlan, setSubscriptionPlan] = useState<SubscriptionPlan>("BASIC");
+    const [imageActivity, setImageActivity] = useState<UserActivityResponse | null>(null);
+
 
     const handleDragOver = useCallback((e: React.DragEvent) => {
         e.preventDefault();
@@ -76,22 +54,38 @@ export default function ImageProcessing() {
 
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith('image/')) {
+            setImageFile(file);
+
             const reader = new FileReader();
             reader.onload = () => {
-                setImage(reader.result as string);
+                setImagePreview(reader.result as string);
             };
             reader.readAsDataURL(file);
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Unsupported Image Format",
+                description: "Please upload a Image of specified format."
+            })
         }
     }, []);
 
     const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file && file.type.startsWith('image/')) {
+            setImageFile(file);
+
             const reader = new FileReader();
             reader.onload = () => {
-                setImage(reader.result as string);
+                setImagePreview(reader.result as string);
             };
             reader.readAsDataURL(file);
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Unsupported Image Format",
+                description: "Please upload a Image of specified format."
+            })
         }
     }, []);
 
@@ -108,34 +102,118 @@ export default function ImageProcessing() {
     }, []);
 
     const resetConfig = useCallback(() => {
-        setImage(null);
-        setSelectedModel("ov-model-n");
-        setSelectedOps(["detection"]);
+        setImagePreview(null);
+        setImageFile(null);
+        setSelectedModel(
+            AVAILABLE_MODELS.find(model => model.name === "ov_model_s") || AVAILABLE_MODELS[0]
+        );
+        setSelectedOps(OPERATIONS.map(op => op.name));
         setConfidence(0.5);
     }, []);
 
-    const isModelAvailable = (modelId: string) => {
-        switch (subscriptionPlan) {
-            case "BASIC":
-                return modelId === "ov-model-n" || modelId === "ov-model-s";
-            case "SILVER":
-                return modelId === "ov-model-n" || modelId === "ov-model-s" || modelId === "ov-model-m";
-            case "GOLD":
-                return modelId !== "ov-model-x";
+    const isModelAvailable = (model_name: string) => {
+        switch ((activePlans && activePlans[0]?.plan_name) || SubscriptionPlansEnum.BASIC) {
+            case SubscriptionPlansEnum.BASIC:
+                return model_name === "ov_model_n" || model_name === "ov_model_s";
+            case SubscriptionPlansEnum.SILVER:
+                return model_name === "ov_model_n" || model_name === "ov_model_s" || model_name === "ov_model_m";
+            case SubscriptionPlansEnum.GOLD:
+                return model_name !== "ov_model_x";
             default:
                 return false;
         }
     };
 
+    const handleModelChange = (model_name: string) => {
+        const model = AVAILABLE_MODELS.find(model => model.name == model_name) || AVAILABLE_MODELS[0];
+        setSelectedModel(model);
+    };
+
+    const handleProcessImage = useCallback(() => {
+        if (!selectedModel || !selectedOps || !imageFile) return;
+        if (!imageActivity || imageActivity.total_usage >= imageActivity.total_limit) {
+            toast({
+                variant: "destructive",
+                title: "Image Quota Full",
+                description: "Please buy a subscription plan or recharge top-up to continue."
+            });
+            return;
+        }
+
+        const modelSizeKey = selectedModel.name as keyof typeof ModelSizeEnum;
+        const modelSize = ModelSizeEnum[modelSizeKey];
+
+        if (!modelSize) {
+            toast({
+                variant: "destructive",
+                title: "Validation Error",
+                description: "Invalid model size selected.",
+            });
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", imageFile);
+        formData.append("model_size", modelSize);
+        formData.append("requested_services", JSON.stringify(selectedOps));
+
+        const data = {
+            file: formData.get('file') as File,
+            model_size: modelSize,
+            requested_services: JSON.parse(formData.get('requested_services') as string) as string[],
+        };
+
+        const result = DetectionRequestSchema.safeParse(data);
+
+        if (!result.success) {
+            toast({
+                variant: "destructive",
+                title: "Validation Error",
+                description: result.error.errors.map(err => err.message).join(", "),
+            });
+            return;
+        };
+        const file_id = new Date().getTime().toString();
+        File_Storage.storeFile(file_id, imageFile);
+
+        storeImageFormData({
+            file_id,
+            model_size: modelSize,
+            requested_services: data.requested_services
+        });
+        router.push(`${path}/${base64Hash(imageFile.name)}/?socketConnection=true`);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedModel, selectedOps, imageFile, imageActivity]);
+
+
+    useEffect(() => {
+        setSelectedModel(
+            AVAILABLE_MODELS.find(model => model.name === "ov_model_s") || AVAILABLE_MODELS[0]
+        );
+        setSelectedOps(OPERATIONS.map(op => op.name));
+    }, []);
+
+    useEffect(() => {
+        if (userActivity) {
+            const img_activity = userActivity?.find(
+                (activity) => activity.activity_type === ActivityTypeEnum.IMAGE_USAGE
+            );
+            setImageActivity(img_activity || null);
+        }
+    }, [userActivity]);
+
+
     return (
-        <div className="space-y-6">
+        <div className="space-y-6">            
+            {detectionLoading && <Loader size="lg" className="w-full h-full" />}
             {/* Section Header */}
             <div className="header">
                 <h2 className="flex items-start text-2xl font-bold">
                     <i className="inline-flex mr-2"><ImageIcon className="w-7 h-7" /></i>
                     Image Processing
                 </h2>
-                <p className="text-gray-600 my-3">
+                <p className="text-gray-600 dark:text-gray-300 my-3">
                     Effortlessly analyze images using advanced AI-powered models. Adjust the confidence threshold to
                     refine accuracy and obtain precise insights.
                 </p>
@@ -145,10 +223,27 @@ export default function ImageProcessing() {
                 {/* Upload Section */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Upload Image</CardTitle>
+                        <CardTitle className="flex items-center justify-between">
+                            <div>
+                                Upload Image
+                                <p className="text-sm font-normal text-gray-500 dark:text-gray-300 mt-2 flex items-center space-x-4">
+                                    <span>Supported formats: JPG, JPEG, PNG, WEBP.</span>
+                                    <span>Max size: 5MB.</span>
+                                </p>
+                            </div>
+                            {imagePreview &&
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    className="[&_svg]:size-5 hover:bg-red-500 hover:text-white"
+                                    onClick={() => setImagePreview(null)}
+                                >
+                                    <X className="h-4 w-4" />
+                                </Button>}
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {!image ? (
+                        {!imagePreview ? (
                             <div
                                 onDragOver={handleDragOver}
                                 onDragLeave={handleDragLeave}
@@ -163,7 +258,7 @@ export default function ImageProcessing() {
                                     <UploadCloud className="h-12 w-12 text-muted-foreground/50" />
                                     <p className="text-lg font-medium">Drag & Drop Image</p>
                                     <p className="text-sm text-muted-foreground">or</p>
-                                    <Button variant="outline" onClick={() => document.getElementById('file-input')?.click()}>
+                                    <Button variant="ghost" onClick={() => document.getElementById('file-input')?.click()}>
                                         Choose File
                                     </Button>
                                     <input
@@ -176,22 +271,14 @@ export default function ImageProcessing() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="relative flex justify-center">
+                            <div className="flex justify-center">
                                 <Image
-                                    src={image}
+                                    src={imagePreview}
                                     alt="Uploaded Image"
-                                    width={0} 
+                                    width={0}
                                     height={0}
-                                    className="w-96 h-auto max-h-80 object-cover object-center rounded-lg shadow-md border"
+                                    className="w-full max-w-96 h-full max-h-80 object-cover object-center rounded-lg shadow-md border"
                                 />
-                                <Button
-                                    size="icon"
-                                    variant="outline"
-                                    className="absolute top-0 right-2"
-                                    onClick={() => setImage(null)}
-                                >
-                                    <X className="h-4 w-4" />
-                                </Button>
                             </div>
                         )}
                     </CardContent>
@@ -208,34 +295,34 @@ export default function ImageProcessing() {
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Model Selection</label>
-                                <Select value={selectedModel} onValueChange={setSelectedModel}>
+                                <Select value={selectedModel?.name} onValueChange={handleModelChange}>
                                     <SelectTrigger>
                                         <div className="flex items-center space-x-3">
-                                            <span>{selectedModel ? AVAILABLE_MODELS.find(model => model.id === selectedModel)?.icon : null}</span>
-                                            <span>{selectedModel ? AVAILABLE_MODELS.find(model => model.id === selectedModel)?.name : "Select a model"}</span>
+                                            <span>{selectedModel ? <selectedModel.icon className="w-4 h-4" /> : null}</span>
+                                            <span>{selectedModel ? selectedModel.label : "Select a model"}</span>
                                         </div>
                                     </SelectTrigger>
                                     <SelectContent>
                                         {AVAILABLE_MODELS.map(model => (
                                             <SelectItem
-                                                key={model.id}
-                                                value={model.id}
-                                                disabled={!isModelAvailable(model.id)}
+                                                key={model.name}
+                                                value={model.name}
+                                                disabled={!isModelAvailable(model.name)}
                                             >
                                                 <div className="flex items-center space-x-3">
-                                                    <div className="hidden md:block w-4 h-4">{model.icon}</div>
+                                                    <div className="hidden md:block w-4 h-4">{<model.icon className="w-4 h-4" />}</div>
                                                     <div className="flex flex-col items-start">
-                                                        <div className="font-medium">{model.name}</div>
+                                                        <div className="font-medium">{model.label}</div>
                                                         <div className="text-xs text-muted-foreground">
                                                             {model.description}
-                                                            {model.id === "ov-model-m" && subscriptionPlan === "BASIC" && (
-                                                                <PlanPill plan={"SILVER"} className="ml-8" />
+                                                            {model.name === "ov-model-m" && (activePlans && activePlans[0].plan_name == SubscriptionPlansEnum.SILVER) && (
+                                                                <PlanPill plan={SubscriptionPlansEnum.SILVER} className="ml-8" />
                                                             )}
-                                                            {model.id === "ov-model-l" &&
-                                                                ["BASIC", "SILVER"].some(ele => ele === subscriptionPlan) && (
-                                                                    <PlanPill plan={"GOLD"} className="ml-2" />
+                                                            {model.name === "ov-model-l" && (activePlans &&
+                                                                [SubscriptionPlansEnum.BASIC, SubscriptionPlansEnum.SILVER].some(ele => ele === activePlans[0].plan_name)) && (
+                                                                    <PlanPill plan={SubscriptionPlansEnum.GOLD} className="ml-2" />
                                                                 )}
-                                                            {model.id === "ov-model-x" && (
+                                                            {model.name === "ov-model-x" && (
                                                                 <span className="text-xs text-yellow-600 ml-1">(Coming Soon)</span>
                                                             )}
                                                         </div>
@@ -269,17 +356,17 @@ export default function ImageProcessing() {
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Operations</label>
                             <div className="grid grid-cols-2 gap-4">
-                                {OPERATIONS.map(op => (
-                                    <div key={op.id} className="flex items-start space-x-3">
+                                {OPERATIONS.map((op: DetectionOperation) => (
+                                    <div key={`operation_${op.name}`} className="flex items-start space-x-3">
                                         <Checkbox
-                                            id={op.id}
-                                            checked={selectedOps.includes(op.id)}
-                                            onCheckedChange={() => toggleOperation(op.id)}
+                                            id={op.name}
+                                            checked={selectedOps.includes(op.name)}
+                                            onCheckedChange={() => toggleOperation(op.name)}
                                             className="mt-[6px]"
                                         />
                                         <div>
                                             <label
-                                                htmlFor={op.id}
+                                                htmlFor={op.name}
                                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                             >
                                                 {op.label}
@@ -305,7 +392,14 @@ export default function ImageProcessing() {
                     Reset All
                 </Button>
                 <Button
-                    disabled={!image || selectedOps.length === 0}
+                    type="submit"
+                    onClick={handleProcessImage}
+                    disabled={
+                        !imageFile ||
+                        !selectedModel ||
+                        !selectedOps ||
+                        selectedOps.length === 0
+                    }
                 >
                     <ArrowRight className="mr-2 h-4 w-4" />
                     Continue to Processing
@@ -313,4 +407,6 @@ export default function ImageProcessing() {
             </div>
         </div>
     );
-}
+};
+
+export default ImageProcessing;
