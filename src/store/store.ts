@@ -9,6 +9,7 @@ import generalReducer from '@/store/features/subscription/SubscriptionSlice';
 import subscriptionActivityReducer from '@/store/features/subscription_activity/subscriptionActivitySlice';
 import detectionReducer from '@/store/features/detection/detectionSlice';
 import socketProcessingReducer from '@/store/features/socket_processing/socketSlice';
+import fileReducer from '@/store/features/files/fileSlice';
 
 
 export const store = configureStore({
@@ -23,6 +24,7 @@ export const store = configureStore({
         subscriptionActivity: subscriptionActivityReducer,      
         detection: detectionReducer,  
         socketProcessing: socketProcessingReducer,
+        files: fileReducer
     },
 });
 

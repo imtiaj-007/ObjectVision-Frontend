@@ -29,6 +29,6 @@ export interface UserUpdateProfile {
 // Submit User Info Structure
 export interface UserInfoData {
     username: string;
-    phone_number: PhoneNumber;
-    address: Address;
+    phone_number?: PhoneNumber | null;
+    address?: Address | null;
 }

@@ -1,5 +1,5 @@
 'use client'
-import React, { JSX, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import { Results } from "@/types/predictions";
 import ResultCard from "./result-card";
 import ObjectDetectionSummary from "./detection-summary";
@@ -7,225 +7,230 @@ import ClassificationSummary from "./classification-summary";
 import PoseSummary from "./pose-summary";
 import { useDetection } from "@/hooks/use-detection";
 import { File_Storage } from "../../../cache/file_storage";
-import { FileService } from "@/services/file_service";
+import { useFileStates } from "@/hooks/use-file-states";
+import { toast } from "@/hooks/use-toast";
 
 
 export interface DetectionResultsDisplayProps {
     file_name: string;
+    isPredictionData?: boolean;
 };
 
-const DetectionResultsDisplay: React.FC<DetectionResultsDisplayProps> = ({ file_name }) => {
+const DetectionResultsDisplay: React.FC<DetectionResultsDisplayProps> = ({ file_name, isPredictionData = false }) => {
+    const { queued_image, resetImageQueue } = useDetection();
+    const { presignedURLs, fileURLs, generatePresignedURL, storeFileURLs } = useFileStates();
     const [resultsState, setResultsState] = useState<Results | null>(null);
-    const [presignedURLs, setPresignedURLs] = useState<Record<string, string>>({});
-    const [fileIds, setFileIds] = useState<Record<string, string>>({});
     const [isLoading, setIsLoading] = useState<Record<string, boolean>>({});
-    const { image_history } = useDetection();
-    const detectionInitiatedRef = useRef<boolean>(false);
-    const outputPathsRef = useRef<string[]>([]);
+    const [outputPaths, setOutputPaths] = useState<string[]>([]);
+    const [isDataInitialized, setIsDataInitialized] = useState(false);
 
-
-    const generatePresignedUrlForPath = useCallback(async (outputPath: string) => {
-        const urlResult = await FileService.localPresignedURL({
-            file_path: outputPath,
-            expiry_minutes: 60
-        });
-
-        const presignedUrl = urlResult?.url?.toString();
-        if (!presignedUrl) {
-            throw new Error(`Failed to get presigned URL for ${outputPath}`);
-        }
-
-        setPresignedURLs(prev => ({ ...prev, [outputPath]: presignedUrl }));
-        return presignedUrl;
-    }, []);
-
-    const fetchFileAndCreateBlob = async (presignedUrl: string, outputPath: string) => {
+    const fetchFileAndCreateBlob = useCallback(async (presignedUrl: string, outputPath: string) => {
         const response = await fetch(presignedUrl);
         if (!response.ok) {
             throw new Error(`Failed to fetch image from presigned URL: ${response.statusText}`);
         }
-    
+
         const blob = await response.blob();
         const mimeType = blob.type || 'image/webp';
         const fileName = outputPath.split('/').pop() || 'image';
         const file = new File([blob], fileName, { type: mimeType });
-    
+
         const fileId = outputPath;
         File_Storage.storeFile(fileId, file);
-    
+        storeFileURLs([outputPath, fileId]);
+
         return fileId;
-    };
+    }, [storeFileURLs]);
 
     const fetchImageForPath = useCallback(async (outputPath: string) => {
-        setIsLoading(prev => ({ ...prev, [outputPath] : true }));
+        setIsLoading(prev => ({ ...prev, [outputPath]: true }));
         try {
-            let newPresignedUrl = presignedURLs[outputPath];            
+            const newPresignedUrl = presignedURLs[outputPath]?.url;
             if (!newPresignedUrl)
-                newPresignedUrl = await generatePresignedUrlForPath(outputPath);
-            
-            let newFileId = fileIds[outputPath];
-            if (!newFileId && newPresignedUrl)
-                newFileId = await fetchFileAndCreateBlob(newPresignedUrl, outputPath);
-
-            if (newPresignedUrl !== presignedURLs[outputPath]) {
-                setPresignedURLs(prev => ({ ...prev, [outputPath]: newPresignedUrl }));
-            }
-            
-            if (newFileId && newFileId !== fileIds[outputPath]) {
-                setFileIds(prev => ({ ...prev, [outputPath]: newFileId }));
-            }
+                await generatePresignedURL(outputPath, undefined, isPredictionData);
             return true;
 
         } catch (error) {
+            console.error(`Error processing ${outputPath}:`, error);
             return false;
 
         } finally {
-            setIsLoading(prev => ({ ...prev, [outputPath]: false }));            
+            setIsLoading(prev => ({ ...prev, [outputPath]: false }));
         }
-    }, [fileIds, generatePresignedUrlForPath, presignedURLs]);
+    }, [generatePresignedURL, isPredictionData, presignedURLs]);
 
 
     const handleRetry = useCallback(async (outputPath: string) => {
         try {
-            await fetchImageForPath(outputPath);
+            if (!presignedURLs[outputPath])
+                await fetchImageForPath(outputPath);
+            else if (!isPredictionData)
+                await fetchFileAndCreateBlob(presignedURLs[outputPath].url, outputPath);
         } catch (error) {
             console.error(`Retry failed for ${outputPath}:`, error);
         }
-    }, [fetchImageForPath]);
+    }, [fetchFileAndCreateBlob, fetchImageForPath, isPredictionData, presignedURLs]);
 
 
     const renderResultCards = useMemo(() => {
         if (!resultsState) return [];
 
         const cards: JSX.Element[] = [];
-        const { detection, segmentation, classification, pose } = resultsState;
+        const { DETECTION, SEGMENTATION, CLASSIFICATION, POSE } = resultsState;
 
-        if (detection && detection.predictions) {
+        if (DETECTION && DETECTION.predictions) {
             cards.push(
                 <ResultCard
-                    key={`detection_${detection.output_path}`}
+                    key={`detection_${DETECTION.output_path}`}
                     title="Detection"
-                    fileIds={fileIds}
-                    outputPath={detection.output_path}
-                    processingTime={detection.processing_time}
-                    renderSummary={() => <ObjectDetectionSummary title={'Detection'} data={detection} />}
-                    isLoading={isLoading[detection.output_path] || false}
-                    onRetry={() => handleRetry(detection.output_path)}
+                    outputPath={DETECTION.output_path}
+                    processingTime={DETECTION.processing_time}
+                    renderSummary={() => <ObjectDetectionSummary title={'Detection'} data={DETECTION} />}
+                    isLoading={isLoading[DETECTION.output_path] || false}
+                    isPredictionData={isPredictionData}
+                    onRetry={() => handleRetry(DETECTION.output_path)}
                 />
             );
         }
 
-        if (segmentation && segmentation.predictions) {
+        if (SEGMENTATION && SEGMENTATION.predictions) {
             cards.push(
                 <ResultCard
-                    key={`segmentation_${segmentation.output_path}`}
+                    key={`segmentation_${SEGMENTATION.output_path}`}
                     title="Segmentation"
-                    fileIds={fileIds}
-                    outputPath={segmentation.output_path}
-                    processingTime={segmentation.processing_time}
-                    renderSummary={() => <ObjectDetectionSummary title={'Segmentation'} data={segmentation} />}
-                    isLoading={isLoading[segmentation.output_path] || false}
-                    onRetry={() => handleRetry(segmentation.output_path)}
+                    outputPath={SEGMENTATION.output_path}
+                    processingTime={SEGMENTATION.processing_time}
+                    renderSummary={() => <ObjectDetectionSummary title={'Segmentation'} data={SEGMENTATION} />}
+                    isLoading={isLoading[SEGMENTATION.output_path] || false}
+                    isPredictionData={isPredictionData}
+                    onRetry={() => handleRetry(SEGMENTATION.output_path)}
                 />
             );
         }
 
-        if (classification && classification.predictions) {
+        if (CLASSIFICATION && CLASSIFICATION.predictions) {
             cards.push(
                 <ResultCard
-                    key={`classification_${classification.output_path}`}
+                    key={`classification_${CLASSIFICATION.output_path}`}
                     title="Classification"
-                    fileIds={fileIds}
-                    outputPath={classification.output_path}
-                    processingTime={classification.processing_time}
-                    renderSummary={() => <ClassificationSummary data={classification} />}
-                    isLoading={isLoading[classification.output_path] || false}
-                    onRetry={() => handleRetry(classification.output_path)}
+                    outputPath={CLASSIFICATION.output_path}
+                    processingTime={CLASSIFICATION.processing_time}
+                    renderSummary={() => <ClassificationSummary data={CLASSIFICATION} />}
+                    isLoading={isLoading[CLASSIFICATION.output_path] || false}
+                    isPredictionData={isPredictionData}
+                    onRetry={() => handleRetry(CLASSIFICATION.output_path)}
                 />
             );
         }
 
-        if (pose) {
+        if (POSE) {
             cards.push(
                 <ResultCard
-                    key={`pose_${pose.output_path}`}
+                    key={`pose_${POSE.output_path}`}
                     title="Pose Estimation"
-                    fileIds={fileIds}
-                    outputPath={pose.output_path}
-                    processingTime={pose.processing_time}
-                    renderSummary={() => <PoseSummary data={pose} />}
-                    isLoading={isLoading[pose.output_path] || false}
-                    onRetry={() => handleRetry(pose.output_path)}
+                    outputPath={POSE.output_path}
+                    processingTime={POSE.processing_time}
+                    renderSummary={() => <PoseSummary data={POSE} />}
+                    isLoading={isLoading[POSE.output_path] || false}
+                    isPredictionData={isPredictionData}
+                    onRetry={() => handleRetry(POSE.output_path)}
                 />
             );
         }
-
         return cards;
-    }, [resultsState, fileIds, isLoading, handleRetry]);
+    }, [resultsState, isLoading, isPredictionData, handleRetry]);
 
-    useEffect(() => {
-        if (image_history && !detectionInitiatedRef.current) {
-            detectionInitiatedRef.current = true;
-            const data = image_history[file_name] || null;
-            setResultsState(data);
-            console.log(data)
 
-            if (data) {
-                const { detection, segmentation, classification, pose } = data;
+    const initializeLoaders = useCallback((data: Results) => {
+        const { DETECTION, SEGMENTATION, CLASSIFICATION, POSE } = data;
 
-                // Collect all output paths that need presigned URLs
-                const outputPaths = [
-                    detection?.output_path,
-                    segmentation?.output_path,
-                    classification?.output_path,
-                    pose?.output_path
-                ].filter(Boolean) as string[];
+        // Collect all output paths that need presigned URLs
+        const outputPaths = [
+            DETECTION?.output_path,
+            SEGMENTATION?.output_path,
+            CLASSIFICATION?.output_path,
+            POSE?.output_path
+        ].filter(Boolean) as string[];
 
-                // Set Loading states for available services
-                if (outputPaths.length > 0) {
-                    outputPathsRef.current = outputPaths;
+        // Set Loading states for available services
+        if (outputPaths.length > 0) {
+            setOutputPaths(outputPaths);
 
-                    const newLoadingState = outputPaths.reduce((acc, path) => {
-                        acc[path] = true;
-                        return acc;
-                    }, {} as Record<string, boolean>);
-                    setIsLoading(newLoadingState);
-                }
-            }
+            const newLoadingState = outputPaths.reduce((acc, path) => {
+                acc[path] = true;
+                return acc;
+            }, {} as Record<string, boolean>);
+            setIsLoading(newLoadingState);
         }
-    }, [image_history, file_name]);
+    }, []);
 
     useEffect(() => {
-        if (outputPathsRef.current.length > 0) {
-            const outputPaths = outputPathsRef.current;
+        if (queued_image && queued_image.filename === file_name) {
+            const data = queued_image.results;
+
+            if (!data) {
+                toast({
+                    variant: "destructive",
+                    description: "Unexpected Error: Detection data not found. Please try again."
+                });
+                return;
+            }
+            setResultsState(data);
+            initializeLoaders(data);
+            setIsDataInitialized(true);
+        }
+    }, [file_name, queued_image, initializeLoaders]);
+
+    useEffect(() => {
+        if (outputPaths.length > 0) {
+            outputPaths.forEach(outputPath => {
+                const presignedUrl = presignedURLs[outputPath];
+                if (!fileURLs[outputPath] && presignedUrl && !isPredictionData)
+                    fetchFileAndCreateBlob(presignedUrl.url, outputPath);
+            });
+        }
+    }, [outputPaths, presignedURLs, fileURLs, fetchFileAndCreateBlob, isPredictionData]);
+
+    useEffect(() => {
+        if (outputPaths.length > 0) {
             const fetchImages = async () => {
-                await new Promise(resolve => setTimeout(resolve, 10000));
+                await new Promise(resolve =>
+                    setTimeout(() =>
+                        resolve(console.log("Fetching Images"))
+                        , 10000));
                 await Promise.all(outputPaths.map(path => fetchImageForPath(path)));
             };
             fetchImages();
         }
-    }, [fetchImageForPath]);
+    }, [outputPaths, fetchImageForPath]);
 
     // Clean up object URLs and Files when component unmounts
     useEffect(() => {
         return () => {
-            Object.values(fileIds).forEach(fileId => {
+            resetImageQueue();
+            Object.values(fileURLs).forEach(fileId => {
                 const file = File_Storage.getFile(fileId);
                 if (file) {
                     URL.revokeObjectURL(URL.createObjectURL(file));
                 }
                 File_Storage.removeFile(fileId);
             });
-            setPresignedURLs({});
-            setFileIds({});
         };
-    }, []);
+    }, [fileURLs, resetImageQueue]);
+
+    if (!isDataInitialized) {
+        return <div className="w-full flex justify-center p-8">Loading results...</div>;
+    }
 
     return (
         <div className="w-full space-y-6">
-            {resultsState && renderResultCards}
+            {resultsState && renderResultCards.length > 0 ? (
+                renderResultCards
+            ) : (
+                <div className="w-full flex justify-center p-8">No results available</div>
+            )}
         </div>
     );
 };
 
-export default DetectionResultsDisplay;
+export default React.memo(DetectionResultsDisplay);

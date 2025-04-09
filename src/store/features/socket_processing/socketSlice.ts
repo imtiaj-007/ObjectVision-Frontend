@@ -1,11 +1,11 @@
 import { WebSocketMessage } from '@/types/general';
-import { ResultsStateResponse } from '@/types/predictions';
+import { ResultsState } from '@/types/predictions';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type ProcessingState = {
     status: string;
     progress: number;
-    data: ResultsStateResponse | null;
+    data: ResultsState | null;
     taskId: string | null;
     error: string | null;
     messageHistory: WebSocketMessage[];
@@ -35,7 +35,7 @@ const socketProcessingSlice = createSlice({
                 state.status = action.payload.message;
             }
         },
-        setResults: (state, action: PayloadAction<ResultsStateResponse>) => {
+        setResults: (state, action: PayloadAction<ResultsState>) => {
             state.data = action.payload;
             state.status = "Processing complete";
             state.progress = 100;

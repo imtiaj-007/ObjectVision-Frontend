@@ -11,6 +11,8 @@ export const settings = {
 
     API_KEY: process.env.NEXT_PUBLIC_API_KEY,
     SECRET_KEY: process.env.NEXT_PUBLIC_SECRET_KEY,
+
+    BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
     GOOGLE_OAUTH_URL: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL,
     RAZORPAY_KEY: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,

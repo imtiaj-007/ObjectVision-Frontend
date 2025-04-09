@@ -146,3 +146,21 @@ export const retryPromiseBatch = async <T, R>(
 
     return results;
 };
+
+const throttleMap = new Map<string, number>();
+
+export const throttleApiCall = (
+    key: string,
+    func: () => Promise<any>,
+    delay: number = 3000
+): Promise<any> => {
+    const now = Date.now();
+    const lastCall = throttleMap.get(key) || 0;
+
+    if (now - lastCall < delay) {
+        return Promise.reject(new Error(`Throttled: Wait ${delay}ms between calls`));
+    }
+
+    throttleMap.set(key, now);
+    return func();
+};

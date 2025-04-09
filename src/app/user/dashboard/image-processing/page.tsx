@@ -181,7 +181,8 @@ const ImageProcessing: React.FC = () => {
             model_size: modelSize,
             requested_services: data.requested_services
         });
-        router.push(`${path}/${base64Hash(imageFile.name)}/?socketConnection=true`);
+        const redirectPath = path.split('/').slice(0, -1).concat('predictions').join('/');
+        router.push(`${redirectPath}/${base64Hash(imageFile.name)}/?socketConnection=true`);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedModel, selectedOps, imageFile, imageActivity]);

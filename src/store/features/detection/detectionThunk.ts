@@ -2,6 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { CustomError } from '@/types/general';
 import { handleRejectResponse } from '@/utils/error_handler';
 import { DetectionService } from '@/services/detection_service';
+import { ResultsStateResponse } from '@/types/predictions';
+import { throttleApiCall } from '@/utils/promise_utils';
+import { DetectionResultsParams } from '@/types/detection';
 
 
 export const createSocketConnection = createAsyncThunk<
@@ -13,6 +16,24 @@ export const createSocketConnection = createAsyncThunk<
     async (client_id, { rejectWithValue }) => {
         try {
             return await DetectionService.establishSocketConnection(client_id);
+        } catch (error: unknown) {
+            return rejectWithValue(handleRejectResponse(error));
+        }
+    }
+);
+
+export const getDetectionPredictions = createAsyncThunk<
+    ResultsStateResponse,
+    DetectionResultsParams,
+    { rejectValue: CustomError }
+>(
+    'detection/getPredictions',
+    async (params, { rejectWithValue }) => {
+        try {
+            return await throttleApiCall(
+                `getPredictions-${params.page}-${params.limit}`,
+                () => DetectionService.getDetectionResults(params)
+            );
         } catch (error: unknown) {
             return rejectWithValue(handleRejectResponse(error));
         }

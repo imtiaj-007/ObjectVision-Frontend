@@ -11,7 +11,7 @@ export interface UserInfoState {
     phoneNumber: PhoneNumber;
     countries: Country[];
     selectedCountry: Country | null;
-    address: Address;
+    address: Address | null;
     loading: boolean;
     error: CustomError | string | null;
     countrySelectOpen: boolean;
@@ -31,18 +31,7 @@ const initialState: UserInfoState = {
     },
     countries: [],
     selectedCountry: null,
-    address: {
-        address_line_1: '',
-        address_line_2: '',
-        city: '',
-        state_province: '',
-        postal_code: '',
-        country: '',
-        country_code: '',
-        latitude: null,
-        longitude: null,
-        type: ContactTypeEnum.HOME,
-    },
+    address: null,
     loading: false,
     error: null,
     countrySelectOpen: false,
@@ -79,18 +68,7 @@ export const userInfoSlice = createSlice({
             state.selectedCountry = action.payload;
         },
         setAddress: (state, action: PayloadAction<Partial<Address>>) => {
-            state.address = {
-                address_line_1: action.payload.address_line_1 ?? state.address.address_line_1,
-                address_line_2: action.payload.address_line_2 ?? state.address.address_line_2,
-                city: action.payload.city ?? state.address.city,
-                state_province: action.payload.state_province ?? state.address.state_province,
-                postal_code: action.payload.postal_code ?? state.address.postal_code,
-                country: action.payload.country ?? state.address.country,
-                country_code: action.payload.country_code ?? state.address.country_code,
-                latitude: action.payload.latitude ?? state.address.latitude,
-                longitude: action.payload.longitude ?? state.address.longitude,
-                type: action.payload.type ?? state.address.type,
-            };
+            state.address = { ...action.payload };
             state.error = null;
         },
         setLoading: (state, action: PayloadAction<boolean>) => {

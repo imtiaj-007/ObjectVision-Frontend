@@ -57,7 +57,7 @@ const PricingPage: React.FC = () => {
 
         if (feature.data_type === "BOOLEAN") {
             return (
-                <li key={`feature_${feature.id}`} className="flex items-center gap-2 text-sm text-gray-600">
+                <li key={`feature_${feature.id}`} className="flex items-center gap-2 text-sm">
                     {feature.value === 'true' ? (
                         <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
                     ) : (
@@ -69,7 +69,7 @@ const PricingPage: React.FC = () => {
         }
 
         return (
-            <li key={`feature_${feature.id}`} className="flex items-center gap-2 text-sm text-gray-600">
+            <li key={`feature_${feature.id}`} className="flex items-center gap-2 text-sm">
                 <span className="capitalize font-semibold">{formattedKey}:</span>
                 <span>{String(feature.value)}</span>
             </li>
@@ -77,19 +77,19 @@ const PricingPage: React.FC = () => {
     };
 
     return (
-        <>
+        <div className="bg-gray-50 dark:bg-gray-900">
             {loading
                 ? <Loader
                     type='spinner'
                     size='lg'
                     fullScreen={false}
                     text='Loading Subscriptions'
-                    className='h-screen w-screen'
+                    className='h-96 w-full'
                 />
                 : (!subscriptions || subscriptions.length == 0 || error)
                     ? <AnimatedErrorMessage />
                     : (
-                        <div className="min-h-screen bg-gray-50 py-12 px-4">
+                        <div className="min-h-screen py-12 px-4">
                             <div className="max-w-7xl mx-auto">
                                 <motion.div
                                     initial={{ opacity: 0, y: -20 }}
@@ -97,8 +97,8 @@ const PricingPage: React.FC = () => {
                                     transition={{ duration: 1.0 }}
                                     className="text-center mb-12"
                                 >
-                                    <h1 className="text-4xl font-bold text-gray-900 mb-4">Simple, transparent pricing</h1>
-                                    <p className="text-xl text-gray-600">Choose the plan that&apos;s right for you</p>
+                                    <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-300 mb-4">Simple, transparent pricing</h1>
+                                    <p className="text-xl text-gray-600 dark:text-gray-400">Choose the plan that&apos;s right for you</p>
                                 </motion.div>
 
                                 <motion.div
@@ -114,9 +114,9 @@ const PricingPage: React.FC = () => {
                                             whileHover="hover"
                                             className={`flex ${index === 1 ? 'md:mt-0 mt-8' : ''}`}
                                         >
-                                            <Card className={`relative h-full w-full bg-white text-gray-800/90
+                                            <Card className={`relative h-full w-full bg-white dark:bg-gray-800 text-gray-800/90
                                                 ${plan.popular
-                                                    ? 'border-blue-500 border-2'
+                                                    ? 'border-blue-500  border-2'
                                                     : plan.premium
                                                         ? 'border-yellow-600 border-2' : ''}
                                                 `}
@@ -133,20 +133,20 @@ const PricingPage: React.FC = () => {
                                                     </div>
                                                 )}
                                                 <CardHeader>
-                                                    <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
+                                                    <CardTitle className="text-2xl font-bold text-gray-300">{plan.name}</CardTitle>
                                                     <CardDescription>{plan.description}</CardDescription>
                                                 </CardHeader>
                                                 <CardContent>
                                                     <div className="mb-6">
-                                                        <span className="text-2xl font-bold">
+                                                        <span className="text-2xl font-bold dark:text-gray-300">
                                                             {plan.amount === 0 ? "Free" : formatCurrency(plan.amount)}
                                                         </span>
                                                     </div>
                                                     <div className="space-y-6">
                                                         {plan.feature_groups.map((featureGroup: FeatureGroupType) => (
                                                             <div key={`feature_group_${featureGroup.id}`}>
-                                                                <h3 className="font-medium mb-2">{featureGroup.title}</h3>
-                                                                <ul className="space-y-2 px-4">
+                                                                <h3 className="font-medium dark:text-gray-400 mb-2">{featureGroup.title}</h3>
+                                                                <ul className="space-y-2 px-4 text-gray-600 dark:text-gray-400">
                                                                     {featureGroup.features.map((feature: FeatureType) => (
                                                                         renderFeatureItem(feature)
                                                                     ))}
@@ -178,7 +178,7 @@ const PricingPage: React.FC = () => {
 
                                 <div className="flex flex-col space-y-6 items-center justify-center border-2 border-red-500 p-6 mt-12 rounded-lg">
                                     <p className="font-medium text-lg text-red-500">** This amount is non-refundable, please read this section before proceeding. **</p>
-                                    <div className="text-gray-700">
+                                    <div className="text-gray-700 dark:text-gray-400">
                                         <p>
                                             Why am I charging for this project? Running this platform involves significant costs, including:
                                         </p>
@@ -188,7 +188,7 @@ const PricingPage: React.FC = () => {
                                             <li>Maintaining infrastructure, ensuring uptime, and providing a seamless user experience.</li>
                                         </ul>
                                     </div>
-                                    <p className='text-gray-700'>
+                                    <p className='text-gray-700 dark:text-gray-400'>
                                         Your support helps cover these costs and allows me to continue improving and maintaining this project. Thank you for understanding!
                                     </p>
                                 </div>
@@ -201,7 +201,7 @@ const PricingPage: React.FC = () => {
                 selectedPlan &&
                 <RazorpayCheckout planDetails={selectedPlan} />
             }
-        </>
+        </div>
     );
 };
 

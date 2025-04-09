@@ -29,6 +29,17 @@ export interface DetectionRequest {
     requested_services: string[];
 }
 
+export interface RequestParams {
+    page: number;
+    limit: number;
+    search?: string;
+    type?: string;
+}
+
+export interface DetectionResultsParams extends RequestParams {
+    meta?: RequestParams;
+}
+
 export const AVAILABLE_MODELS: ModelResponse[] = [
   {
     id: 1,

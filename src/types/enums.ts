@@ -69,3 +69,10 @@ export enum FileTypeEnum {
     VIDEO = "VIDEO",
     DOCUMENT = "DOCUMENT"
 }
+
+export enum ModelTypeEnum {
+    DETECTION = "DETECTION",
+    SEGMENTATION = "SEGMENTATION",
+    CLASSIFICATION = "CLASSIFICATION",
+    POSE = "POSE"
+}

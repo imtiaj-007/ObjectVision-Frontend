@@ -1,5 +1,6 @@
-import { PathLike } from "fs";
-import { JSX } from "react";
+import { DbImageData } from "./media";
+import { RequestParams } from "./detection";
+
 
 export interface Prediction {
     class_name: string;
@@ -36,40 +37,29 @@ export interface PoseResult {
 }
 
 export interface Results {
-    detection?: DetectionResult;
-    segmentation?: DetectionResult;
-    classification?: ClassificationResult;
-    pose?: PoseResult;
+    DETECTION?: DetectionResult;
+    SEGMENTATION?: DetectionResult;
+    CLASSIFICATION?: ClassificationResult;
+    POSE?: PoseResult;
+}
+
+export interface ResultsState extends DbImageData {
+    results: Results | null;
 }
 
 export interface ResultsStateResponse {
-    filename: string;
-    results: {
-        detection?: DetectionResult;
-        segmentation?: DetectionResult;
-        classification?: ClassificationResult;
-        pose?: PoseResult;
-    } | null;
-}
-
-
-export interface ResultCardProps {
-    title: string;
-    fileIds: Record<string, string>;
-    outputPath: string;
-    processingTime: number;
-    renderSummary: () => JSX.Element;
-    isLoading: boolean;
-    onRetry: () => void;
+    data: ResultsState[];
+    total_count: number;
+    meta: RequestParams;
 }
 
 export interface PresignedUrlRequest{
-    file_path: PathLike;
+    file_path: string;
     expiry_minutes?: number;
 }
 
 export interface PresignedUrlResponse{
-    url?: PathLike;
-    file_path?: PathLike;
+    url: string;
+    file_path?: string;
     expires_at?: string;
 }

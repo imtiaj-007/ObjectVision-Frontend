@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
+import NotFoundImage from './image-not-found';
 
 export interface ImageInfoProps {
     preview: string | null;
@@ -16,22 +17,24 @@ const ImageInfo: React.FC<ImageInfoProps> = ({
     preview, name, size, dimensions,
     type, uploadedAt, model, services
 }) => {
-    if (!preview) return null;
 
     return (
         <div className="mb-6 border-b pb-6">
             <h2 className="text-2xl font-bold mb-4">Image Information</h2>
             <div className="flex flex-col md:flex-row gap-6">
                 <div className="w-full md:w-1/3 flex-shrink-0">
-                    <div className="bg-gray-100 rounded-lg overflow-hidden">
-                        <Image
-                            src={preview}
-                            alt="Image preview"
-                            width={0}
-                            height={0}
-                            className="w-full max-h-60 object-contain"
-                            style={{ maxHeight: '200px' }}
-                        />
+                    <div className="bg-gray-100 h-52 rounded-lg overflow-hidden">
+                        {preview
+                            ? <Image
+                                src={preview}
+                                alt="Image preview"
+                                width={0}
+                                height={0}
+                                className="w-full object-contain"
+                                unoptimized
+                            />
+                            : <NotFoundImage />
+                        }
                     </div>
                 </div>
                 <div className="w-full md:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 text-sm">
@@ -53,7 +56,7 @@ const ImageInfo: React.FC<ImageInfoProps> = ({
                     <div>
                         <p className="font-semibold text-gray-500">File Type</p>
                         <p>{type}</p>
-                    </div>                    
+                    </div>
                     <div>
                         <p className="font-semibold text-gray-500">Model</p>
                         <p>{model}</p>

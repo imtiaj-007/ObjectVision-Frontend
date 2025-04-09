@@ -9,26 +9,22 @@ import { LuBadgeX } from "react-icons/lu";
 import { RiFileList3Fill } from "react-icons/ri";
 import { Clock, Image as ImageIcon, Video, Database, Activity, Gift } from 'lucide-react';
 
-import { MediaItem } from '@/types/media';
-import { isCustomError } from '@/types/general';
+import { OrderResponse } from '@/types/payment';
 import { UserActivityResponse } from '@/types/subscription_activity';
 import { ActivityTypeEnum, PaymentStatus, SubscriptionPlansEnum, UserRoleEnum } from '@/types/enums';
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Loader from '@/components/ui/loader';
 import PlanPill from '@/components/ui/plan-pill';
-import RecentImagesSection from '@/components/sections/recent-image';
 
 import { useSubscriptionActivity } from '@/hooks/use-subscription-activity';
 import useUser from '@/hooks/use-user';
 import { useOrder } from '@/hooks/use-order';
 import { checkExpired, formatCurrency, formatDate, remainingDays } from '@/utils/general';
 import { formatFileSize } from '@/utils/file_utils';
-import { OrderResponse } from '@/types/payment';
 
 
 const usageData = [
@@ -41,20 +37,11 @@ const usageData = [
     { name: 'Sun', value: 75 },
 ];
 
-const recentImages: MediaItem[] = [
-    { id: 1, src: "/logo.png", alt: "Recent image 1", title: "Image 1", type: "image" },
-    { id: 2, src: "/object-vision-logo.png", alt: "Recent image 2", title: "Image 2", type: "image" },
-    { id: 3, src: "/logo.png", alt: "Recent image 3", title: "Image 3", type: "image" },
-];
-
 
 const DashboardPage: React.FC = () => {
     const { user_details } = useUser();
-    const { fetchUserOrders, fetchAllOrders, userOrders, allOrders, loading: orderLoader, error: orderError } = useOrder();
-    const {
-        plansList, activePlans, userActivity,
-        loading: activityLoader, error: activityError
-    } = useSubscriptionActivity();
+    const { fetchUserOrders, fetchAllOrders, userOrders, allOrders, loading: orderLoader } = useOrder();
+    const { plansList, activePlans, userActivity, loading: activityLoader } = useSubscriptionActivity();
     const [activityState, setActivityState] = useState<Record<ActivityTypeEnum, UserActivityResponse | null>>(
         Object.values(ActivityTypeEnum).reduce((acc, key) => {
             acc[key] = null;
@@ -62,24 +49,7 @@ const DashboardPage: React.FC = () => {
         }, {} as Record<ActivityTypeEnum, UserActivityResponse | null>)
     );
     const [orders, setOrders] = useState<OrderResponse[] | null>(null);
-    const [alertError, setAlertError] = useState<string | null>(null);
 
-
-    const prepareErrorMessage = () => {
-        const hasOrderErrors = Object.values(orderError).some(err => err !== null);
-        const hasActivityError = isCustomError(activityError);
-
-        let errorMessages: string | null = null;
-        if (hasOrderErrors || hasActivityError) {
-            errorMessages = [
-                ...Object.values(orderError)
-                    .filter(isCustomError)
-                    .map(err => err.message),
-                hasActivityError ? activityError.message : ''
-            ].filter(Boolean).join(', ');
-        };
-        setAlertError(errorMessages);
-    }
 
     useEffect(() => {
         if (userActivity) {
@@ -108,19 +78,9 @@ const DashboardPage: React.FC = () => {
             setOrders(userOrders);
     }, [userOrders, allOrders]);
 
-    useEffect(() => {
-        prepareErrorMessage();
-    }, [activityError, orderError]);
-
 
     return (
         <div className="space-y-6">
-            {alertError &&
-                <Alert variant={'destructive'}>
-                    <AlertTitle>Server Error:</AlertTitle>
-                    <AlertDescription>{alertError}</AlertDescription>
-                </Alert>
-            }
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                 {/* Left Column: Top Stats in 2x2 Grid */}
@@ -454,16 +414,6 @@ const DashboardPage: React.FC = () => {
                         </Link>
                     </CardFooter>
                 </Card>
-            </div>
-
-            {/* Recent Images */}
-            <div className="grid grid-cols-1">
-                <RecentImagesSection title='Recent Images' media_list={recentImages} />
-            </div>
-
-            {/* Recent Videos */}
-            <div className="grid grid-cols-1">
-                <RecentImagesSection title='Recent Videos' media_list={recentImages} />
             </div>
 
             {/* Bottom Section */}

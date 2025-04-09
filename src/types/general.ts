@@ -1,6 +1,6 @@
 import { ContactTypeEnum, WebSocketMessageTypeEnum } from "./enums";
 import { RazorpayPaymentDetails } from "./payment";
-import { ResultsStateResponse } from "./predictions";
+import { ResultsState } from "./predictions";
 
 
 export interface SuccessResponse {
@@ -13,7 +13,7 @@ export interface WebSocketMessage {
     type: WebSocketMessageTypeEnum;
     taskId: string;
     progress?: number;
-    data?: ResultsStateResponse;
+    data?: ResultsState;
     service?: string;
     message?: string;
 }
@@ -34,14 +34,14 @@ export function isCustomError(error: unknown): error is CustomError {
 
 export interface Address {
     address_line_1: string;
-    address_line_2?: string | undefined;
+    address_line_2?: string;
     city: string;
     state_province: string;
     postal_code: string;
     country: string;
     country_code: string;
-    latitude?: string | undefined | null;
-    longitude?: string | undefined | null;
+    latitude?: string | null;
+    longitude?: string | null;
     type: ContactTypeEnum;
 }
 
@@ -106,4 +106,25 @@ export interface Country {
         format: string;
         regex: string;
     };
+}
+
+
+export const DemoAddress: Address = {
+    address_line_1: '',
+    address_line_2: undefined,
+    city: '',
+    state_province: '',
+    postal_code: '',
+    country: '',
+    country_code: '',
+    latitude: undefined,
+    longitude: undefined,
+    type: ContactTypeEnum.HOME
+}
+
+export const DemoPhoneNumber: PhoneNumber = {
+    phone_number: '',
+    country_code: '',
+    type: ContactTypeEnum.HOME,
+    is_primary: true
 }

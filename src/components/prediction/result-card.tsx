@@ -1,43 +1,55 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Maximize, RefreshCw } from 'lucide-react';
 import Loader from '../ui/loader';
 import { Button } from '../ui/button';
-import { ResultCardProps } from '@/types/predictions';
 import { File_Storage } from '../../../cache/file_storage';
 import ImageDownloader from '../sections/image-downloader';
 import { Card } from '../ui/card';
+import { useFileStates } from '@/hooks/use-file-states';
 
+
+export interface ResultCardProps {
+    title: string;
+    outputPath: string;
+    processingTime: number;
+    renderSummary: () => JSX.Element;
+    isLoading: boolean;
+    isPredictionData?: boolean;
+    onRetry: () => void;
+}
 
 const ResultCard: React.FC<ResultCardProps> = ({
-    fileIds,
     outputPath,
     renderSummary,
     isLoading,
+    isPredictionData = false,
     onRetry
 }) => {
+    const { presignedURLs, fileURLs } = useFileStates();
     const [imageURL, setImageURL] = useState<string | null>(null);
     const [isHovered, setIsHovered] = useState(false);
     const [isZoomed, setIsZoomed] = useState(false);
-    const fileKeyRef = useRef<string>(outputPath);
 
     useEffect(() => {
-        const fileKey = fileKeyRef.current;
-        const url = File_Storage.getBlobUrl(fileKey);
-        if (url) {
-            setImageURL(url);
-        }
-    }, [fileIds]);
+        if (imageURL) return;
+
+        let url: string | undefined | null = presignedURLs[outputPath]?.url;
+        if (!isPredictionData && fileURLs[outputPath]) 
+            url = File_Storage.getBlobUrl(outputPath);
+        if (url) setImageURL(url);
+
+    }, [fileURLs, imageURL, isPredictionData, outputPath, presignedURLs]);
 
     useEffect(() => {
         return () => {
-            if (imageURL) {
+            if (imageURL && !isPredictionData) {
                 URL.revokeObjectURL(imageURL);
             }
         };
-    }, [imageURL]);
+    }, [])
 
     return (
         <>
@@ -55,7 +67,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
                         <motion.img
                             src={imageURL}
                             alt="Zoomed Image"
-                            className="w-11/12 md:w-2/3 object-contain cursor-pointer"
+                            className="w-11/12 md:w-2/3 max-h-[95vh] object-contain cursor-pointer"
                             initial={{ scale: 0.7, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.5 }}
@@ -90,11 +102,14 @@ const ResultCard: React.FC<ResultCardProps> = ({
                         ) : (
                             <div className="relative w-full h-full">
                                 {!imageURL ? (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <Button onClick={onRetry} variant="outline" className="bg-white/80">
-                                            <RefreshCw className="mr-2 h-4 w-4" />
-                                            Retry Loading
-                                        </Button>
+                                    <div className="flex h-full">
+                                        <div className="space-y-4 text-center m-auto">
+                                            <Button onClick={onRetry}>
+                                                <RefreshCw className="mr-2 h-4 w-4" />
+                                                Retry Loading
+                                            </Button>
+                                            <p className="text-sm text-gray-700 dark:text-gray-300">It may take upto 1 minute for the image to be availale. <br />Please try again after a while.</p>
+                                        </div>
                                     </div>
                                 ) : (
                                     <>
@@ -105,7 +120,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
                                             width={500}
                                             height={400}
                                             className="w-full h-full object-contain"
-                                            unoptimized={true}
+                                            unoptimized
                                         />
 
                                         {/* Zoom Overlay */}

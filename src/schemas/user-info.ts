@@ -1,24 +1,27 @@
-
 import { ContactTypeEnum } from "@/types/enums";
 import { z } from "zod";
 
-export const usernameSchema = z
-    .string()
-    .nonempty("Username is required")
-    .min(4, "Username must be at least 4 characters")
-    .max(15, "Username must not exceed 15 characters")
-    .regex(
-        /^[a-zA-Z0-9!@#$_-]+$/,
-        "Invalid characters in username"
-    );
+export const usernameSchema = z.object({
+    username: z
+        .string()
+        .min(4, 'Username must be at least 4 characters')
+        .max(10, 'Username cannot exceed 10 characters')
+        .regex(
+            /^[a-zA-Z0-9!@#$_-]+$/,
+            'Username can only contain letters, numbers, and ! @ # $ _ -'
+        )
+});
 
-export const phoneNumberSchema = z
-    .string()
-    .nonempty("Phone Number is required")
-    .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number must not exceed 15 digits")
-    .regex(/^\d+$/, "Phone number can only contain digits");
-
+export const phoneNumberSchema = z.object({
+    phone_number: z.string()
+        .nonempty("Phone Number is required")
+        .min(10, 'Phone number must be at least 10 digits')
+        .max(15, "Phone number must not exceed 15 digits")
+        .regex(/^\d+$/, 'Phone number must contain only digits'),
+    country_code: z.string(),
+    type: z.nativeEnum(ContactTypeEnum),
+    is_primary: z.boolean()
+});
 
 export const addressSchema = z.object({
     address_line_1: z.string().min(1, "Address Line 1 is required"),
@@ -33,7 +36,7 @@ export const addressSchema = z.object({
     country_code: z.string().length(2).nonempty("Country_code is required"),
     latitude: z.string().optional().nullable(),
     longitude: z.string().optional().nullable(),
-    type: z.nativeEnum(ContactTypeEnum).default(ContactTypeEnum.HOME),
+    type: z.nativeEnum(ContactTypeEnum),
 });
 
 export const submitUserInfoSchema = z.object({

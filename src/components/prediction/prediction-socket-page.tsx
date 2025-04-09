@@ -1,6 +1,5 @@
 'use client'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import React, { useCallback, useEffect, useRef } from "react";
 import isEqual from "lodash/isEqual";
 
 import { settings } from "@/configuration/config";
@@ -20,13 +19,21 @@ import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ImageInfo, { ImageInfoProps } from "@/components/sections/image-info";
 import DetectionResultsDisplay from "@/components/prediction/detection_result";
-import { formatFileSize } from "@/utils/file_utils";
-import { File_Storage } from "../../../../../../cache/file_storage";
 import { TriangleAlertIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { File_Storage } from "../../../cache/file_storage";
+import { toast } from "@/hooks/use-toast";
+import { formatFileSize } from "@/utils/file_utils";
 
 
-const ImageDetectionResult: React.FC = () => {
+interface ImageDetectionResultProps {
+    clientId: string;
+    socketUrl: string;
+    imageInfo: ImageInfoProps;
+    setImageInfo: React.Dispatch<React.SetStateAction<ImageInfoProps>>;
+}
+
+const ImageDetectionResult: React.FC<ImageDetectionResultProps> = ({ clientId, socketUrl, imageInfo, setImageInfo }) => {
     const dispatch = useDispatch<AppDispatch>();
     const {
         taskId,
@@ -36,56 +43,12 @@ const ImageDetectionResult: React.FC = () => {
         data
     } = useSelector((state: RootState) => state.socketProcessing, isEqual);
 
-    const { image_form_data, pushToImageHistory, performImageDetection, error: detectionError, resetErrors } = useDetection();
-    const path = usePathname();
-    const searchParams = useSearchParams();
-    const [clientId, setClientId] = useState<string | null>(null);
+    const { image_form_data, addImagetoQueue, performImageDetection, error: detectionError, resetErrors } = useDetection();
     const detectionInitiated = useRef(false);
     const reconnectAttempts = useRef(0);
 
-    // Image information state
-    const [imageInfo, setImageInfo] = useState<ImageInfoProps>({
-        preview: null,
-        name: "",
-        size: "",
-        dimensions: "",
-        type: "",
-        uploadedAt: "",
-        model: '',
-        services: []
-    });
-
-    const socketUrl = useMemo(() => {
-        if (!searchParams || !path) return null;
-
-        const createSocket = searchParams.get("socketConnection");
-        const client_id = path.split("/").pop() || new Date().getTime().toString();
-
-        if (clientId !== client_id) {
-            setClientId(client_id);
-        }
-
-        if (createSocket === "true") {
-            return `${settings.API_BASE_URL?.replace("http", "ws")}/ws/${client_id}`;
-        }
-
-        return null;
-    }, [searchParams, path, clientId]);
-
-
-    useEffect(() => {
-        dispatch(resetSocketState());
-
-        return () => {
-            if (imageInfo.preview) {
-                URL.revokeObjectURL(imageInfo.preview);
-            }
-            resetErrors();
-        };
-    }, []);
-
     // Handle image processing
-    const processImage = useCallback(async (file: File, modelSize: string, requestedServices: string[]) => {
+    const processImage = useCallback(async (file: File, modelSize: string, requestedServices: string[]) => {        
         const objectUrl = URL.createObjectURL(file);
         const img = new Image();
 
@@ -104,11 +67,14 @@ const ImageDetectionResult: React.FC = () => {
 
         img.onerror = () => {
             URL.revokeObjectURL(objectUrl);
-            dispatch(setError('Failed to load image preview'));
+            toast({
+                variant: "destructive",
+                description: "Failed to load Image Preview."
+            })
+            return;
         };
 
         img.src = objectUrl;
-
         if (!clientId) return;
 
         const updatedFormData = new FormData();
@@ -124,7 +90,7 @@ const ImageDetectionResult: React.FC = () => {
             dispatch(setError('Failed to initiate image detection'));
             console.error('Image detection error:', error);
         }
-    }, [clientId, dispatch, performImageDetection]);
+    }, [clientId, dispatch, performImageDetection, setImageInfo]);
 
 
     useEffect(() => {
@@ -187,7 +153,7 @@ const ImageDetectionResult: React.FC = () => {
             case WebSocketMessageTypeEnum.RESULT:
                 if (message.data && !isEqual(data, message.data)) {
                     dispatch(setResults(message.data));
-                    pushToImageHistory(message.data);
+                    addImagetoQueue(message.data);
                 }
                 break;
 
@@ -198,7 +164,7 @@ const ImageDetectionResult: React.FC = () => {
             default:
                 console.log("Unknown message type:", message);
         }
-    }, [taskId, progress, data, dispatch, pushToImageHistory]);
+    }, [taskId, progress, data, dispatch, addImagetoQueue]);
 
 
     useEffect(() => {
@@ -212,6 +178,18 @@ const ImageDetectionResult: React.FC = () => {
             }
         }
     }, [messages, processWebSocketMessage, dispatch]);
+
+    useEffect(() => {
+        dispatch(resetSocketState());
+
+        return () => {
+            if (imageInfo.preview) {
+                URL.revokeObjectURL(imageInfo.preview);
+            }
+            resetErrors();
+        };
+    }, []);
+
 
     return (
         <div className="space-y-6">
@@ -280,4 +258,4 @@ const ImageDetectionResult: React.FC = () => {
     );
 };
 
-export default React.memo(ImageDetectionResult);
+export default ImageDetectionResult;
