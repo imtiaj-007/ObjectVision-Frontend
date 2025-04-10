@@ -21,7 +21,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { SignupFormData } from '@/types/auth';
 import { SignupFormDataSchema } from '@/schemas/auth';
-import { config } from '@/configuration/config';
+import { settings } from '@/configuration/config';
 import { isCustomError } from '@/types/general';
 import { base64Hash } from '@/utils/hash';
 
@@ -52,7 +52,7 @@ const SignupPage: React.FC = () => {
     };
 
     const handleGoogleLogin = (): void => {
-        const url: string | undefined = config.GOOGLE_OAUTH_URL;
+        const url: string | undefined = settings.GOOGLE_OAUTH_URL;
         if (!url) {
             toast({
                 variant: "destructive",
@@ -169,9 +169,8 @@ const SignupPage: React.FC = () => {
                                 />
                                 <Button
                                     type="button"
-                                    variant="ghost"
                                     size="sm"
-                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                    className="absolute right-0 top-0 h-full px-3 py-2 bg-transparent shadow-none hover:bg-transparent"
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
                                     {showPassword ? (
@@ -195,9 +194,8 @@ const SignupPage: React.FC = () => {
                                 />
                                 <Button
                                     type="button"
-                                    variant="ghost"
                                     size="sm"
-                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                    className="absolute right-0 top-0 h-full px-3 py-2 bg-transparent shadow-none hover:bg-transparent"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 >
                                     {showConfirmPassword ? (
@@ -232,16 +230,16 @@ const SignupPage: React.FC = () => {
                         <div className="grid grid-cols-2 gap-4 w-full">
                             <Button
                                 type="button"
-                                variant="outline"
-                                className="w-full flex items-center gap-2 [&_svg]:size-auto"
+                                variant="ghost"
+                                className="w-full flex items-center gap-2 [&_svg]:size-auto bg-white border border-gray-800 text-gray-700"
                                 onClick={handleGoogleLogin}
                             >
                                 Signup with <FcGoogle size={20} />
                             </Button>
                             <Button
                                 type="button"
-                                variant="outline"
-                                className="w-full flex items-center gap-2 [&_svg]:size-auto"
+                                variant="ghost"
+                                className="w-full flex items-center gap-2 [&_svg]:size-auto bg-white border border-gray-800 text-gray-700"
                                 onClick={handleGithubLogin}
                             >
                                 Signup with <BsGithub size={20} />

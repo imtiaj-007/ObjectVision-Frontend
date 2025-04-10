@@ -9,25 +9,22 @@ import { LuBadgeX } from "react-icons/lu";
 import { RiFileList3Fill } from "react-icons/ri";
 import { Clock, Image as ImageIcon, Video, Database, Activity, Gift } from 'lucide-react';
 
-import { MediaItem } from '@/types/media';
-import { isCustomError } from '@/types/general';
+import { OrderResponse } from '@/types/payment';
 import { UserActivityResponse } from '@/types/subscription_activity';
 import { ActivityTypeEnum, PaymentStatus, SubscriptionPlansEnum, UserRoleEnum } from '@/types/enums';
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Loader from '@/components/ui/loader';
 import PlanPill from '@/components/ui/plan-pill';
-import RecentImagesSection from '@/components/sections/recent-image';
 
 import { useSubscriptionActivity } from '@/hooks/use-subscription-activity';
 import useUser from '@/hooks/use-user';
 import { useOrder } from '@/hooks/use-order';
 import { checkExpired, formatCurrency, formatDate, remainingDays } from '@/utils/general';
-import { OrderResponse } from '@/types/payment';
+import { formatFileSize } from '@/utils/file_utils';
 
 
 const usageData = [
@@ -40,21 +37,11 @@ const usageData = [
     { name: 'Sun', value: 75 },
 ];
 
-const recentImages: MediaItem[] = [
-    { id: 1, src: "/logo.png", alt: "Recent image 1", title: "Image 1", type: "image" },
-    { id: 2, src: "/object-vision-logo.png", alt: "Recent image 2", title: "Image 2", type: "image" },
-    { id: 3, src: "/logo.png", alt: "Recent image 3", title: "Image 3", type: "image" },
-];
-
 
 const DashboardPage: React.FC = () => {
     const { user_details } = useUser();
-    const { fetchUserOrders, fetchAllOrders, userOrders, allOrders, loading: orderLoader, error: orderError } = useOrder();
-    const {
-        plansList, activePlans, userActivity,
-        fetchPlansList, fetchActivePlans, fetchUserActivities,
-        loading: activityLoader, error: activityError
-    } = useSubscriptionActivity();
+    const { fetchUserOrders, fetchAllOrders, userOrders, allOrders, loading: orderLoader } = useOrder();
+    const { plansList, activePlans, userActivity, loading: activityLoader } = useSubscriptionActivity();
     const [activityState, setActivityState] = useState<Record<ActivityTypeEnum, UserActivityResponse | null>>(
         Object.values(ActivityTypeEnum).reduce((acc, key) => {
             acc[key] = null;
@@ -62,36 +49,13 @@ const DashboardPage: React.FC = () => {
         }, {} as Record<ActivityTypeEnum, UserActivityResponse | null>)
     );
     const [orders, setOrders] = useState<OrderResponse[] | null>(null);
-    const [alertError, setAlertError] = useState<string | null>(null);
 
-
-    const prepareErrorMessage = () => {
-        const hasOrderErrors = Object.values(orderError).some(err => err !== null);
-        const hasActivityError = isCustomError(activityError);
-
-        let errorMessages: string | null = null;
-        if (hasOrderErrors || hasActivityError) {
-            errorMessages = [
-                ...Object.values(orderError)
-                    .filter(isCustomError)
-                    .map(err => err.message),
-                hasActivityError ? activityError.message : ''
-            ].filter(Boolean).join(', ');
-        };
-        setAlertError(errorMessages);
-    }
-
-    useEffect(() => {
-        fetchPlansList();
-        fetchActivePlans();
-        fetchUserActivities();
-    }, []);
 
     useEffect(() => {
         if (userActivity) {
             const updatedState = { ...activityState };
             userActivity.forEach(activity => {
-                updatedState[activity.activity_type] = activity;
+                updatedState[activity.activity_type] = activity;                
             });
             setActivityState(updatedState);
         }
@@ -99,8 +63,8 @@ const DashboardPage: React.FC = () => {
 
     useEffect(() => {
         if (user_details?.user) {
-            if (user_details?.user?.role === UserRoleEnum.USER) {
-                fetchUserOrders();
+            if (user_details.user?.role === UserRoleEnum.USER) {
+                fetchUserOrders(user_details.user?.id);
             } else {
                 fetchAllOrders();
             }
@@ -114,19 +78,9 @@ const DashboardPage: React.FC = () => {
             setOrders(userOrders);
     }, [userOrders, allOrders]);
 
-    useEffect(() => {
-        prepareErrorMessage();
-    }, [activityError, orderError]);
-
 
     return (
         <div className="space-y-6">
-            {alertError &&
-                <Alert variant={'destructive'}>
-                    <AlertTitle>Server Error:</AlertTitle>
-                    <AlertDescription>{alertError}</AlertDescription>
-                </Alert>
-            }
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                 {/* Left Column: Top Stats in 2x2 Grid */}
@@ -136,7 +90,7 @@ const DashboardPage: React.FC = () => {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-gray-500">Total Processed</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-300">Total Processed</p>
                                     <h3 className="text-2xl font-bold">1,234</h3>
                                 </div>
                                 <Activity className="h-8 w-8 text-blue-500" />
@@ -149,7 +103,7 @@ const DashboardPage: React.FC = () => {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-gray-500">Images Processed</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-300">Images Processed</p>
                                     <h3 className="text-2xl font-bold">856</h3>
                                 </div>
                                 <ImageIcon className="h-8 w-8 text-green-500" />
@@ -162,7 +116,7 @@ const DashboardPage: React.FC = () => {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-gray-500">Videos Processed</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-300">Videos Processed</p>
                                     <h3 className="text-2xl font-bold">378</h3>
                                 </div>
                                 <Video className="h-8 w-8 text-purple-500" />
@@ -175,7 +129,7 @@ const DashboardPage: React.FC = () => {
                         <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-gray-500">Processing Time</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-300">Processing Time</p>
                                     <h3 className="text-2xl font-bold">1.2s</h3>
                                 </div>
                                 <Clock className="h-8 w-8 text-orange-500" />
@@ -184,7 +138,7 @@ const DashboardPage: React.FC = () => {
                     </Card>
 
                     {/* Alert Message */}
-                    <Card className="bg-green-600 col-span-2">
+                    <Card className="bg-green-600 dark:bg-green-600/80 col-span-2">
                         <CardContent className="px-6 py-4 flex items-center justify-center space-x-2">
                             <Gift className="text-amber-300 h-7 w-7" />
                             <p className='text-white font-semibold mt-[2px]'>
@@ -195,7 +149,7 @@ const DashboardPage: React.FC = () => {
                 </div>
 
                 {/* Right Column: Subscription Card */}
-                <Card className="bg-gradient-to-tl from-blue-700 to-blue-600">
+                <Card className="bg-gradient-to-tl from-blue-700 to-blue-600 dark:from-blue-600/90 dark:to-blue-600/70">
                     {!activePlans ? (
                         (activityLoader.activePlanLoading || activityLoader.userActivityLoading) ? (
                             <Loader className='w-full h-full' />
@@ -216,7 +170,7 @@ const DashboardPage: React.FC = () => {
                         <>
                             <CardHeader className='bg-blue-800/90'>
                                 <div className="flex items-center justify-between">
-                                    <CardTitle className="text-white">Your Activity Details</CardTitle>
+                                    <CardTitle className="text-white">Your Active Plan</CardTitle>
                                     <PlanPill
                                         plan={
                                             activePlans.length > 0
@@ -240,8 +194,10 @@ const DashboardPage: React.FC = () => {
                                             <span className="font-medium text-blue-50">{formatDate(activePlans[0].expiry_date)}</span>
                                         </div>
                                         <div className="grid grid-cols-2 gap-2 text-sm">
-                                            <span className="font-semibold text-neutral-200">Remaining Days:</span>
-                                            <span className="font-medium text-blue-50">{remainingDays(activePlans[0].expiry_date)} Days</span>
+                                            <span className="font-semibold text-neutral-200">Plan Expiration:</span>
+                                            <span className="font-medium text-blue-50">
+                                                {remainingDays(activePlans[0].expiry_date)}
+                                            </span>
                                         </div>
                                         <div className="grid grid-cols-2 gap-2 text-sm">
                                             <span className="font-semibold text-neutral-200">Backup Expiry:</span>
@@ -258,7 +214,7 @@ const DashboardPage: React.FC = () => {
                                                 <div className="flex items-center justify-between text-sm font-medium text-blue-100">
                                                     <span>Storage</span>
                                                     {activityState.STORAGE_USAGE ? (
-                                                        <span>{activityState.STORAGE_USAGE.total_usage} / {activityState.STORAGE_USAGE.total_limit} MB</span>
+                                                        <span>{formatFileSize(activityState.STORAGE_USAGE.total_usage, false)} / {formatFileSize(activityState.STORAGE_USAGE.total_limit)}</span>
                                                     ) : (
                                                         <span>{0} / {250} MB</span>
                                                     )}
@@ -336,8 +292,8 @@ const DashboardPage: React.FC = () => {
 
             {/* Recent orders and subscription plans list */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className='min-h-60 max-h-96 flex-col'>
-                    <CardHeader className='bg-yellow-400/90'>
+                <Card className='min-h-60 max-h-96 flex flex-col'>
+                    <CardHeader className='bg-yellow-400/90 dark:bg-amber-400/70'>
                         <CardTitle>Recent Orders</CardTitle>
                     </CardHeader>
                     <CardContent className='flex-1 max-h-48 overflow-y-auto pb-0'>
@@ -356,7 +312,7 @@ const DashboardPage: React.FC = () => {
                                     {orders?.map((order) => (
                                         <div
                                             key={`order_item_${order.razorpay_order_id}`}
-                                            className="flex justify-between items-center border-b pb-3 last:border-b-0"
+                                            className="flex justify-between items-center border-b-2 px-4 pb-3 last:border-b-0"
                                         >
                                             <div>
                                                 <div className="text-sm font-medium mb-1">{order.razorpay_order_id}</div>
@@ -395,7 +351,7 @@ const DashboardPage: React.FC = () => {
 
                 {/* Subscription Plans Card */}
                 <Card className='min-h-60 max-h-96 flex flex-col'>
-                    <CardHeader className='bg-red-500 text-white'>
+                    <CardHeader className='bg-red-500 dark:bg-red-500/80 text-white'>
                         <CardTitle>Subscription Plans</CardTitle>
                     </CardHeader>
                     <CardContent className='flex-1 max-h-48 overflow-y-auto pb-0'>
@@ -414,7 +370,7 @@ const DashboardPage: React.FC = () => {
                                     {plansList && plansList.length > 0 && plansList.map((plan) => (
                                         <div
                                             key={`plan_item_${plan.plan_name}`}
-                                            className="border rounded-lg px-4 py-3 space-y-2"
+                                            className="border dark:bg-black/15 rounded-lg px-4 py-3 space-y-2"
                                         >
                                             <div className="flex justify-between items-center">
                                                 <h3 className="text-sm font-medium">{plan.plan_name}</h3>
@@ -458,16 +414,6 @@ const DashboardPage: React.FC = () => {
                         </Link>
                     </CardFooter>
                 </Card>
-            </div>
-
-            {/* Recent Images */}
-            <div className="grid grid-cols-1">
-                <RecentImagesSection title='Recent Images' media_list={recentImages} />
-            </div>
-
-            {/* Recent Videos */}
-            <div className="grid grid-cols-1">
-                <RecentImagesSection title='Recent Videos' media_list={recentImages} />
             </div>
 
             {/* Bottom Section */}

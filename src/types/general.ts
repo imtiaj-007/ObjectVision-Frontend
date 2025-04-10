@@ -1,61 +1,23 @@
-import { ContactTypeEnum } from "./enums";
+import { ContactTypeEnum, WebSocketMessageTypeEnum } from "./enums";
 import { RazorpayPaymentDetails } from "./payment";
+import { ResultsState } from "./predictions";
 
 
-// General Success Response
 export interface SuccessResponse {
     message: string | undefined;
     status?: number;
     extra_data?: RazorpayPaymentDetails | Record<string, unknown> | null;
 }
 
-// Address Structure
-export interface Address {
-    address_line_1: string;
-    address_line_2?: string | undefined;
-    city: string;
-    state_province: string;
-    postal_code: string;
-    country: string;
-    country_code: string;
-    latitude?: string | undefined | null;
-    longitude?: string | undefined | null;
-    type: ContactTypeEnum;
+export interface WebSocketMessage {
+    type: WebSocketMessageTypeEnum;
+    taskId: string;
+    progress?: number;
+    data?: ResultsState;
+    service?: string;
+    message?: string;
 }
 
-// Update Address Structure
-export interface AddressUpdate {
-    address_line_1: string;
-    address_line_2?: string | undefined;    
-    latitude?: string | undefined | null;
-    longitude?: string | undefined | null;
-    type: ContactTypeEnum;
-}
-
-// Response structure of addresses
-export interface AddressResponse {
-    data: Address[]
-    total_count: number | null
-}
-
-// Address State for Internal use
-export interface AddressState {
-    addresses: Address[];
-    totalCount: number;
-    loading: boolean;
-    error: CustomError | null;
-    currentOperation: 'fetch' | 'create' | 'update' | 'delete' | null;
-}
-
-// Phone Number Structure
-export interface PhoneNumber {
-    phone_number: string;
-    country_code: string;
-    type: ContactTypeEnum;
-    is_primary: boolean;
-}
-
-// Custom Error interface
 export interface CustomError {
     message: string | undefined;
     status_code: number;
@@ -70,7 +32,47 @@ export function isCustomError(error: unknown): error is CustomError {
     );
 };
 
-// Country data
+export interface Address {
+    address_line_1: string;
+    address_line_2?: string;
+    city: string;
+    state_province: string;
+    postal_code: string;
+    country: string;
+    country_code: string;
+    latitude?: string | null;
+    longitude?: string | null;
+    type: ContactTypeEnum;
+}
+
+export interface AddressUpdate {
+    address_line_1: string;
+    address_line_2?: string | undefined;
+    latitude?: string | undefined | null;
+    longitude?: string | undefined | null;
+    type: ContactTypeEnum;
+}
+
+export interface AddressResponse {
+    data: Address[]
+    total_count: number | null
+}
+
+export interface AddressState {
+    addresses: Address[];
+    totalCount: number;
+    loading: boolean;
+    error: CustomError | null;
+    currentOperation: 'fetch' | 'create' | 'update' | 'delete' | null;
+}
+
+export interface PhoneNumber {
+    phone_number: string;
+    country_code: string;
+    type: ContactTypeEnum;
+    is_primary: boolean;
+}
+
 export interface Country {
     name: {
         common: string;
@@ -104,4 +106,25 @@ export interface Country {
         format: string;
         regex: string;
     };
+}
+
+
+export const DemoAddress: Address = {
+    address_line_1: '',
+    address_line_2: undefined,
+    city: '',
+    state_province: '',
+    postal_code: '',
+    country: '',
+    country_code: '',
+    latitude: undefined,
+    longitude: undefined,
+    type: ContactTypeEnum.HOME
+}
+
+export const DemoPhoneNumber: PhoneNumber = {
+    phone_number: '',
+    country_code: '',
+    type: ContactTypeEnum.HOME,
+    is_primary: true
 }

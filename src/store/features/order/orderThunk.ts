@@ -6,7 +6,7 @@ import {
     PaymentOrderRequest, PaymentOrderResponse
 } from "@/types/payment";
 import { handleRejectResponse } from "@/utils/error_handler";
-import { config } from "@/configuration/config";
+import { settings } from "@/configuration/config";
 
 
 export const createOrder = createAsyncThunk<
@@ -31,7 +31,7 @@ export const getOrdersOfUser = createAsyncThunk<
     { rejectValue: CustomError }
 >(
     "order/userOrders",
-    async ({ user_id, page = config.DEFAULT_PAGE, limit = config.DEFAULT_PAGE_LIMIT }, { rejectWithValue }) => {
+    async ({ user_id, page = settings.DEFAULT_PAGE, limit = settings.DEFAULT_PAGE_LIMIT }, { rejectWithValue }) => {
         try {
             const response = await PaymentService.getUserOrders(user_id, page, limit);
             return response;
@@ -47,7 +47,7 @@ export const getOrders = createAsyncThunk<
     { rejectValue: CustomError }
 >(
     "order/allOrders",
-    async ({ page = config.DEFAULT_PAGE, limit = config.DEFAULT_PAGE_LIMIT }, { rejectWithValue }) => {
+    async ({ page = settings.DEFAULT_PAGE, limit = settings.DEFAULT_PAGE_LIMIT }, { rejectWithValue }) => {
         try {
             const response = await PaymentService.getAllOrders(page, limit);
             return response;

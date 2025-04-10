@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
@@ -34,7 +33,7 @@ export const useUserInfo = () => {
         }
     }, [dispatch]);
 
-    // Handels next button on each step with validation checks
+    // Handles next button on each step with validation checks
     const handleNext = useCallback(async () => {
         let isValid = false;
 
@@ -47,47 +46,48 @@ export const useUserInfo = () => {
                 dispatch(setError("This user_name is already taken, please try another one."));
                 isValid = false;
             }
-
         } else if (userInfo.step === 2) {
+            isValid = true;
+            if (userInfo.selectedCountry) {
+                dispatch(setAddress({
+                    ...userInfo.address,
+                    country: userInfo.selectedCountry.name.common,
+                    country_code: userInfo.selectedCountry.cca2
+                }));
+            }
+        } else if (userInfo.step === 3) {
             isValid = await validateField(phoneNumberSchema, userInfo.phoneNumber.phone_number);
 
             if (userInfo.selectedCountry) {
                 const cn_code = `${userInfo.selectedCountry.idd.root ?? ""}${userInfo.selectedCountry.idd.suffixes?.[0] ?? ""}`;
 
-                dispatch(setPhoneNumber({ 
-                    ...userInfo.phoneNumber, 
-                    country_code: cn_code 
-                }));
-                dispatch(setAddress({ 
-                    ...userInfo.address, 
-                    country: userInfo.selectedCountry.name.common,
-                    country_code: userInfo.selectedCountry.cca2
+                dispatch(setPhoneNumber({
+                    ...userInfo.phoneNumber,
+                    country_code: cn_code
                 }));
             }
         }
+
         if (isValid) {
             dispatch(setStep(userInfo.step + 1));
         }
     }, [userInfo, validateField, dispatch]);
 
-    // Hanndels back button on each step
     const handleBack = useCallback(() => {
         if (userInfo.step > 1) {
             dispatch(setStep(userInfo.step - 1));
         }
     }, [dispatch, userInfo.step]);
 
-    // Get all usernames
-    const getUsernames = async () => {
+    const getUsernames = useCallback(async () => {
         try {
             const res = await dispatch(getAllUsernames()).unwrap();
             dispatch(setUserNames(res));
         } catch (error) {
             throw error;
         }
-    }
+    }, [dispatch]);
 
-    // Submit form handler
     const submitForm = useCallback(async (data: UserInfoData) => {
         try {
             const result = await dispatch(submitNewUserInfo(data)).unwrap();
@@ -116,5 +116,5 @@ export const useUserInfo = () => {
         setCountrySelectOpen: (open: boolean) => dispatch(setCountrySelectOpen(open)),
         setSearchQuery: (query: string) => dispatch(setSearchQuery(query)),
         resetUserInfo: () => dispatch(resetUserInfo()),
-    }), [userInfo, handleNext, handleBack, dispatch]);
+    }), [userInfo, handleNext, handleBack, submitForm, getUsernames, dispatch]);
 };
