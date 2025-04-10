@@ -3,7 +3,6 @@ import { AuthResponse, LoginFormData, OTPSuccess, OTPUrlObj, OTPVerify, SignupFo
 import { CustomError } from '@/types/general';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { isAxiosError } from 'axios';
-import { setUser } from '../user/userSlice';
 
 
 export const signupUser = createAsyncThunk<SignupResponse, SignupFormData, { rejectValue: CustomError }>(
@@ -28,16 +27,13 @@ export const signupUser = createAsyncThunk<SignupResponse, SignupFormData, { rej
 
 export const loginUser = createAsyncThunk<AuthResponse, LoginFormData, { rejectValue: CustomError }>(
     'auth/login',
-    async (data, { rejectWithValue, dispatch }) => {
+    async (data, { rejectWithValue }) => {
         try {
             const response = await authService.login(data);
             if (response.access_token) {
                 localStorage.setItem("access_token", response.access_token ?? '');
                 localStorage.setItem("token_type", response.token_type ?? '');
                 localStorage.setItem("refresh_token", response.refresh_token ?? '');
-
-                // Update Redux store
-                dispatch(setUser(response.user));
             }
             return response;
         } catch (error) {

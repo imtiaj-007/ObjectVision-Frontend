@@ -52,13 +52,8 @@ export const userInfoSlice = createSlice({
         setUserNames: (state, action: PayloadAction<Array<string>>) => {
             state.userNames = action.payload;
         },
-        setPhoneNumber: (state, action: PayloadAction<Partial<PhoneNumber>>) => {
-            state.phoneNumber = {
-                phone_number: action.payload.phone_number ?? state.phoneNumber.phone_number,
-                country_code: action.payload.country_code ?? state.phoneNumber.country_code,
-                type: action.payload.type ?? state.phoneNumber.type,
-                is_primary: action.payload.is_primary ?? state.phoneNumber.is_primary,
-            };
+        setPhoneNumber: (state, action: PayloadAction<PhoneNumber>) => {
+            state.phoneNumber = { ...action.payload };
             state.error = null;
         },
         setCountries: (state, action: PayloadAction<Country[]>) => {
@@ -67,7 +62,7 @@ export const userInfoSlice = createSlice({
         setSelectedCountry: (state, action: PayloadAction<Country | null>) => {
             state.selectedCountry = action.payload;
         },
-        setAddress: (state, action: PayloadAction<Partial<Address>>) => {
+        setAddress: (state, action: PayloadAction<Address>) => {
             state.address = { ...action.payload };
             state.error = null;
         },

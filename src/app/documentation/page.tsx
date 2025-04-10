@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import DocumentationTabs from '@/components/sections/page-slide-docs';
+import { settings } from '@/configuration/config';
 
 
 const ObjectVisionDocs: React.FC = () => {
@@ -329,7 +330,7 @@ const ObjectVisionDocs: React.FC = () => {
   ]
 }`}</pre>
                                     </div>
-                                    <div className="mt-6 flex items-center justify-between">
+                                    <div className="mt-6 flex items-center justify-between mb-2 me-2">
                                         <div className="flex gap-2">
                                             <Badge variant="outline" className="border-green-200 bg-green-50 text-green-800">
                                                 Status: 200 OK
@@ -338,7 +339,7 @@ const ObjectVisionDocs: React.FC = () => {
                                                 Latency: 142ms
                                             </Badge>
                                         </div>
-                                        <Link href={'/backend/docs'} passHref>
+                                        <Link href={`${settings.BACKEND_URL}/docs`} target="_blank" passHref>
                                             <Button size="sm" className="bg-green-600 hover:bg-green-700">
                                                 <Terminal className="h-4 w-4 mr-2" />
                                                 Try in API Playground

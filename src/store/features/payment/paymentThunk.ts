@@ -41,7 +41,7 @@ export const verifyPayment = createAsyncThunk<
 );
 
 export const fetchPaymentHistory = createAsyncThunk<
-    Array<unknown>,
+    any,
     PaymentHistoryRequest,
     { rejectValue: CustomError }
 >(
@@ -50,13 +50,13 @@ export const fetchPaymentHistory = createAsyncThunk<
         try {
             const queryString = new URLSearchParams(
                 Object.entries(params)
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     .filter(([_, value]) => value !== undefined && value !== null)
                     .map(([key, value]) => [key, String(value)])
             ).toString();
 
             const response = await PaymentService.fetchTransactionHistory(queryString);
             return response.data;
+
         } catch (error: unknown) {
             return rejectWithValue(handleRejectResponse(error));
         }
