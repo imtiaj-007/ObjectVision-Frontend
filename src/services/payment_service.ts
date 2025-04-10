@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from "axios";
 import axiosHandler from "@/utils/axios";
 import { OrderResponse, PaymentOrderRequest, PaymentOrderResponse, PaymentVerificationRequest } from "@/types/payment";
