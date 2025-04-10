@@ -44,7 +44,7 @@ export default function AboutUsPage() {
                                     SK Imtiaj Uddin
                                 </h3>
                                 <p className="text-gray-700 dark:text-gray-300 mb-4">
-                                    I'm a final-year B.Tech student specializing in Information Technology at Budge Budge Institute of Technology, graduating in 2025. I'm passionate about building solutions that bridge technology and real-world problems, with expertise in full-stack development.
+                                    I&apos;m a final-year B.Tech student specializing in Information Technology at Budge Budge Institute of Technology, graduating in 2025. I&apos;m passionate about building solutions that bridge technology and real-world problems, with expertise in full-stack development.
                                 </p>
 
                                 <div className="space-y-4">
@@ -186,7 +186,7 @@ export default function AboutUsPage() {
                     >
                         <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Computer Vision Projects?</h2>
                         <p className="text-xl mb-8 text-blue-100">
-                            Join us in pushing the boundaries of what's possible with object detection technology.
+                            Join us in pushing the boundaries of what&apos;s possible with object detection technology.
                         </p>
                         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
                             <Link href={'/auth/login'} passHref >

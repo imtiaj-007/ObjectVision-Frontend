@@ -45,7 +45,7 @@ const Sidebar: React.FC = ({ className }: SidebarProps) => {
     const docRoutes = [
         {
             name: "Frontend Docs",
-            href: "/html/docs",
+            href: "/docs/index.html",
             icon: SiNextdotjs
         },
         {
@@ -129,6 +129,7 @@ const Sidebar: React.FC = ({ className }: SidebarProps) => {
                                     <Link
                                         key={item.name}
                                         href={item.href}
+                                        target="_blank"
                                         className={cn(
                                             "flex items-center px-4 py-3 text-sm font-medium rounded-lg",
                                             "transition-colors duration-200",

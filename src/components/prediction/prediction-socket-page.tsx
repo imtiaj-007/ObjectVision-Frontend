@@ -60,6 +60,7 @@ const ImageDetectionResult: React.FC<ImageDetectionResultProps> = ({ clientId, s
                 dimensions: `${img.width} × ${img.height}`,
                 type: file.type,
                 uploadedAt: new Date().toLocaleString(),
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 model: Object.entries(ModelSizeEnum).find(([_, value]) => value === modelSize)?.[0] || "ov_model_s",
                 services: requestedServices ? requestedServices : []
             });

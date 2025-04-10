@@ -55,7 +55,7 @@ const DashboardPage: React.FC = () => {
         if (userActivity) {
             const updatedState = { ...activityState };
             userActivity.forEach(activity => {
-                updatedState[activity.activity_type] = activity;                
+                updatedState[activity.activity_type] = activity;
             });
             setActivityState(updatedState);
         }
@@ -71,8 +71,8 @@ const DashboardPage: React.FC = () => {
         }
     }, [user_details]);
 
-    useEffect(()=> {
-        if(allOrders && allOrders.length > 0)
+    useEffect(() => {
+        if (allOrders && allOrders.length > 0)
             setOrders(allOrders);
         else if (userOrders && userOrders.length > 0)
             setOrders(userOrders);

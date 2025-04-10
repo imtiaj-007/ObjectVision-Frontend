@@ -133,7 +133,7 @@ const PricingPage: React.FC = () => {
                                                     </div>
                                                 )}
                                                 <CardHeader>
-                                                    <CardTitle className="text-2xl font-bold text-gray-300">{plan.name}</CardTitle>
+                                                    <CardTitle className="text-2xl font-bold dark:text-gray-300">{plan.name}</CardTitle>
                                                     <CardDescription>{plan.description}</CardDescription>
                                                 </CardHeader>
                                                 <CardContent>
