@@ -1,8 +1,8 @@
-import { config } from "@/configuration/config";
+import { settings } from "@/configuration/config";
 import bcrypt from "bcryptjs"
 
 
-const SECRET_KEY = config.SECRET_KEY;
+const SECRET_KEY = settings.SECRET_KEY;
 
 /**
  * Generates a secure bcrypt hash for the provided input string.

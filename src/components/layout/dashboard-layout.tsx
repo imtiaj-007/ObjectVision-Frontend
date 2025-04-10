@@ -8,7 +8,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     return (
         <ProtectedClient>
             <div className="flex min-h-screen bg-background text-foreground">
-                <aside className="hidden lg:block w-60 min-h-screen">
+                <aside className="hidden lg:block w-60 min-h-screen bg-nav">
                     <Sidebar />
                 </aside>
                 <main className="flex-1 p-3">

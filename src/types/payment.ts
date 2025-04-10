@@ -70,11 +70,7 @@ export interface PaymentResult {
     razorpay_signature: string;
 }
 
-export interface PaymentVerificationRequest {
-    razorpay_payment_id: string;
-    razorpay_order_id: string;
-    razorpay_signature: string;
-}
+export type PaymentVerificationRequest = PaymentResult;
 
 export interface CustomerRequest {
     name: string;

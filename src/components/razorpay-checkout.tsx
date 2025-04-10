@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from "@/store/store"
 import { createOrder, verifyPayment } from "@/store/features/payment/paymentThunk";
 import { toast } from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
-import { config } from "@/configuration/config";
+import { settings } from "@/configuration/config";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -110,7 +110,6 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
                 handlePayment();
             }, 1000);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentOrder]);
 
     useEffect(()=> {
@@ -132,7 +131,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
         }
 
         const options: RazorpayOptions = {
-            key: config.RAZORPAY_KEY as string,
+            key: settings.RAZORPAY_KEY as string,
             amount: finalAmount * 100,
             currency: "INR",
             name: "Object Vision",
@@ -178,7 +177,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
         <>
             {loading.createOrder && <LoadingScreen />}
             <Dialog open={showPlanInfo} onOpenChange={() => setShowPlanInfo(false)}>
-                <DialogContent className="sm:max-w-md bg-white text-gray-800/90">
+                <DialogContent className="sm:max-w-md bg-white dark:bg-gray-800 text-gray-800/90 dark:text-gray-400">
                     <DialogHeader>
                         <DialogTitle>Plan Summary</DialogTitle>
                         <DialogDescription>
@@ -194,7 +193,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
                         </div>
 
                         {/* Plan Amount */}
-                        <div className="flex items-center justify-between border-t border-b py-3">
+                        <div className="flex items-center justify-between border-y dark:border-gray-600 py-3">
                             <span className="font-medium">Plan Amount</span>
                             <span className="text-lg font-bold">{formatCurrency(planDetails.amount)}</span>
                         </div>
@@ -221,7 +220,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
 
                             {appliedPromo && (
                                 <div className="flex items-center justify-center space-x-2 text-sm">
-                                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                                    <Badge variant="outline" className="bg-green-50 dark:bg-green-100 text-green-700 border-green-200">
                                         <Check className="mr-1 h-3 w-3" />
                                         {appliedPromo.discount}% OFF
                                     </Badge>
@@ -236,7 +235,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
                                 <span className="font-medium">Final Amount</span>
                                 <div className="text-right">
                                     <span className="text-sm text-muted-foreground line-through mr-2">{formatCurrency(planDetails.amount)}</span>
-                                    <span className="text-lg font-bold text-green-700">{formatCurrency(finalAmount)}</span>
+                                    <span className="text-lg font-bold text-green-700 dark:text-green-600">{formatCurrency(finalAmount)}</span>
                                 </div>
                             </div>
                         )}

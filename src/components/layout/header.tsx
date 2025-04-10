@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Search, Menu } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -8,14 +8,47 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ThemeToggle } from '../themes/theme-toggle';
+import { usePathname } from 'next/navigation';
+import { LayoutDashboard, Image as ImageIcon, Video, Radio } from "lucide-react";
+
+const navigation = [
+    {
+        name: "Dashboard",
+        href: "/user/dashboard",
+        icon: LayoutDashboard
+    },
+    {
+        name: "Image Processing",
+        href: "/user/dashboard/image-processing",
+        icon: ImageIcon
+    },
+    {
+        name: "Video Processing",
+        href: "/user/dashboard/video-processing",
+        icon: Video
+    },
+    {
+        name: "Real Time Detection",
+        href: "/user/dashboard/real-time-detection",
+        icon: Radio
+    }
+];
+
 
 const Header = () => {
+    const pathname = usePathname();
+    const currentNav = useMemo(()=> 
+        [...navigation]
+            .sort((a, b) => b.href.length - a.href.length)
+            .find(nav => pathname.startsWith(nav.href)) || navigation[0], 
+        [pathname]
+    );
 
     return (
-        <header className="h-16 bg-background flex items-center justify-between p-2 lg:px-8 z-50 rounded-xl border-2 mb-2">
+        <header className="h-16 bg-nav flex items-center justify-between p-2 lg:px-8 z-50 rounded-xl border mb-2">
             <div className="flex items-center">
                 <Menu className="h-5 w-5 text-muted-foreground hover:text-foreground cursor-pointer lg:hidden mr-4" />
-                <span className="text-xl font-semibold">Dashboard</span>
+                <span className="text-xl font-semibold">{currentNav.name}</span>
             </div>
 
             {/* Middle section - Search */}

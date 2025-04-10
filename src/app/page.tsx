@@ -14,12 +14,12 @@ const HomePage: React.FC = () => {
     return (
         <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white">
             {/* Hero Section */}
-            <section className="pt-32 pb-20 px-4">
+            <section className="py-20 px-4">
                 <div className="max-w-7xl mx-auto text-center">
                     <div className="inline-block mb-4 px-4 py-1 bg-blue-600/20 rounded-full text-blue-400 text-sm">
                         Introducing ObjectVision AI
                     </div>
-                    <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">
+                    <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent pb-4">
                         Transform Your Images with AI-Powered Object Detection
                     </h1>
                     <p className="text-xl text-slate-300 mt-6 mb-8 max-w-3xl mx-auto">
@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
             </section>
 
             {/* Features Card Section */}
-            <section className="py-20 px-4" id="features">
+            <section className="py-12 md:py-20 px-4" id="features">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-bold mb-4">Everything You Need</h2>

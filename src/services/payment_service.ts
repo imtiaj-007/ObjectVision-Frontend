@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import axiosHandler from "@/utils/axios";
 import { OrderResponse, PaymentOrderRequest, PaymentOrderResponse, PaymentVerificationRequest } from "@/types/payment";
 import { SuccessResponse } from "@/types/general";
-import { config } from "@/configuration/config";
+import { settings } from "@/configuration/config";
 
 
 export const PaymentService = {
@@ -10,7 +10,7 @@ export const PaymentService = {
         const response: AxiosResponse<PaymentOrderResponse> = await axiosHandler.post(`/payment/create-order`, payload);
         return response.data;
     },
-    getUserOrders: async (user_id: number, page: number = config.DEFAULT_PAGE, limit: number = config.DEFAULT_PAGE_LIMIT): Promise<OrderResponse[]> => {
+    getUserOrders: async (user_id: number, page: number = settings.DEFAULT_PAGE, limit: number = settings.DEFAULT_PAGE_LIMIT): Promise<OrderResponse[]> => {
         const params = new URLSearchParams({ 
             page: page.toString(), 
             limit: limit.toString() 
@@ -28,7 +28,7 @@ export const PaymentService = {
     },
 
     // Admin Routes
-    getAllOrders: async (page: number = config.DEFAULT_PAGE, limit: number = config.DEFAULT_PAGE_LIMIT): Promise<OrderResponse[]> => {
+    getAllOrders: async (page: number = settings.DEFAULT_PAGE, limit: number = settings.DEFAULT_PAGE_LIMIT): Promise<OrderResponse[]> => {
         const params = new URLSearchParams({ 
             page: page.toString(), 
             limit: limit.toString() 

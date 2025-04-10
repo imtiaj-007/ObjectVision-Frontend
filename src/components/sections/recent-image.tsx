@@ -70,22 +70,23 @@ const RecentMediaSection: React.FC<RecentMediaSectionProps> = ({ title, media_li
                                 {media.type === 'image' ? (
                                     <div className="relative w-full h-full">
                                         <Image
-                                            src={media.src}
-                                            alt={media.alt || 'Media'}
+                                            src={media.thumbnailUrl}
+                                            alt={media.name || 'Media'}
                                             fill
                                             sizes="(max-width: 768px) 100vw, 33vw"
                                             className="object-cover"
+                                            unoptimized
                                         />
                                     </div>
                                 ) : (
                                     <video
-                                        src={media.src}
+                                        src={media.thumbnailUrl}
                                         controls
                                         className="w-full h-full object-cover"
                                     />
                                 )}
                                 <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-2 text-sm">
-                                    {media.title}
+                                    {media.name}
                                 </div>
                             </div>
                         </div>

@@ -5,18 +5,19 @@ import axios, {
     AxiosResponse,
     AxiosError
 } from "axios";
-import { config } from "@/configuration/config";
+import { settings } from "@/configuration/config";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
     _retry?: boolean;
 }
-const baseURL: string | undefined = config.API_BASE_URL;
+const baseURL: string | undefined = settings.API_BASE_URL;
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
+        "x-api-key": settings.API_KEY
     },
 });
 
@@ -25,6 +26,7 @@ const refreshInstance = axios.create({
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
+        "x-api-key": settings.API_KEY
     },
 });
 
@@ -37,6 +39,7 @@ axiosInstance.interceptors.request.use(
             ...config,
             headers: config.headers || {},
         };
+        internalConfig.headers["x-api-key"] = settings.API_KEY;
 
         if (accessToken) {
             internalConfig.headers.Authorization = `Bearer ${accessToken}`;

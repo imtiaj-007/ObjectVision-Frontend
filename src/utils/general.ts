@@ -5,10 +5,18 @@ export const formatDate = (date_str: string | null | undefined): string => {
     return format(new Date(date_str), "dd/MM/yyyy");
 };
 
-export const remainingDays = (date_str: string | null | undefined): number => {
-    if (!date_str) return 0;
-    return differenceInDays(new Date(date_str), new Date());
-}
+export const remainingDays = (date_str: string | null | undefined): string => {
+    if (!date_str) return "Invalid date";
+
+    const daysLeft = differenceInDays(new Date(date_str), new Date()) + 1;
+
+    if(daysLeft <= 0) return "Expired";
+    if (daysLeft === 1) return "Today";
+    if (daysLeft === 2) return "Tomorrow";
+    
+    return `${daysLeft} Days`;
+};
+
 
 export const checkExpired = (date_str: string | null | undefined): boolean => {
     if (!date_str) return true;

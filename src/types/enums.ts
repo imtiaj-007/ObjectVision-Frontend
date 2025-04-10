@@ -41,3 +41,38 @@ export enum ActivityTypeEnum {
     IMAGE_USAGE = "IMAGE_USAGE",
     VIDEO_USAGE = "VIDEO_USAGE"
 }
+
+export enum ModelSizeEnum {
+    ov_model_n = "nano",
+    ov_model_s = "small",
+    ov_model_m = "medium",
+    ov_model_l = "large",
+    ov_model_x = "extreme"
+}
+
+export enum WebSocketMessageTypeEnum {
+    STATUS = "status",
+    RESULT = "result",
+    ERROR = "error",
+    PROGRESS = "progress",
+}
+
+export enum DownloadImageFormatEnum {
+    JPG = "jpg",
+    JPEG = "jpeg",
+    PNG = "png",
+    WEBP = "webp"
+}
+
+export enum FileTypeEnum {
+    IMAGE = "IMAGE",
+    VIDEO = "VIDEO",
+    DOCUMENT = "DOCUMENT"
+}
+
+export enum ModelTypeEnum {
+    DETECTION = "DETECTION",
+    SEGMENTATION = "SEGMENTATION",
+    CLASSIFICATION = "CLASSIFICATION",
+    POSE = "POSE"
+}
