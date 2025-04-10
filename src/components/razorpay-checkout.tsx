@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PlanType } from "@/types/subscription";
-import { 
-    Dialog, DialogContent, DialogDescription, 
-    DialogFooter, DialogHeader, DialogTitle 
+import {
+    Dialog, DialogContent, DialogDescription,
+    DialogFooter, DialogHeader, DialogTitle
 } from "@/components/ui/dialog";
 import LoadingScreen from "@/components/ui/screen_loader";
 
@@ -86,7 +87,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
         }
     }, [user_details, planDetails, finalAmount, promoCode, dispatch, currentOrder]);
 
-    useEffect(() => {        
+    useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://checkout.razorpay.com/v1/checkout.js';
         script.async = true;
@@ -97,8 +98,8 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
         };
     }, []);
 
-    useEffect(()=> {
-        if(!user_details) {
+    useEffect(() => {
+        if (!user_details) {
             router.push('/auth/login?redirectURL=/pricing')
         }
     }, [user_details, router]);
@@ -112,11 +113,11 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
         }
     }, [currentOrder]);
 
-    useEffect(()=> {
-        if(paymentResult) {
+    useEffect(() => {
+        if (paymentResult) {
             toast({
                 variant: paymentResult.captured ? 'success' : 'destructive',
-                title: `Transaction ${paymentResult.captured ? 'Completed': 'Failed'}`,
+                title: `Transaction ${paymentResult.captured ? 'Completed' : 'Failed'}`,
                 description: paymentResult.description
             });
             router.push('/auth/success?paymentVerified=true');
@@ -125,7 +126,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
 
     const handlePayment = () => {
         if (!currentOrder) return;
-        if (!window.Razorpay) {
+        if (!(window as any).Razorpay) {
             console.error('Razorpay script not loaded');
             return;
         }

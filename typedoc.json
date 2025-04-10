@@ -3,11 +3,14 @@
         "src"
     ],
     "entryPointStrategy": "expand",
-    "out": "docs",
+    "out": "public/docs",
     "tsconfig": "tsconfig.json",
     "includeVersion": true,
-    "excludePrivate": false,
+    "excludePrivate": true,
     "excludeProtected": false,
     "excludeExternals": false,
-    "excludeNotDocumented": false,
+    "exclude": [
+        "src/components/razorpay-checkout.tsx",
+        "src/hooks/use-debounce.tsx"
+    ]
 }

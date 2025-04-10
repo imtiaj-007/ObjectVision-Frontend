@@ -4,6 +4,8 @@ import { ArrowRight, Book, Code, Zap, Accessibility, Server, Database, Shield, G
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { settings } from "@/configuration/config";
 
 
 const DocumentationTabs: React.FC = () => {
@@ -64,12 +66,12 @@ const DocumentationTabs: React.FC = () => {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            className="w-full absolute top-0 left-0 right-0"
+                            className="w-full absolute top-0 left-0"
                         >
                             {activeTab === "frontend" ? (
                                 <div className="grid md:grid-cols-2 gap-8">
                                     <div className="h-full">
-                                        <Card className="shadow-lg border-none h-full dark:bg-gray-900">
+                                        <Card className="shadow-md border-none h-full dark:bg-gray-900">
                                             <CardHeader>
                                                 <CardTitle className="flex items-center gap-2 text-2xl">
                                                     <Code className="h-6 w-6 text-blue-600" />
@@ -83,7 +85,7 @@ const DocumentationTabs: React.FC = () => {
                                                 <p className="text-gray-600 dark:text-gray-400">
                                                     Our frontend documentation covers all aspects of the ObjectVision UI, including:
                                                 </p>
-                                                <ul className="space-y-3 text-gray-600 dark:text-gray-400">
+                                                <ul className="space-y-3 text-gray-600 dark:text-gray-400 pb-4">
                                                     <li className="flex items-start gap-2">
                                                         <ArrowRight className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
                                                         <span><strong>Component API</strong>: Detailed props, methods, and event documentation for all reusable components</span>
@@ -101,12 +103,12 @@ const DocumentationTabs: React.FC = () => {
                                                         <span><strong>Interactive Examples</strong>: Live code sandboxes for testing component behavior</span>
                                                     </li>
                                                 </ul>
-                                                <div className="pt-4">
+                                                <Link href="/docs/index.html" target="_blank" passHref>
                                                     <Button>
                                                         View Frontend Docs
                                                         <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Button>
-                                                </div>
+                                                </Link>
                                             </CardContent>
                                         </Card>
                                     </div>
@@ -152,7 +154,7 @@ const DocumentationTabs: React.FC = () => {
                             ) : (
                                 <div className="grid md:grid-cols-2 gap-8">
                                     <div className="h-full">
-                                        <Card className="shadow-lg border-none h-full dark:bg-gray-900">
+                                        <Card className="shadow-md border-none h-full dark:bg-gray-900">
                                             <CardHeader>
                                                 <CardTitle className="flex items-center gap-2 text-2xl">
                                                     <Server className="h-6 w-6 text-green-600" />
@@ -166,7 +168,7 @@ const DocumentationTabs: React.FC = () => {
                                                 <p className="text-gray-600 dark:text-gray-400">
                                                     Our FastAPI backend documentation includes comprehensive API references:
                                                 </p>
-                                                <ul className="space-y-3 text-gray-600 dark:text-gray-400">
+                                                <ul className="space-y-3 text-gray-600 dark:text-gray-400 pb-4">
                                                     <li className="flex items-start gap-2">
                                                         <ArrowRight className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                                                         <span><strong>OpenAPI Specification</strong>: Complete API schema documentation with Swagger UI integration</span>
@@ -184,12 +186,12 @@ const DocumentationTabs: React.FC = () => {
                                                         <span><strong>Interactive Testing</strong>: Try out API endpoints directly in the documentation</span>
                                                     </li>
                                                 </ul>
-                                                <div className="pt-4">
+                                                <Link href={`${settings.BACKEND_URL}/redoc`} target="_blank" passHref>
                                                     <Button variant="success" className="bg-green-600 text-white hover:bg-green-700">
                                                         View Backend Docs
                                                         <ArrowRight className="ml-2 h-4 w-4" />
                                                     </Button>
-                                                </div>
+                                                </Link>
                                             </CardContent>
                                         </Card>
                                     </div>

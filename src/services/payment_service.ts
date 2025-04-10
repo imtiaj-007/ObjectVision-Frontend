@@ -22,8 +22,8 @@ export const PaymentService = {
         const response: AxiosResponse<SuccessResponse> = await axiosHandler.post(`/payment/verify`, payload);
         return response.data;
     },
-    fetchTransactionHistory: async (params: string): Promise<unknown> => {
-        const response: AxiosResponse<unknown> = await axiosHandler.get(`/payment/history?${params}`);
+    fetchTransactionHistory: async (params: string): Promise<any> => {
+        const response: AxiosResponse<any> = await axiosHandler.get(`/payment/history?${params}`);
         return response.data;
     },
 
