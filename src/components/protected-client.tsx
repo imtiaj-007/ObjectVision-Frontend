@@ -17,7 +17,7 @@ export default function ProtectedClient({ children }: { children: React.ReactNod
     const [showSessionExpiredModal, setShowSessionExpiredModal] = useState<boolean>(false);
 
     const userAuthenticated = useMemo(()=> {
-        const auth_token = localStorage.getItem("access_token");
+        const auth_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : null;
         return auth_token && isAuthenticated;
     }, [isAuthenticated]);
 
