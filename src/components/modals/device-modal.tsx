@@ -12,7 +12,13 @@ import {
 import { Laptop2, Shield } from "lucide-react";
 
 
-const DeviceLoginModal = ({ isOpen, onClose, onProceed }) => {
+interface DeviceLoginModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onProceed: () => void;
+}
+
+const DeviceLoginModal: React.FC<DeviceLoginModalProps> = ({ isOpen, onClose, onProceed }) => {
     const getDeviceType = () => {
         const userAgent = navigator.userAgent;
 
