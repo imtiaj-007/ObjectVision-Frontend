@@ -50,7 +50,7 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
                         <SelectValue placeholder="12" />
                     </SelectTrigger>
                     <SelectContent>
-                        {[6, 12, 18].map((size) => (
+                        {[6, 9, 12].map((size) => (
                             <SelectItem key={size} value={size.toString()}>
                                 {size}
                             </SelectItem>

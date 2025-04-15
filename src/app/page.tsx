@@ -8,6 +8,7 @@ import {
     ChevronRight, Image, BadgeCheck, CloudLightning,
     FileImage, Film, File, FileVideo, ImagePlay
 } from 'lucide-react';
+import Link from 'next/link';
 
 const HomePage: React.FC = () => {
 
@@ -27,14 +28,18 @@ const HomePage: React.FC = () => {
                         Built for developers, designed for everyone.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                        <Button size="lg">
-                            Start Free Trial
-                            <ArrowRight className="ml-2" />
-                        </Button>
-                        <Button size="lg" className='bg-neutral-200 text-gray-900/90 hover:bg-neutral-100 hover:text-gray-900'>
-                            Live Demo
-                            <ChevronRight className="ml-2" />
-                        </Button>
+                        <Link href='/auth/login'>
+                            <Button size="lg" className='min-w-72'>
+                                Start Free Trial
+                                <ArrowRight className="ml-2" />
+                            </Button>
+                        </Link>
+                        <Link href='/documentation'>
+                            <Button size="lg" className='min-w-72 bg-neutral-200 text-gray-900/90 hover:bg-neutral-100 hover:text-gray-900'>
+                                Live Demo
+                                <ChevronRight className="ml-2" />
+                            </Button>
+                        </Link>
                     </div>
 
                     {/* Stats */}
@@ -106,27 +111,8 @@ const HomePage: React.FC = () => {
                                 key={index}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                animate={{
-                                    scale: [1, 1.03, 1],
-                                }}
-                                transition={{
-                                    y: {
-                                        duration: 4,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                        repeatType: "mirror"
-                                    },
-                                    scale: {
-                                        duration: 4,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                        repeatType: "mirror"
-                                    },
-                                    opacity: {
-                                        duration: 0.8,
-                                        delay: index * 0.1
-                                    }
-                                }}
+                                whileHover={{ scale: 1.05 }}
+                                transition={{ duration: 2.0 }}
                             >
                                 <Card className="p-6 bg-slate-800/50 hover:bg-slate-800 transition-colors border-slate-700">
                                     {/* Icon */}
@@ -152,7 +138,6 @@ const HomePage: React.FC = () => {
                             initial={{ opacity: 0, y: -20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
                             className="text-4xl font-bold mb-4"
                         >
                             Supported Formats
@@ -161,7 +146,6 @@ const HomePage: React.FC = () => {
                             initial={{ opacity: 0, y: -20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            viewport={{ once: true }}
                             className="text-slate-400 text-xl"
                         >
                             Process any type of image or video format with ease
@@ -219,14 +203,18 @@ const HomePage: React.FC = () => {
                         Start your free trial today. No credit card required.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg text-white px-8 py-6">
-                            Start Free Trial
-                            <ArrowRight className="ml-2" />
-                        </Button>
-                        <Button size="lg" className='bg-neutral-200 text-gray-900/90 hover:bg-neutral-100 hover:text-gray-900'>
-                            Contact Sales
-                            <ChevronRight className="ml-2" />
-                        </Button>
+                        <Link href='/auth/login'>
+                            <Button size="lg" className="min-w-72 bg-blue-600 hover:bg-blue-700 text-lg text-white px-8 py-6">
+                                Start Free Trial
+                                <ArrowRight className="ml-2" />
+                            </Button>
+                        </Link>
+                        <Link href='/aboutus'>
+                            <Button size="lg" className='min-w-72 bg-neutral-200 text-gray-900/90 hover:bg-neutral-100 hover:text-gray-900'>
+                                Contact Sales
+                                <ChevronRight className="ml-2" />
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </section>

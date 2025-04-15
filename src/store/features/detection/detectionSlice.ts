@@ -17,7 +17,7 @@ export interface DetectionState {
 const initialState: DetectionState = {
     image_form_data: null,
     queued_image: null,
-    total_image_count: -1,
+    total_image_count: 0,
     cachedPages: {},
     loading: false,
     error: null,

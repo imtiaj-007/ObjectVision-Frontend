@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { settings } from "@/configuration/config";
 
 
-
 interface SidebarProps {
     className?: string;
 }
@@ -27,17 +26,17 @@ const Sidebar: React.FC = ({ className }: SidebarProps) => {
         },
         {
             name: "Image Processing",
-            href: "/user/dashboard/image-processing",
+            href: "/user/image-processing",
             icon: ImageIcon
         },
         {
             name: "Video Processing",
-            href: "/user/dashboard/video-processing",
+            href: "/user/video-processing",
             icon: Video
         },
         {
             name: "Processed Results",
-            href: "/user/dashboard/predictions",
+            href: "/user/predictions",
             icon: SiTask 
         }
     ];
@@ -98,7 +97,7 @@ const Sidebar: React.FC = ({ className }: SidebarProps) => {
                     <div className="h-full flex flex-col justify-between">
                         <div className="space-y-1">
                             {navigation.map((item) => {
-                                const isActive = pathname === item.href;
+                                const isActive = pathname.startsWith(item.href);
                                 const Icon = item.icon;
 
                                 return (

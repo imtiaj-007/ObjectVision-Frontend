@@ -33,7 +33,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, isLoading }) => {
     const handleViewDetails = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         addImagetoQueue(item);
-        router.push(`/user/dashboard/predictions/${base64Hash(item.filename)}`);
+        router.push(`/user/predictions/${base64Hash(item.filename)}`);
     }
 
     useEffect(() => {

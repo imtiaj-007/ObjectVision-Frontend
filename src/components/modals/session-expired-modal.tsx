@@ -16,7 +16,7 @@ const SessionExpiredModal = () => {
             setCountDown(prev => {
                 if (prev <= 1) {
                     clearInterval(timer);
-                    setOpen(false);
+                    // setOpen(false);
                     return 0;
                 }
                 return prev - 1;
@@ -27,41 +27,41 @@ const SessionExpiredModal = () => {
     }, []);
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
-            <AlertDialogContent className="max-w-md bg-white/95 border-2 border-red-100 shadow-xl">
+            <AlertDialogContent className="max-w-md shadow-xl rounded-lg">
                 <AlertDialogHeader>
                     <div className="flex items-center justify-center mb-2">
-                        <div className="bg-red-50 p-3 rounded-full">
+                        <div className="bg-red-100 p-3 rounded-full">
                             <Clock className="h-8 w-8 text-red-500" />
                         </div>
                     </div>
                     <AlertDialogTitle className="text-xl text-center text-red-600">
                         Session Expired
                     </AlertDialogTitle>
-                    <AlertDialogDescription className="text-center text-gray-700 mt-2">
+                    <AlertDialogDescription className="text-center text-gray-700 dark:text-gray-400 mt-2">
                         Please log in again to continue where you left off.
 
-                        <span className="flex items-center justify-center font-semibold gap-2 mt-8 mb-4">
+                        <span className="flex items-center justify-center font-semibold dark:text-gray-400 gap-2 mt-8 mb-4">
                             <Timer className="w-4 h-4" />
                             Redirecting to Login page in {countDown} seconds
                         </span>
                     </AlertDialogDescription>
                 </AlertDialogHeader>
 
-                <div className="my-4 border-t border-gray-200 pt-4">
+                <div className="md:my-4 border-t border-gray-200 pt-4">
                     <p className="text-sm text-gray-500 mb-2 text-center">
                         Any unsaved changes might have been lost.
                     </p>
                 </div>
 
-                <AlertDialogFooter className="flex flex-col sm:flex-row gap-2">
+                <AlertDialogFooter className="flex flex-col sm:flex-row items-center justify-center gap-2">
                     <Link href='/' >
-                        <Button>
+                        <Button className=''>
                             <Home className="h-4 w-4" />
                             <span>Go to Home</span>
                         </Button>
                     </Link>
                     <Link href='/auth/login' >
-                        <Button variant={'destructive'}>
+                        <Button variant='destructive' className=''>
                             <LogIn className="h-4 w-4" />
                             <span>Log In Again</span>
                         </Button>
