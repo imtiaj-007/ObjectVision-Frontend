@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Code, Eye, Cpu, Server } from "lucide-react";
-import { FaAddressCard, FaDiscord, FaGithub, FaInstagram, FaLinkedin, FaSquareXTwitter } from "react-icons/fa6";
+import { FaAddressCard, FaGithub, FaInstagram, FaLinkedin, FaSquareXTwitter } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -55,9 +55,9 @@ export default function AboutUsPage() {
                                         <div>
                                             <h4 className="font-medium my-1">Technical Expertise</h4>
                                             <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                                Full-stack developer specializing in the MERN stack (MongoDB, Express, React, Node.js) and Next.js.
-                                                Proficient in C++, Python, Java, and JavaScript with experience in both SQL (MySQL, PostgreSQL)
-                                                and NoSQL databases. Additional skills in FastAPI, AWS, Docker, and Git for building scalable,
+                                                Full-stack developer specializing in the <strong>MERN stack (MongoDB, Express.js, React.js, Node.js)</strong> along with <strong>Next.js & TypeScript</strong>.
+                                                Proficient in <strong>C++, Python, Java, and JavaScript</strong> with experience in both <strong>SQL (MySQL, PostgreSQL)
+                                                and NoSQL (MongoDB)</strong> databases. Additional skills in <strong>FastAPI, AWS, Docker, and Git</strong> for building scalable,
                                                 production-ready applications.
                                             </p>
                                         </div>
@@ -78,22 +78,19 @@ export default function AboutUsPage() {
 
                                 </div>
                                 <div className="flex justify-around lg:justify-normal max-w-80 lg:max-w-full items-center lg:space-x-8 mt-8 mx-auto text-gray-500">
-                                    <Link target="_blank" href="https://github.com/imtiaj-007" rel="noopener noreferrer">
+                                    <Link target="_blank" href="https://github.com/imtiaj-007" className="text-gray-500 dark:text-gray-400 hover:text-gray-600" rel="noopener noreferrer">
                                         <FaGithub size={28} />
                                     </Link>
-                                    <Link target="_blank" href="https://www.linkedin.com/in/sk-imtiaj-uddin-b26432254/" rel="noopener noreferrer">
+                                    <Link target="_blank" href="https://www.linkedin.com/in/sk-imtiaj-uddin-b26432254/" className="text-gray-500 dark:text-gray-400 hover:text-gray-600" rel="noopener noreferrer">
                                         <FaLinkedin size={28} />
                                     </Link>
-                                    <Link target="_blank" href="https://x.com/imtiaj_007" rel="noopener noreferrer">
+                                    <Link target="_blank" href="https://x.com/imtiaj_007" className="text-gray-500 dark:text-gray-400 hover:text-gray-600" rel="noopener noreferrer">
                                         <FaSquareXTwitter size={28} />
                                     </Link>
-                                    <Link target="_blank" href="https://www.instagram.com/soul.survivor_27/" rel="noopener noreferrer">
+                                    <Link target="_blank" href="https://www.instagram.com/soul.survivor_27/" className="text-gray-500 dark:text-gray-400 hover:text-gray-600" rel="noopener noreferrer">
                                         <FaInstagram size={28} />
                                     </Link>
-                                    <Link target="_blank" href="https://discord.com/users/imtiaj007" rel="noopener noreferrer">
-                                        <FaDiscord size={28} />
-                                    </Link>
-                                    <Link target="_blank" href="https://sk-imtiaj-uddin-portfolio.netlify.app/" rel="noopener noreferrer">
+                                    <Link target="_blank" href="https://sk-imtiaj-uddin-portfolio.netlify.app/" className="text-gray-500 dark:text-gray-400 hover:text-gray-600" rel="noopener noreferrer">
                                         <FaAddressCard size={28} />
                                     </Link>
                                 </div>

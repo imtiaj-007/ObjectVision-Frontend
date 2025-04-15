@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Search, Menu } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     DropdownMenu,
@@ -9,7 +9,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ThemeToggle } from '../themes/theme-toggle';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Image as ImageIcon, Video, Radio } from "lucide-react";
+import { LayoutDashboard, Image as ImageIcon, Video } from "lucide-react";
+import { useAuth } from '@/hooks/use-auth';
+import { MobileNav } from './mobile-navigation';
+import { SiTask } from 'react-icons/si';
 
 const navigation = [
     {
@@ -19,37 +22,35 @@ const navigation = [
     },
     {
         name: "Image Processing",
-        href: "/user/dashboard/image-processing",
+        href: "/user/image-processing",
         icon: ImageIcon
     },
     {
         name: "Video Processing",
-        href: "/user/dashboard/video-processing",
+        href: "/user/video-processing",
         icon: Video
     },
     {
-        name: "Real Time Detection",
-        href: "/user/dashboard/real-time-detection",
-        icon: Radio
+        name: "Processed Results",
+        href: "/user/predictions",
+        icon: SiTask
     }
 ];
 
 
 const Header = () => {
     const pathname = usePathname();
-    const currentNav = useMemo(()=> 
-        [...navigation]
-            .sort((a, b) => b.href.length - a.href.length)
-            .find(nav => pathname.startsWith(nav.href)) || navigation[0], 
+    const { logoutUser } = useAuth();
+
+    const currentNav = useMemo(() =>
+        navigation.find(nav => pathname.startsWith(nav.href)),
         [pathname]
     );
 
     return (
         <header className="h-16 bg-nav flex items-center justify-between p-2 lg:px-8 z-50 rounded-xl border mb-2">
-            <div className="flex items-center">
-                <Menu className="h-5 w-5 text-muted-foreground hover:text-foreground cursor-pointer lg:hidden mr-4" />
-                <span className="text-xl font-semibold">{currentNav.name}</span>
-            </div>
+            <MobileNav navigation={navigation} pathname={pathname} />
+            <span className="text-xl font-semibold">{currentNav?.name}</span>
 
             {/* Middle section - Search */}
             <div className="hidden md:flex items-center max-w-md w-full mx-4">
@@ -77,7 +78,7 @@ const Header = () => {
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem>Profile</DropdownMenuItem>
                         <DropdownMenuItem>Settings</DropdownMenuItem>
-                        <DropdownMenuItem>Sign out</DropdownMenuItem>
+                        <DropdownMenuItem onClick={logoutUser}>Sign out</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

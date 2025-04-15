@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
                             variant="ghost"
                             size="icon"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="h-10 w-10"
+                            className="bg-gray-800 dark:bg-gray-800 text-gray-400 dark:text-gray-400 h-10 w-10"
                         >
                             {isMobileMenuOpen ? (
                                 <X className="h-6 w-6" />
@@ -113,13 +113,13 @@ const Navbar: React.FC = () => {
                                     </Link>
                                 ) : (
                                     <>
-                                        <Link href="/login">
-                                            <Button variant="outline" className="w-full justify-center">
+                                        <Link href="/auth/login" className="flex mx-auto">
+                                            <Button variant="ghost" className="w-72 justify-center">
                                                 Login
                                             </Button>
                                         </Link>
-                                        <Link href="/signup">
-                                            <Button className="w-full justify-center">
+                                        <Link href="/auth/signup" className="flex mx-auto">
+                                            <Button className="w-72 justify-center">
                                                 Sign Up
                                             </Button>
                                         </Link>

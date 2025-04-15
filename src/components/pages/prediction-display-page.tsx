@@ -63,14 +63,13 @@ const PredictionDisplayPage: React.FC = () => {
         }
     }, [socketUrl, queued_image, presignedURLs]);
 
-    useEffect(()=> {
+    useEffect(() => {
         return () => {
-            if(clientId && socketUrl) {
+            if (clientId) {
                 resetCache();
             }
         }
-    }, [])
-
+    }, [clientId, resetCache]);
 
     if (clientId && socketUrl) {
         return (
@@ -85,11 +84,9 @@ const PredictionDisplayPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            {/* Image Info Component */}
             <Card className="grid grid-cols-1 p-6 rounded-lg shadow-md">
                 <ImageInfo {...imageInfo} />
             </Card>
-            {/* Results Section */}
             <DetectionResultsDisplay file_name={queued_image?.filename || ""} isPredictionData={true} />
         </div>
     )
