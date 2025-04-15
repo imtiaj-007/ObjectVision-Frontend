@@ -66,6 +66,8 @@ axiosInstance.interceptors.response.use(
         else if (error.status === 401) {
             localStorage.removeItem('access_token');
             localStorage.removeItem('token_type');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('user_details');
         }
         
         return Promise.reject(error);

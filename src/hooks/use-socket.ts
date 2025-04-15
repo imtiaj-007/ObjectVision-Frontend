@@ -1,59 +1,57 @@
-import { WebSocketMessage } from "@/types/general";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from 'react';
+import { WebSocketMessage } from '@/types/general';
+import { socketManager } from '@/utils/socket_manager';
 
 
 interface UseSocketReturn {
     isConnected: boolean;
+    isConnecting: boolean;
     messages: WebSocketMessage[];
     sendMessage: (message: string) => void;
     closeSocket: () => void;
 }
 
-const useSocket = ( url : string): UseSocketReturn => {
-    const socketRef = useRef<WebSocket | null>(null);
-    const [isConnected, setIsConnected] = useState<boolean>(false);
+export const useSocket = (clientId: string, url: string): UseSocketReturn => {
+    const [isConnected, setIsConnected] = useState(false);
+    const [isConnecting, setIsConnecting] = useState(true);
     const [messages, setMessages] = useState<WebSocketMessage[]>([]);
 
     useEffect(() => {
-        if (!url) return;
-        socketRef.current = new WebSocket(url);
+        if (!clientId || !url) return;
 
-        socketRef.current.onopen = () => {
-            console.log("WebSocket connected");
-            setIsConnected(true);
+        const handleStatusChange = (connected: boolean) => {
+            setIsConnected(connected);
+            setIsConnecting(false);
         };
 
-        socketRef.current.onmessage = (event) => {
-            const parsedData = typeof event.data === 'string' 
-                ? JSON.parse(event.data) 
-                : event.data;
-            
-            setMessages((prev) => [...prev, parsedData]);
+        const handleMessage = (message: WebSocketMessage) => {
+            setMessages(prev => [...prev, message]);
         };
 
-        socketRef.current.onerror = (error) => {
-            console.error("WebSocket error:", error);
-        };
+        socketManager.addStatusListener(clientId, handleStatusChange);
+        socketManager.addMessageListener(clientId, handleMessage);
 
-        socketRef.current.onclose = () => {
-            console.log("WebSocket disconnected");
-            setIsConnected(false);
-        };
+        socketManager.connect(clientId, url);
 
         return () => {
-            socketRef.current?.close();
+            socketManager.removeStatusListener(clientId, handleStatusChange);
+            socketManager.removeMessageListener(clientId, handleMessage);
         };
-    }, [url]);
+    }, [clientId, url]);
 
-    const sendMessage = (message: string): void => {
-        if (socketRef.current && isConnected) {
-            socketRef.current.send(message);
-        } else {
-            console.error("WebSocket is not connected");
-        }
+    const sendMessage = (message: string) => {
+        socketManager.sendMessage(clientId, message);
     };
 
-    return { isConnected, messages, sendMessage, closeSocket: () => socketRef.current?.close() };
-};
+    const closeSocket = () => {
+        socketManager.close(clientId);
+    };
 
-export default useSocket;
+    return {
+        isConnected,
+        isConnecting,
+        messages,
+        sendMessage,
+        closeSocket
+    };
+};

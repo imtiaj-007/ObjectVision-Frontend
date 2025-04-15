@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    async rewrites() {
+        return [
+            {
+                source: '/docs/:path*',
+                destination: '/docs/:path*'
+            }
+        ];
+    },
     images: {
         remotePatterns: [
             {
@@ -23,7 +31,7 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "s3.ap-south-1.amazonaws.com"
             }
-        ],        
+        ],
     },
 };
 

@@ -53,7 +53,7 @@ const MediaPredictions: React.FC = () => {
         }
     }, [queryParams, getPredictions, isPageCached]);
 
-    const showSkeleton = loading || initialLoading || total_image_count === -1 || !currentPageItems;
+    const showSkeleton: boolean = useMemo(() => initialLoading || loading, [initialLoading, loading]);
 
     return (
         <div className="container mx-auto px-4">
