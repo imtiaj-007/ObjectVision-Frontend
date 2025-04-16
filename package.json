@@ -10,7 +10,8 @@
     "start:prod": "next start",
     "lint": "next lint",
     "docs": "typedoc",
-    "docs:watch": "typedoc --watch"
+    "docs:watch": "typedoc --watch",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -37,6 +38,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.473.0",
     "next": "15.1.2",
+    "next-sitemap": "^4.2.3",
     "next-themes": "^0.4.4",
     "razorpay": "^2.9.6",
     "react": "^19.0.0",
