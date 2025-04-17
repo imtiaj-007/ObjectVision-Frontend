@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useDetection } from '@/hooks/use-detection'
 import { Search, Filter, ListVideo, ImageIcon } from 'lucide-react'
@@ -14,7 +14,6 @@ import { PaginationControls } from '@/components/sections/pagination-control'
 const MediaPredictions: React.FC = () => {
     const searchParams = useSearchParams();
     const { total_image_count, getPredictions, loading, cachedPages, isPageCached } = useDetection();
-    const [initialLoading, setInitialLoading] = useState<boolean>(true);
 
     const queryParams = useMemo(() => {
         const page = parseInt(searchParams.get('page') || '1', 10);
@@ -36,7 +35,6 @@ const MediaPredictions: React.FC = () => {
     const currentPageItems = useMemo(() => {
         const cacheKey = `pageKey-${queryParams.page}-${queryParams.limit}`;
         if (isPageCached(cacheKey)) {
-            setInitialLoading(false);
             return cachedPages[cacheKey];
         }
         return undefined;
@@ -46,14 +44,9 @@ const MediaPredictions: React.FC = () => {
     useEffect(() => {
         const cacheKey = `pageKey-${queryParams.page}-${queryParams.limit}`;
         if (!isPageCached(cacheKey)) {
-            setInitialLoading(true);
-            getPredictions(queryParams).then(() => {
-                setInitialLoading(false);
-            });
+            getPredictions(queryParams);
         }
     }, [queryParams, getPredictions, isPageCached]);
-
-    const showSkeleton: boolean = useMemo(() => initialLoading || loading, [initialLoading, loading]);
 
     return (
         <div className="container mx-auto px-4">
@@ -90,7 +83,7 @@ const MediaPredictions: React.FC = () => {
 
                 <TabsContent value={queryParams.type}>
                     <div className="mt-6">
-                        {showSkeleton ? (
+                        {loading ? (
                             <MediaGridSkeleton />
                         ) : (
                             <MediaGrid media={currentPageItems} />
