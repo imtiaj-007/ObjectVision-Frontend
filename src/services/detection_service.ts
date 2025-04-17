@@ -15,7 +15,7 @@ export const DetectionService = {
             page: params.page.toString(),
             limit: params.limit.toString()
         });
-        const response: AxiosResponse<ResultsStateResponse> = await axiosHandler.get(`/detection?${req_params.toString()}`);
+        const response: AxiosResponse<ResultsStateResponse> = await axiosHandler.get(`/detection/?${req_params.toString()}`);
         return { ...response.data, meta: params };
     },
     sendImageDetection: async (payload: FormData): Promise<Record<string, unknown>> => {

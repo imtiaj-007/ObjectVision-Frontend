@@ -112,7 +112,7 @@ const VideoProcessingComponent: React.FC = () => {
     const handleProcessVideo = useCallback(() => {
         toast({
             variant: "info",
-            title: "Not Implemented",
+            title: "Coming Soon",
             description: "Video processing coming soon!"
         });
     }, []);
