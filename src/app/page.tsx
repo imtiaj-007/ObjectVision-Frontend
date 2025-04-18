@@ -209,7 +209,7 @@ const HomePage: React.FC = () => {
                                 <ArrowRight className="ml-2" />
                             </Button>
                         </Link>
-                        <Link href='/aboutus'>
+                        <Link href="mailto:imtiaj.dev.kol@gmail.com">
                             <Button size="lg" className='min-w-72 bg-neutral-200 text-gray-900/90 hover:bg-neutral-100 hover:text-gray-900'>
                                 Contact Sales
                                 <ChevronRight className="ml-2" />

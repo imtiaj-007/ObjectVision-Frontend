@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
 import { settings } from '@/configuration/config';
-import PricingPage from "@/components/pages/pricing-page";
+import SitemapPage from "@/components/pages/sitemap-page";
 
 
-const page_url: string = settings.FRONTEND_URL + '/pricing';
+const page_url: string = settings.FRONTEND_URL + '/sitemap';
 const logo_url: string = settings.LOGO_URL;
 
 export const metadata: Metadata = {
-    title: "Pricing Plans | ObjectVision",
-    description: "Explore flexible pricing plans tailored for individuals, teams, and enterprises. Choose the right plan for your needs and get started with ObjectVision today.",
+    title: "Sitemap | ObjectVision",
+    description: "Complete site navigation with all ObjectVision pages including documentation, pricing, and legal information.",
     robots: {
-        index: true,
+        index: false,
         follow: true
     },
     openGraph: {
-        title: "Pricing Plans | ObjectVision",
-        description: "Explore flexible pricing plans tailored for individuals, teams, and enterprises. Choose the right plan for your needs and get started with ObjectVision today.",
+        title: "Sitemap | ObjectVision",
+        description: "Complete site navigation with all ObjectVision pages including documentation, pricing, and legal information.",
         url: page_url,
         siteName: "ObjectVision",
         images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Pricing Plans | ObjectVision",
-        description: "Explore flexible pricing plans tailored for individuals, teams, and enterprises. Choose the right plan for your needs and get started with ObjectVision today.",
+        title: "Sitemap | ObjectVision",
+        description: "Complete site navigation with all ObjectVision pages including documentation, pricing, and legal information.",
         site: page_url,
         creator: "SK Imtiaj Uddin",
         images: [
@@ -47,8 +47,8 @@ export const metadata: Metadata = {
     alternates: { canonical: page_url }
 };
 
-export default function Pricing() {
+export default function Sitemap() {
     return (
-        <PricingPage />
+        <SitemapPage />
     );
-}
+};

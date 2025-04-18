@@ -38,27 +38,27 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="font-semibold text-white mb-4">Documentation</h3>
                         <ul className="space-y-2">
-                            <li><a href="/auth/login" className="hover:text-white">Getting Started</a></li>
-                            <li><a href="/documentation" className="hover:text-white">API Reference</a></li>
-                            <li><a href="/documentation" className="hover:text-white">Tutorials</a></li>
-                            <li><a href="/documentation" className="hover:text-white">Examples</a></li>
+                            <li><Link href="/auth/login" className="hover:text-white">Getting Started</Link></li>
+                            <li><Link href="/documentation" className="hover:text-white">API Reference</Link></li>
+                            <li><Link href="/documentation" className="hover:text-white">Tutorials</Link></li>
+                            <li><Link href="/documentation" className="hover:text-white">Examples</Link></li>
                         </ul>
                     </div>
                     <div>
                         <h3 className="font-semibold text-white mb-4">Resources</h3>
                         <ul className="space-y-2">
-                            <li><a href="https://github.com/imtiaj-007" className="hover:text-white">GitHub Repository</a></li>
-                            <li><a href="#" className="hover:text-white">Change Log</a></li>
-                            <li><a href="#" className="hover:text-white">FAQ</a></li>
-                            <li><a href="#" className="hover:text-white">Community</a></li>
+                            <li><Link href="/terms-of-service" className="hover:text-white">Terms of Service</Link></li>
+                            <li><Link href="/privacy-policy" className="hover:text-white">Privacy Policy</Link></li>
+                            <li><Link href="/frequently-asked-questions" className="hover:text-white">FAQ</Link></li>
+                            <li><Link href="/sitemap" className="hover:text-white">Sitemap</Link></li>
                         </ul>
                     </div>
-                    <div className="hidden lg:block">
+                    <div>
                         <h3 className="font-semibold text-white mb-4">Connect</h3>
                         <ul className="space-y-2">
-                            <li><a href="https://www.linkedin.com/in/sk-imtiaj-uddin-b26432254/" className="hover:text-white">LinkedIn</a></li>
-                            <li><a href="https://sk-imtiaj-uddin-portfolio.netlify.app/" className="hover:text-white">Portfolio</a></li>
-                            <li><a href="#" className="hover:text-white">Contact Us</a></li>
+                            <li><Link href="https://www.linkedin.com/in/sk-imtiaj-uddin-b26432254/" className="hover:text-white">LinkedIn</Link></li>
+                            <li><Link href="https://sk-imtiaj-uddin-portfolio.netlify.app/" className="hover:text-white">Portfolio</Link></li>
+                            <li><Link href="mailto:imtiaj.dev.kol@gmail.com" className="hover:text-white">Contact Us</Link></li>
                         </ul>
                     </div>
                 </div>

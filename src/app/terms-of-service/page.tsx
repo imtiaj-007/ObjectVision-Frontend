@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
 import { settings } from '@/configuration/config';
-import ObjectVisionDocsPage from "@/components/pages/docs-overview-page";
+import TermsOfServicePage from "@/components/pages/terms-of-service-page";
 
 
-const page_url: string = settings.FRONTEND_URL + '/documentation';
+const page_url: string = settings.FRONTEND_URL + '/terms-of-service';
 const logo_url: string = settings.LOGO_URL;
 
 export const metadata: Metadata = {
-    title: "Documentation | ObjectVision",
-    description: "Get started with ObjectVision using our comprehensive documentation. Find guides, API references, setup instructions, and best practices to make the most of our platform.",
+    title: "Terms of Service | ObjectVision",
+    description: "Read the official Terms of Service for ObjectVision AI. Learn about your rights, responsibilities, and our policies for using our platform, services, and content.",
     robots: {
         index: true,
         follow: true
     },
     openGraph: {
-        title: "Documentation | ObjectVision",
-        description: "Get started with ObjectVision using our comprehensive documentation. Find guides, API references, setup instructions, and best practices to make the most of our platform.",
+        title: "Terms of Service | ObjectVision",
+        description: "Read the official Terms of Service for ObjectVision AI. Learn about your rights, responsibilities, and our policies for using our platform, services, and content.",
         url: page_url,
         siteName: "ObjectVision",
         images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Documentation | ObjectVision",
-        description: "Get started with ObjectVision using our comprehensive documentation. Find guides, API references, setup instructions, and best practices to make the most of our platform.",
+        title: "Terms of Service | ObjectVision",
+        description: "Read the official Terms of Service for ObjectVision AI. Learn about your rights, responsibilities, and our policies for using our platform, services, and content.",
         site: page_url,
         creator: "SK Imtiaj Uddin",
         images: [
@@ -47,8 +47,8 @@ export const metadata: Metadata = {
     alternates: { canonical: page_url }
 };
 
-export default function Documentation() {
+export default function TermsOfService() {
     return (
-        <ObjectVisionDocsPage />
+        <TermsOfServicePage />
     );
 }

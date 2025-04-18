@@ -3,6 +3,25 @@ import { RazorpayPaymentDetails } from "./payment";
 import { ResultsState } from "./predictions";
 
 
+export interface AppSettings {
+    ENV: string;
+    DEFAULT_PAGE: number;
+    DEFAULT_PAGE_LIMIT: number;
+    MAX_RECONNECT_ATTEMPTS: number;
+    RECONNECT_DELAY: number;
+    API_KEY: string;
+    SECRET_KEY: string;
+    FRONTEND_URL: string;
+    LOGO_URL: string;
+    BACKEND_URL: string;
+    API_BASE_URL: string;
+    GOOGLE_OAUTH_URL: string;
+    GOOGLE_TAG: string;
+    GOOGLE_VERIFICATION_CODE: string;
+    RAZORPAY_KEY: string;
+}
+
+
 export interface SuccessResponse {
     message: string | undefined;
     status?: number;

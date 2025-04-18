@@ -4,7 +4,6 @@ import { CustomError } from '@/types/general';
 import { handleRejectResponse } from '@/utils/error_handler';
 import { PresignedUrlRequest, PresignedUrlResponse } from '@/types/predictions';
 import { FileService } from '@/services/file_service';
-import { throttleApiCall } from '@/utils/promise_utils';
 
 
 export const getLocalPresignedURL = createAsyncThunk<
@@ -15,10 +14,7 @@ export const getLocalPresignedURL = createAsyncThunk<
     'detection/localPresignedURL',
     async (payload, { rejectWithValue }) => {
         try {
-            return await throttleApiCall(
-                `getLocalUrl-${payload.file_path}`,
-                () => FileService.localPresignedURL(payload)
-            );
+            return await FileService.localPresignedURL(payload);
         } catch (error: unknown) {
             return rejectWithValue(handleRejectResponse(error));
         }
@@ -63,10 +59,7 @@ export const getCloudPresignedURL = createAsyncThunk<
     'detection/cloudPresignedURL',
     async (payload, { rejectWithValue }) => {
         try {
-            return await throttleApiCall(
-                `getCloudUrl-${payload.file_path}`,
-                () => FileService.cloudPresignedURL(payload)
-            );
+            return await FileService.cloudPresignedURL(payload);
         } catch (error: unknown) {
             return rejectWithValue(handleRejectResponse(error));
         }

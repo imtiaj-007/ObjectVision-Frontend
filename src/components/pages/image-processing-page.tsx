@@ -18,9 +18,9 @@ import { UserActivityResponse } from "@/types/subscription_activity";
 import { toast } from "@/hooks/use-toast";
 import { DetectionRequestSchema } from "@/schemas/detection";
 import { useDetection } from "@/hooks/use-detection";
-import Loader from "@/components/ui/loader";
 import { base64Hash } from "@/utils/hash";
 import { File_Storage } from "../../../cache/file_storage";
+import { Alert, AlertDescription } from "../ui/alert";
 
 
 
@@ -28,7 +28,7 @@ const ImageProcessingComponent: React.FC = () => {
     const router = useRouter();
     const path = usePathname();
     const { activePlans, userActivity } = useSubscriptionActivity();
-    const { storeImageFormData, loading: detectionLoading } = useDetection();
+    const { storeImageFormData } = useDetection();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -222,18 +222,19 @@ const ImageProcessingComponent: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            {detectionLoading && <Loader size="lg" className="w-full h-full" />}
             {/* Section Header */}
             <div className="header">
                 <h2 className="flex items-start text-2xl font-bold">
                     <i className="inline-flex mr-2"><ImageIcon className="w-7 h-7" /></i>
                     Image Processing
                 </h2>
-                {/* <p className="text-gray-600 dark:text-gray-300 my-3">
-                    Effortlessly analyze images using advanced AI-powered models. Adjust the confidence threshold to
-                    refine accuracy and obtain precise insights.
-                </p> */}
             </div>
+
+            <Alert variant="destructive">
+                <AlertDescription>
+                    Some advanced models are temporarily unavailable due to high demand. But don&apos;t wory, Alternate models with similar precision remain fully accessible!.
+                </AlertDescription>
+            </Alert>
 
             <div className="grid gap-6 md:grid-cols-2">
                 {/* Upload Section */}

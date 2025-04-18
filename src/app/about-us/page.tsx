@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
 import { settings } from '@/configuration/config';
-import ObjectVisionDocsPage from "@/components/pages/docs-overview-page";
+import AboutUsPage from "@/components/pages/about-us-page";
 
 
-const page_url: string = settings.FRONTEND_URL + '/documentation';
+const page_url: string = settings.FRONTEND_URL + '/about-us';
 const logo_url: string = settings.LOGO_URL;
 
 export const metadata: Metadata = {
-    title: "Documentation | ObjectVision",
-    description: "Get started with ObjectVision using our comprehensive documentation. Find guides, API references, setup instructions, and best practices to make the most of our platform.",
+    title: "About Us | ObjectVision",
+    description: "Discover the story behind ObjectVision, our mission, and the team building powerful computer vision solutions. Learn what drives us to innovate and deliver value.",
     robots: {
         index: true,
         follow: true
     },
     openGraph: {
-        title: "Documentation | ObjectVision",
-        description: "Get started with ObjectVision using our comprehensive documentation. Find guides, API references, setup instructions, and best practices to make the most of our platform.",
+        title: "About Us | ObjectVision",
+        description: "Discover the story behind ObjectVision, our mission, and the team building powerful computer vision solutions. Learn what drives us to innovate and deliver value.",
         url: page_url,
         siteName: "ObjectVision",
         images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Documentation | ObjectVision",
-        description: "Get started with ObjectVision using our comprehensive documentation. Find guides, API references, setup instructions, and best practices to make the most of our platform.",
+        title: "About Us | ObjectVision",
+        description: "Discover the story behind ObjectVision, our mission, and the team building powerful computer vision solutions. Learn what drives us to innovate and deliver value.",
         site: page_url,
         creator: "SK Imtiaj Uddin",
         images: [
@@ -47,8 +47,8 @@ export const metadata: Metadata = {
     alternates: { canonical: page_url }
 };
 
-export default function Documentation() {
+export default function AboutUs() {
     return (
-        <ObjectVisionDocsPage />
+        <AboutUsPage />
     );
 }

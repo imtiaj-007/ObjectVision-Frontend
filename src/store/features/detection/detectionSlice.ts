@@ -49,6 +49,7 @@ const detectionSlice = createSlice({
             // Process Image
             .addCase(processImage.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(processImage.fulfilled, (state) => {
                 state.loading = false;
@@ -61,6 +62,7 @@ const detectionSlice = createSlice({
             // Get Detection Results
             .addCase(getDetectionPredictions.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(getDetectionPredictions.fulfilled, (state, action: PayloadAction<ResultsStateResponse>) => {
                 if (action.payload.data && action.payload.data.length > 0) {

@@ -3,7 +3,6 @@ import { CustomError } from '@/types/general';
 import { handleRejectResponse } from '@/utils/error_handler';
 import { DetectionService } from '@/services/detection_service';
 import { ResultsStateResponse } from '@/types/predictions';
-import { throttleApiCall } from '@/utils/promise_utils';
 import { DetectionResultsParams } from '@/types/detection';
 
 
@@ -30,10 +29,7 @@ export const getDetectionPredictions = createAsyncThunk<
     'detection/getPredictions',
     async (params, { rejectWithValue }) => {
         try {
-            return await throttleApiCall(
-                `getPredictions-${params.page}-${params.limit}`,
-                () => DetectionService.getDetectionResults(params)
-            );
+            return await DetectionService.getDetectionResults(params);
         } catch (error: unknown) {
             return rejectWithValue(handleRejectResponse(error));
         }
