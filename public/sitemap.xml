@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://object-vision-frontend.vercel.app</loc>
+  </url>
+  <url>
+    <loc>https://object-vision-frontend.vercel.app/about-us</loc>
+  </url>
+  <url>
+    <loc>https://object-vision-frontend.vercel.app/pricing</loc>
+  </url>
+  <url>
+    <loc>https://object-vision-frontend.vercel.app/documentation</loc>
+  </url>
+  <!-- <url>
+    <loc>https://object-vision-frontend.vercel.app/docs</loc>
+  </url>
+  <url>
+    <loc>https://api-objectvision-ai.linkpc.net/redoc</loc>
+  </url>
+  <url>
+    <loc>https://api-objectvision-ai.linkpc.net/docs</loc>
+  </url> -->
+  <url>
+    <loc>https://object-vision-frontend.vercel.app/terms-of-service</loc>
+  </url>
+  <url>
+    <loc>https://object-vision-frontend.vercel.app/privacy-policy</loc>
+  </url>
+  <url>
+    <loc>https://object-vision-frontend.vercel.app/frequently-asked-questions</loc>
+  </url>
+  <url>
+    <loc>https://object-vision-frontend.vercel.app/sitemap</loc>
+  </url>
+</urlset>

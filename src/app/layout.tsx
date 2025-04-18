@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
 import LayoutWrapper from "@/components/layout/layout-wrapper";
-import Script from "next/script";
+import { settings } from "@/configuration/config";
 
 
 const inter = Inter({ subsets: ["latin"] });
+const site_url: string = settings.FRONTEND_URL;
+const logo_url: string = settings.LOGO_URL;
+const g_tag: string = settings.GOOGLE_TAG;
+const google_verification_id: string = settings.GOOGLE_VERIFICATION_CODE;
+
 
 export const metadata: Metadata = {
     title: "ObjectVision - Advanced Object Detection AI",
@@ -17,11 +23,11 @@ export const metadata: Metadata = {
     openGraph: {
         title: "ObjectVision - Advanced Object Detection AI",
         description: "Transform your images into actionable insights with our state-of-the-art object detection technology",
-        url: "https://object-vision-frontend.vercel.app",
+        url: site_url,
         siteName: "ObjectVision",
         images: [
             {
-                url: "https://object-vision-frontend.vercel.app/object-vision-logo.png",
+                url: logo_url,
                 width: 1783,
                 height: 739,
                 alt: "ObjectVision AI Platform",
@@ -33,8 +39,17 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary_large_image",
         title: "ObjectVision - Advanced Object Detection AI",
-        description: "Transform your images into actionable insights with our state-of-the-art object detection",
-        images: ["https://object-vision-frontend.vercel.app/object-vision-logo.png"],
+        description: "Transform your images into actionable insights with our state-of-the-art object detection technology",
+        site: site_url,
+        creator: "SK Imtiaj Uddin",
+        images: [
+            {
+                url: logo_url,
+                width: 1783,
+                height: 739,
+                alt: "ObjectVision AI Platform",
+            },
+        ],
     },
     robots: {
         index: true,
@@ -47,12 +62,8 @@ export const metadata: Metadata = {
             "max-snippet": -1,
         },
     },
-    verification: {
-        google: "OuSofKLORGTLOydYjhd36JkYpysvJ3m1bNNIL7K5qV8",
-    },
-    alternates: {
-        canonical: "https://object-vision-frontend.vercel.app",
-    },
+    verification: { google: google_verification_id },
+    alternates: { canonical: site_url },
 };
 
 
@@ -66,7 +77,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <head>
                 {/* Global site tag (gtag.js) - Google Analytics */}
-                <Script async src="https://www.googletagmanager.com/gtag/js?id=G-SE5C1NGH3B" />
+                <Script async src={`https://www.googletagmanager.com/gtag/js?id=${g_tag}`} />
                 <Script
                     id="google_analytics_gtag"
                     dangerouslySetInnerHTML={{
@@ -74,7 +85,7 @@ export default function RootLayout({
                           window.dataLayer = window.dataLayer || [];
                           function gtag(){dataLayer.push(arguments);}
                           gtag('js', new Date());
-                          gtag('config', 'G-SE5C1NGH3B', {
+                          gtag('config', ${g_tag}, {
                               page_path: window.location.pathname,
                           });
                         `,
@@ -89,14 +100,27 @@ export default function RootLayout({
                             "@context": "https://schema.org",
                             "@type": "SoftwareApplication",
                             "name": "ObjectVision",
-                            "applicationCategory": "SoftwareApplication",
-                            "description": "Advanced object detection platform using AI for industries",
+                            "applicationCategory": "AIPlatform",
+                            "operatingSystem": "All",
+                            "browserRequirements": "Requires JavaScript",
+                            "url": site_url,
+                            "logo": logo_url,
+                            "description": "Advanced object detection platform using AI for industries like retail, security, healthcare, and manufacturing.",
                             "offers": {
                                 "@type": "Offer",
                                 "price": "100",
                                 "priceCurrency": "INR"
+                            },
+                            "publisher": {
+                                "@type": "Organization",
+                                "name": "ObjectVision AI",
+                                "url": site_url,
+                                "logo": {
+                                    "@type": "ImageObject",
+                                    "url": logo_url
+                                }
                             }
-                        })
+                        }),
                     }}
                 />
             </head>

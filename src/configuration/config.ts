@@ -1,22 +1,27 @@
-export const settings = {
-    ENV: process.env.NEXT_PUBLIC_ENV || 'development',
-    
-    // Global Variables
+import { AppSettings } from "@/types/general";
+
+export const settings: AppSettings = {
+    ENV: process.env.NEXT_PUBLIC_ENV || 'development',    
     DEFAULT_PAGE: 1,
     DEFAULT_PAGE_LIMIT: 10,
 
-    // Websocket Variables
     MAX_RECONNECT_ATTEMPTS: 3,
     RECONNECT_DELAY: 5000,
 
-    API_KEY: process.env.NEXT_PUBLIC_API_KEY,
-    SECRET_KEY: process.env.NEXT_PUBLIC_SECRET_KEY,
+    API_KEY: process.env.NEXT_PUBLIC_API_KEY || "your-api-key",
+    SECRET_KEY: process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key",
 
-    FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
-    BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
-    API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
-    GOOGLE_OAUTH_URL: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL,
-    RAZORPAY_KEY: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000",
+    LOGO_URL: process.env.NEXT_PUBLIC_LOGO_URL || "http://localhost:3000/logo.png",
+    
+    GOOGLE_TAG: process.env.NEXT_PUBLIC_GTAG_ID || "your-g-tag",    
+    GOOGLE_VERIFICATION_CODE: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_CODE || "your-verification-code",
+
+    BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000",
+    API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api",
+    GOOGLE_OAUTH_URL: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL || "http://localhost:8000/api/oauth",
+    
+    RAZORPAY_KEY: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "your-razorpay-key",
 };
 
 const environmentEmojis = {

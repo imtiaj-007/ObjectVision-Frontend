@@ -9,12 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 
-export default function AboutUsPage() {
-
+const AboutUsPage: React.FC = () => {
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
             {/* About the Founder */}
-            <section className="py-8 lg:py-16 bg-white dark:bg-gray-800">
+            <section className="py-8 lg:py-16 bg-white dark:bg-slate-800">
                 <div className="container mx-auto px-4">
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
@@ -101,7 +100,7 @@ export default function AboutUsPage() {
             </section>
 
             {/* Project Features */}
-            <section className="py-20 bg-gray-50 dark:bg-gray-900">
+            <section className="py-20 bg-gray-50 dark:bg-slate-900">
                 <div className="container mx-auto px-4">
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -202,4 +201,6 @@ export default function AboutUsPage() {
             </section>
         </div>
     );
-}
+};
+
+export default AboutUsPage;
