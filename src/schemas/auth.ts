@@ -36,8 +36,8 @@ export const LoginFormDataSchema = z.object({
         z.string().min(3, { message: "User ID must be at least 3 characters" }),
     ]),
     password: z.string().min(1, { message: "Password is required" }),
-    remember_me: z.boolean().default(false),
-    new_device: z.boolean().default(false),
+    remember_me: z.boolean(),
+    new_device: z.boolean(),
 });
 
 // OTP URL Schema

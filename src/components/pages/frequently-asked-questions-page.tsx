@@ -29,20 +29,20 @@ const faqData = [
                 <ul className="list-disc ml-6 mt-2 space-y-1">
                     <li>
                         <strong>Images:</strong>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.jpg</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.jpeg</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.png</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.bmp</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.webp</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.tiff</code> etc.
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.jpg</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.jpeg</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.png</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.bmp</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.webp</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.tiff</code> etc.
                     </li>
                     <li>
                         <strong>Videos:</strong>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.mp4</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.mov</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.avi</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.mkv</code>{" "}
-                        <code className="bg-slate-100 dark:bg-slate-400 dark:text-gray-800 px-1 py-0.5 rounded">.webm</code> etc.
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.mp4</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.mov</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.avi</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.mkv</code>{" "}
+                        <code className="bg-slate-400 text-gray-800 px-1 py-0.5 rounded">.webm</code> etc.
                     </li>
                 </ul>
             </div>
@@ -121,7 +121,7 @@ const FAQPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 px-4 py-12 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -129,8 +129,8 @@ const FAQPage: React.FC = () => {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-12"
                 >
-                    <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-300 mb-4">Frequently Asked Questions</h1>
-                    <p className="text-lg text-gray-600 dark:text-gray-400 mx-auto">
+                    <h1 className="text-4xl font-bold text-gray-300 mb-4">Frequently Asked Questions</h1>
+                    <p className="text-lg text-gray-400 mx-auto">
                         Get answers to common questions about ObjectVision&apos;s features, capabilities, and policies.
                     </p>
                 </motion.div>
@@ -149,7 +149,7 @@ const FAQPage: React.FC = () => {
                             placeholder="Search questions..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10 py-6 text-lg focus:ring-2 focus:ring-gray-800 dark:focus:ring-indigo-300 border-gray-700 dark:border-gray-200"
+                            className="pl-10 py-6 text-lg text-gray-200 focus:ring-2 focus:ring-gray-800 dark:focus:ring-indigo-300 border-gray-200"
                         />
                     </div>
                 </motion.div>
@@ -168,17 +168,17 @@ const FAQPage: React.FC = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.3, delay: 0.1 * index }}
-                                className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                                className="bg-slate-800 rounded-lg shadow-md overflow-hidden"
                             >
                                 <button
                                     onClick={() => toggleFAQ(faq.id)}
-                                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                                    className="w-full flex items-center justify-between p-6 text-left bg-slate-800 transition-colors"
                                 >
                                     <div className="flex items-center">
                                         <div className="mr-4 flex-shrink-0">
                                             {faq.icon}
                                         </div>
-                                        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-300">{faq.question}</h3>
+                                        <h3 className="text-lg font-medium text-gray-300">{faq.question}</h3>
                                     </div>
                                     {openId === faq.id ?
                                         <ChevronUp className="h-5 w-5 text-indigo-500" /> :
@@ -196,7 +196,7 @@ const FAQPage: React.FC = () => {
                                             className="overflow-hidden"
                                         >
                                             <div className="p-6 border-t border-gray-200">
-                                                <div className="prose max-w-none text-gray-600 dark:text-gray-400">
+                                                <div className="prose max-w-none text-gray-400">
                                                     {faq.answer}
                                                 </div>
                                             </div>
@@ -221,7 +221,7 @@ const FAQPage: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.6 }}
-                    className="mt-12 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-800 dark:to-indigo-800 text-white p-8 rounded-xl shadow-sm text-center"
+                    className="mt-12 bg-gradient-to-r from-blue-800 to-indigo-800 text-white p-8 rounded-xl shadow-sm text-center"
                 >
                     <h3 className="text-xl font-semibold mb-2">Still have questions?</h3>
                     <p className="mb-4">

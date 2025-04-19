@@ -3,6 +3,13 @@
         {
             "src": "/docs/(.*)",
             "dest": "/docs/$1"
+        },
+        {
+            "src": "/sitemap.xml",
+            "headers": {
+                "Content-Type": "application/xml"
+            },
+            "continue": true
         }
     ]
 }

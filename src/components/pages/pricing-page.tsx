@@ -10,6 +10,7 @@ import { formatCurrency } from '@/utils/general';
 import useSubscription from '@/hooks/use-subscription';
 import AnimatedErrorMessage from '@/components/error-page';
 import Loader from '@/components/ui/loader';
+import Link from 'next/link';
 
 
 const containerVariants = {
@@ -77,7 +78,7 @@ const PricingPage: React.FC = () => {
     };
 
     return (
-        <div className="bg-gray-50 dark:bg-slate-900">
+        <div className="bg-slate-900">
             {loading
                 ? <Loader
                     type='spinner'
@@ -97,8 +98,8 @@ const PricingPage: React.FC = () => {
                                     transition={{ duration: 1.0 }}
                                     className="text-center mb-12"
                                 >
-                                    <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-300 mb-4">Simple, transparent pricing</h1>
-                                    <p className="text-xl text-gray-600 dark:text-gray-400">Choose the plan that&apos;s right for you</p>
+                                    <h1 className="text-4xl font-bold text-gray-300 mb-4">Simple, transparent pricing</h1>
+                                    <p className="text-xl text-gray-400">Choose the plan that&apos;s right for you</p>
                                 </motion.div>
 
                                 <motion.div
@@ -114,7 +115,7 @@ const PricingPage: React.FC = () => {
                                             whileHover="hover"
                                             className={`flex ${index === 1 ? 'md:mt-0 mt-8' : ''}`}
                                         >
-                                            <Card className={`relative h-full w-full bg-white dark:bg-gray-800 text-gray-800/90
+                                            <Card className={`relative h-full w-full bg-gray-800 text-gray-800/90
                                                 ${plan.popular
                                                     ? 'border-blue-500  border-2'
                                                     : plan.premium
@@ -133,20 +134,20 @@ const PricingPage: React.FC = () => {
                                                     </div>
                                                 )}
                                                 <CardHeader>
-                                                    <CardTitle className="text-2xl font-bold dark:text-gray-300">{plan.name}</CardTitle>
+                                                    <CardTitle className="text-2xl font-bold text-gray-300">{plan.name}</CardTitle>
                                                     <CardDescription>{plan.description}</CardDescription>
                                                 </CardHeader>
                                                 <CardContent>
                                                     <div className="mb-6">
-                                                        <span className="text-2xl font-bold dark:text-gray-300">
+                                                        <span className="text-2xl font-bold text-gray-300">
                                                             {plan.amount === 0 ? "Free" : formatCurrency(plan.amount)}
                                                         </span>
                                                     </div>
                                                     <div className="space-y-6">
                                                         {plan.feature_groups.map((featureGroup: FeatureGroupType) => (
                                                             <div key={`feature_group_${featureGroup.id}`}>
-                                                                <h3 className="font-medium dark:text-gray-400 mb-2">{featureGroup.title}</h3>
-                                                                <ul className="space-y-2 px-4 text-gray-600 dark:text-gray-400">
+                                                                <h3 className="font-medium text-gray-400 mb-2">{featureGroup.title}</h3>
+                                                                <ul className="space-y-2 px-4 text-gray-400">
                                                                     {featureGroup.features.map((feature: FeatureType) => (
                                                                         renderFeatureItem(feature)
                                                                     ))}
@@ -165,9 +166,11 @@ const PricingPage: React.FC = () => {
                                                         >
                                                             Buy Now
                                                         </Button>
-                                                        : <Button className='w-full bg-black text-neutral-50 hover:bg-black'>
-                                                            Get Started
-                                                        </Button>
+                                                        : <Link href="/auth/login">
+                                                            <Button className='w-full bg-black text-neutral-50 hover:bg-black'>
+                                                                Get Started
+                                                            </Button>
+                                                        </Link>
                                                     }
 
                                                 </CardFooter>
@@ -178,7 +181,7 @@ const PricingPage: React.FC = () => {
 
                                 <div className="flex flex-col space-y-6 items-center justify-center border-2 border-red-500 p-6 mt-12 rounded-lg">
                                     <p className="font-medium text-lg text-red-500">** This amount is non-refundable, please read this section before proceeding. **</p>
-                                    <div className="text-gray-700 dark:text-gray-400">
+                                    <div className="text-gray-400">
                                         <p>
                                             Why am I charging for this project? Running this platform involves significant costs, including:
                                         </p>
@@ -188,7 +191,7 @@ const PricingPage: React.FC = () => {
                                             <li>Maintaining infrastructure, ensuring uptime, and providing a seamless user experience.</li>
                                         </ul>
                                     </div>
-                                    <p className='text-gray-700 dark:text-gray-400'>
+                                    <p className='text-gray-400'>
                                         Your support helps cover these costs and allows me to continue improving and maintaining this project. Thank you for understanding!
                                     </p>
                                 </div>

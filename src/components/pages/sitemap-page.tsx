@@ -11,11 +11,11 @@ import { Card } from '@/components/ui/card';
 
 const SitemapPage: React.FC = () => {
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
+        <div className="min-h-screen bg-slate-900">
             <main className="max-w-5xl mx-auto px-6 py-16">
                 <div className="flex items-center justify-center mb-12">
-                    <Map className="size-10 text-blue-600 dark:text-blue-400 mr-3" />
-                    <h1 className="text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300 py-4">
+                    <Map className="size-10 text-blue-400 mr-3" />
+                    <h1 className="text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300 py-4">
                         Site Navigation
                     </h1>
                 </div>
@@ -72,8 +72,8 @@ const SitemapPage: React.FC = () => {
                 </div>
 
                 <div className="mt-16 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">
-                        Can&apos;t find what you&apos;re looking for? <Link href="mailto:imtiaj.dev.kol@gmail.com" className="text-blue-600 dark:text-blue-400 hover:underline">Contact us</Link>
+                    <p className="text-gray-400">
+                        Can&apos;t find what you&apos;re looking for? <Link href="mailto:imtiaj.dev.kol@gmail.com" className="text-blue-400 hover:underline">Contact us</Link>
                     </p>
                 </div>
             </main>
@@ -83,13 +83,13 @@ const SitemapPage: React.FC = () => {
 
 const CategoryCard = ({ title, icon, children }) => {
     return (
-        <Card className="dark:bg-slate-800 border-none transition-all duration-300">
+        <Card className="bg-slate-800 border-none transition-all duration-300">
             <div className="w-full flex items-center p-5">
                 <div className="flex items-center">
-                    <div className="bg-blue-100 dark:bg-blue-900/40 p-3 rounded-lg mr-4 text-blue-600 dark:text-blue-400">
+                    <div className="bg-blue-900/40 p-3 rounded-lg mr-4 text-blue-600 dark:text-blue-400">
                         {icon}
                     </div>
-                    <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                    <h2 className="text-xl font-bold text-gray-100">
                         {title}
                     </h2>
                 </div>
@@ -109,10 +109,10 @@ const SitemapLink = ({ href, icon, label, isExternal = false, highlight = false 
             <LinkComponent>
                 <div className={cn(
                     "flex items-center p-3 rounded-lg transition-all duration-200",
-                    "hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:shadow-md",
+                    "hover:bg-blue-900/20 hover:shadow-md",
                     highlight
-                        ? "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300"
-                        : "bg-gray-50 dark:bg-slate-700/50 text-gray-700 dark:text-gray-300"
+                        ? "bg-blue-900/40 text-blue-300"
+                        : "bg-slate-700/50 text-gray-300"
                 )}>
                     <div className="mr-3 text-blue-600 dark:text-blue-400">
                         {icon}

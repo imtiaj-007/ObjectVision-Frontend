@@ -71,7 +71,7 @@ const AnimatedErrorMessage: React.FC = () => {
 
     return (
         <motion.div
-            className="flex flex-col items-center justify-center p-8 max-w-md mx-auto text-center"
+            className="min-h-[70vh] flex flex-col items-center justify-center p-8 max-w-md mx-auto text-center"
             variants={containerVariants}
             initial="initial"
             animate="animate"
@@ -98,14 +98,14 @@ const AnimatedErrorMessage: React.FC = () => {
             </motion.div>
 
             <motion.h2
-                className="text-2xl font-bold text-gray-800 mb-4"
+                className="text-2xl font-bold text-gray-200 mb-4"
                 variants={itemVariants}
             >
                 Oops! Something went wrong
             </motion.h2>
 
             <motion.p
-                className="text-gray-600 mb-6"
+                className="text-gray-400 mb-6"
                 variants={itemVariants}
             >
                 We&apos;re having trouble loading the content at the moment.
@@ -139,7 +139,7 @@ const AnimatedErrorMessage: React.FC = () => {
                 </motion.button>
 
                 <motion.div
-                    className="text-sm text-gray-500"
+                    className="text-sm text-gray-400"
                     variants={itemVariants}
                 >
                     If the problem persists, please try again later or contact support.
