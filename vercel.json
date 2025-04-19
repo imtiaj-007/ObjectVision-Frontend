@@ -3,17 +3,13 @@
         {
             "src": "/docs/(.*)",
             "dest": "/docs/$1"
-        }
-    ],
-    "headers": [
+        },
         {
-            "source": "/sitemap.xml",
-            "headers": [
-                {
-                    "key": "Content-Type",
-                    "value": "application/xml"
-                }
-            ]
+            "src": "/sitemap.xml",
+            "headers": {
+                "Content-Type": "application/xml"
+            },
+            "continue": true
         }
     ]
 }
