@@ -51,7 +51,7 @@ const DocumentationTabs: React.FC = () => {
                 onValueChange={handleTabChange}
                 value={activeTab}
             >
-                <TabsList className="grid w-full max-w-md mx-auto mb-8 grid-cols-2 dark:bg-gray-900">
+                <TabsList className="grid w-full max-w-md mx-auto mb-8 grid-cols-2 bg-slate-900">
                     <TabsTrigger value="frontend">Frontend Architecture</TabsTrigger>
                     <TabsTrigger value="backend">Backend Architecture</TabsTrigger>
                 </TabsList>
@@ -95,9 +95,9 @@ const DocumentationTabs: React.FC = () => {
 const FrontendContent = () => (
     <div className="grid md:grid-cols-2 gap-8">
         <div>
-            <Card className="shadow-md border-none h-full dark:bg-gray-900">
+            <Card className="shadow-md border-none h-full bg-slate-900">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-2xl">
+                    <CardTitle className="flex items-center gap-2 text-2xl text-gray-300">
                         <Code className="h-6 w-6 text-blue-600" />
                         Frontend Documentation
                     </CardTitle>
@@ -106,10 +106,10 @@ const FrontendContent = () => (
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-400">
                         Our frontend documentation covers all aspects of the ObjectVision UI, including:
                     </p>
-                    <ul className="space-y-3 text-gray-600 dark:text-gray-400 pb-4">
+                    <ul className="space-y-3 text-gray-400 pb-4">
                         <li className="flex items-start gap-2">
                             <ArrowRight className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
                             <span><strong>Component API</strong>: Detailed props, methods, and event documentation for all reusable components</span>
@@ -138,37 +138,37 @@ const FrontendContent = () => (
         </div>
 
         <div className="flex flex-col gap-6">
-            <Card className="shadow-md border-none dark:bg-gray-900">
+            <Card className="shadow-md border-none bg-slate-900">
                 <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <h3 className="text-lg text-gray-300 font-semibold mb-2 flex items-center gap-2">
                         <Book className="h-5 w-5 text-blue-600" />
                         TypeDoc Generated App References
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-gray-400 mb-4">
                         Automatically generated interface documentation using TypeDoc, ensuring always up-to-date App references.
                     </p>
                 </CardContent>
             </Card>
 
-            <Card className="shadow-md border-none dark:bg-gray-900">
+            <Card className="shadow-md border-none bg-slate-900">
                 <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <h3 className="text-lg text-gray-300 font-semibold mb-2 flex items-center gap-2">
                         <Zap className="h-5 w-5 text-blue-600" />
                         Performance Optimization Guide
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-gray-400 mb-4">
                         Detailed documentation on component memoization, code splitting, and lazy loading strategies implemented in the app.
                     </p>
                 </CardContent>
             </Card>
 
-            <Card className="shadow-md border-none dark:bg-gray-900">
+            <Card className="shadow-md border-none bg-slate-900">
                 <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <h3 className="text-lg text-gray-300 font-semibold mb-2 flex items-center gap-2">
                         <Accessibility className="h-5 w-5 text-blue-600" />
                         Accessibility Compliance
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-gray-400 mb-4">
                         Comprehensive guidelines for ARIA attributes, keyboard navigation, and screen reader testing results for all components.
                     </p>
                 </CardContent>
@@ -180,9 +180,9 @@ const FrontendContent = () => (
 const BackendContent = () => (
     <div className="grid md:grid-cols-2 gap-8">
         <div>
-            <Card className="shadow-md border-none h-full dark:bg-gray-900">
+            <Card className="shadow-md border-none h-full bg-slate-900">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-2xl">
+                    <CardTitle className="flex items-center gap-2 text-2xl text-gray-300">
                         <Server className="h-6 w-6 text-green-600" />
                         Backend Documentation
                     </CardTitle>
@@ -191,10 +191,10 @@ const BackendContent = () => (
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-400">
                         Our FastAPI backend documentation includes comprehensive API references:
                     </p>
-                    <ul className="space-y-3 text-gray-600 dark:text-gray-400 pb-4">
+                    <ul className="space-y-3 text-gray-400 pb-4">
                         <li className="flex items-start gap-2">
                             <ArrowRight className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                             <span><strong>OpenAPI Specification</strong>: Complete API schema documentation with Swagger UI integration</span>
@@ -223,37 +223,37 @@ const BackendContent = () => (
         </div>
 
         <div className="flex flex-col gap-6">
-            <Card className="shadow-md border-none dark:bg-gray-900">
+            <Card className="shadow-md border-none bg-slate-900">
                 <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <h3 className="text-lg text-gray-300 font-semibold mb-2 flex items-center gap-2">
                         <Database className="h-5 w-5 text-green-600" />
                         Database Schema Documentation
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-gray-400 mb-4">
                         Complete documentation of database models, relationships, and migration strategies with ERD diagrams.
                     </p>
                 </CardContent>
             </Card>
 
-            <Card className="shadow-md border-none dark:bg-gray-900">
+            <Card className="shadow-md border-none bg-slate-900">
                 <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <h3 className="text-lg text-gray-300 font-semibold mb-2 flex items-center gap-2">
                         <Shield className="h-5 w-5 text-green-600" />
                         API Security Documentation
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-gray-400 mb-4">
                         Detailed security implementation guides including rate limiting, input validation, and CORS configuration.
                     </p>
                 </CardContent>
             </Card>
 
-            <Card className="shadow-md border-none dark:bg-gray-900">
+            <Card className="shadow-md border-none bg-slate-900">
                 <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <h3 className="text-lg text-gray-300 font-semibold mb-2 flex items-center gap-2">
                         <Gauge className="h-5 w-5 text-green-600" />
                         Performance Optimization
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-gray-400 mb-4">
                         Guides for query optimization, caching strategies, and async task management using Celery and Redis.
                     </p>
                 </CardContent>
