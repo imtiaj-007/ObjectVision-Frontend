@@ -112,7 +112,6 @@ const HomePage: React.FC = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 2.0 }}
                             >
                                 <Card className="p-6 bg-slate-800/50 hover:bg-slate-800 transition-colors border-slate-700">
                                     {/* Icon */}
@@ -182,7 +181,6 @@ const HomePage: React.FC = () => {
                                     visible: { opacity: 1, y: 0 },
                                 }}
                                 whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 1.0 }}
                             >
                                 <div className="h-12 w-12 mx-auto rounded-lg bg-blue-600/20 flex items-center justify-center mb-4">
                                     <format.icon className="h-6 w-6 text-blue-400" />

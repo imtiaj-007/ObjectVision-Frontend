@@ -1,65 +1,45 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { BrainCircuit, CloudCog, Eye, EyeOff, Home, LineChart, Loader2, Lock, LogIn, Settings2, ShieldCheck, User } from 'lucide-react';
+import { BrainCircuit, CloudCog, Eye, EyeOff, Home, LineChart, Loader2, Lock, Settings2, ShieldCheck, User } from 'lucide-react';
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Checkbox } from '@/components/ui/checkbox';
-import DeviceLoginModal from '@/components/modals/device-modal';
 
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { isCustomError } from '@/types/general';
 import { settings } from '@/configuration/config';
-import { LoginFormDataSchema } from '@/schemas/auth';
-import { LoginFormData } from '@/types/auth';
+import { SignupFormDataSchema } from '@/schemas/auth';
+import { SignupFormData } from '@/types/auth';
+import { base64Hash } from '@/utils/hash';
 import Image from 'next/image';
 
-
-const LoginPageComponent: React.FC = () => {
+const SignupPage: React.FC = () => {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const { login, loading, clearAuthErrors } = useAuth();
+    const { signup, loading, clearAuthErrors } = useAuth();
     const { toast } = useToast();
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [showDeviceModal, setShowDeviceModal] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
     // Initialize form
-    const form = useForm<LoginFormData>({
-        resolver: zodResolver(LoginFormDataSchema),
+    const form = useForm<SignupFormData>({
+        resolver: zodResolver(SignupFormDataSchema),
         defaultValues: {
-            user_key: '',
+            name: '',
+            email: '',
             password: '',
-            remember_me: false,
-            new_device: false,
+            confirmPassword: ''
         },
         mode: 'onBlur',
     });
-
-    // Auth helper functions
-    const redirectToNextPage = (): void => {
-        const redirectURL = searchParams.get('redirectURL') as string || '/user/dashboard';
-        router.push(redirectURL);
-    };
-
-    const handleLoginError = (err: unknown, customMessage?: string): void => {
-        const errorMessage = isCustomError(err)
-            ? err.message
-            : customMessage
-            ?? "An unexpected error has occurred";
-        toast({
-            variant: "destructive",
-            description: errorMessage
-        })
-    };
 
     // OAuth handlers
     const handleOAuthLogin = (provider: 'google' | 'github'): void => {
@@ -83,32 +63,29 @@ const LoginPageComponent: React.FC = () => {
         }
     };
 
-    // Handle new device login
-    const handleNewDeviceLogin = async (): Promise<void> => {
-        try {
-            const formData = form.getValues();
-            await login({
-                ...formData,
-                new_device: true
-            });
-            redirectToNextPage();
-        } catch (err: unknown) {
-            handleLoginError(err, "Failed to login with new device");
-        }
-    };
-
     // Form submission handler
-    const onSubmit = async (data: LoginFormData) => {
+    const onSubmit = async (data: SignupFormData) => {
         clearAuthErrors();
 
         try {
-            await login(data);
-            redirectToNextPage();
+            const response = await signup(data);
+            if (response) {
+                const uid = base64Hash(response.user_id);
+                const email = base64Hash(response.email);
+                const encoded_url = `/auth/verify?uid=${uid}&token=${email}`;
+                router.push(encoded_url);
+            }
         } catch (err: unknown) {
-            if (isCustomError(err) && err.status_code === 409) {
-                setShowDeviceModal(true);
+            if (isCustomError(err)) {
+                toast({
+                    variant: "destructive",
+                    description: err.message || "Signup failed",
+                });
             } else {
-                handleLoginError(err);
+                toast({
+                    variant: "destructive",
+                    description: "An unexpected error occurred during signup",
+                });
             }
         }
     };
@@ -116,6 +93,7 @@ const LoginPageComponent: React.FC = () => {
     return (
         <div className="min-h-screen flex bg-slate-900">
             <div className="max-w-6xl m-auto">
+                {/* Grid container */}
                 <div className="grid grid-cols-1 lg:grid-cols-11 gap-8 lg:gap-24 p-6 lg:px-0 lg:py-6">
                     {/* Left section - Info and decorative elements */}
                     <div className="flex flex-col lg:col-span-6">
@@ -137,8 +115,8 @@ const LoginPageComponent: React.FC = () => {
                             </div>
 
                             <div className="space-y-4">
-                                <h2 className="text-3xl md:text-4xl font-bold text-white">Welcome Back!</h2>
-                                <p className="text-gray-300 text-lg">Sign in to access your personalized dashboard and continue your journey with us.</p>
+                                <h2 className="text-3xl md:text-4xl font-bold text-white">Join Us Today!</h2>
+                                <p className="text-gray-300 text-lg">Create an account to unlock all features and start your journey with us.</p>
                             </div>
 
                             {/* Features grid */}
@@ -189,24 +167,49 @@ const LoginPageComponent: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Right section - Login form */}
+                    {/* Right section - Signup form */}
                     <div className="lg:col-span-5 flex">
                         <div className="bg-gray-800 w-full max-w-xl rounded-xl shadow-xl overflow-hidden mx-auto">
                             <div className="h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
                             <div className="px-6 py-8">
                                 <div className="mb-6 text-center">
-                                    <h3 className="text-xl font-bold text-gray-200">Sign In</h3>
-                                    <p className="text-sm text-gray-400 mt-1">Enter your credentials to access your account</p>
+                                    <h3 className="text-xl font-bold text-gray-200">Create Account</h3>
+                                    <p className="text-sm text-gray-400 mt-1">Enter your details to create a new account</p>
                                 </div>
 
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                                        {/* Form fields remain the same */}
                                         <FormField
                                             control={form.control}
-                                            name="user_key"
+                                            name="name"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel className="text-gray-50">Email / Username</FormLabel>
+                                                    <FormLabel className="text-gray-100">Full Name</FormLabel>
+                                                    <FormControl>
+                                                        <div className="relative">
+                                                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                                                <User size={18} />
+                                                            </span>
+                                                            <Input
+                                                                placeholder="John Doe"
+                                                                className="text-gray-200 pl-10 focus:ring-2 focus:ring-blue-500"
+                                                                disabled={loading}
+                                                                {...field}
+                                                            />
+                                                        </div>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+
+                                        <FormField
+                                            control={form.control}
+                                            name="email"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className="text-gray-100">Email</FormLabel>
                                                     <FormControl>
                                                         <div className="relative">
                                                             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -214,6 +217,7 @@ const LoginPageComponent: React.FC = () => {
                                                             </span>
                                                             <Input
                                                                 placeholder="example@gmail.com"
+                                                                type="email"
                                                                 className="text-gray-200 pl-10 focus:ring-2 focus:ring-blue-500"
                                                                 disabled={loading}
                                                                 {...field}
@@ -230,7 +234,7 @@ const LoginPageComponent: React.FC = () => {
                                             name="password"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel className="text-gray-50">Password</FormLabel>
+                                                    <FormLabel className="text-gray-100">Password</FormLabel>
                                                     <FormControl>
                                                         <div className="relative">
                                                             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -262,32 +266,42 @@ const LoginPageComponent: React.FC = () => {
                                             )}
                                         />
 
-                                        <div className="flex items-center justify-between">
-                                            <FormField
-                                                control={form.control}
-                                                name="remember_me"
-                                                render={({ field }) => (
-                                                    <FormItem className="flex flex-row items-center space-x-2 space-y-0">
-                                                        <FormControl>
-                                                            <Checkbox
-                                                                checked={field.value}
-                                                                onCheckedChange={field.onChange}
-                                                                className="border-white"
+                                        <FormField
+                                            control={form.control}
+                                            name="confirmPassword"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className="text-gray-100">Confirm Password</FormLabel>
+                                                    <FormControl>
+                                                        <div className="relative">
+                                                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                                                <Lock size={18} />
+                                                            </span>
+                                                            <Input
+                                                                placeholder="confirm your password"
+                                                                type={showConfirmPassword ? "text" : "password"}
+                                                                className="text-gray-200 pl-10 focus:ring-2 focus:ring-blue-500"
+                                                                disabled={loading}
+                                                                {...field}
                                                             />
-                                                        </FormControl>
-                                                        <FormLabel className="text-sm text-gray-50 font-medium leading-none">
-                                                            Remember me
-                                                        </FormLabel>
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <Link
-                                                href="/auth/forgot-password"
-                                                className="text-sm text-blue-500 hover:text-blue-700 font-medium"
-                                            >
-                                                Forgot password?
-                                            </Link>
-                                        </div>
+                                                            <Button
+                                                                type="button"
+                                                                size="sm"
+                                                                className="absolute right-0 top-0 h-full px-3 py-2 bg-transparent shadow-none hover:bg-transparent"
+                                                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                            >
+                                                                {showConfirmPassword ? (
+                                                                    <EyeOff className="h-4 w-4 text-gray-500" />
+                                                                ) : (
+                                                                    <Eye className="h-4 w-4 text-gray-500" />
+                                                                )}
+                                                            </Button>
+                                                        </div>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
 
                                         <Button
                                             className="w-full"
@@ -297,13 +311,10 @@ const LoginPageComponent: React.FC = () => {
                                             {loading ? (
                                                 <span className="flex items-center gap-2">
                                                     <Loader2 className="animate-spin h-4 w-4" />
-                                                    Logging in...
+                                                    Creating account...
                                                 </span>
                                             ) : (
-                                                <span className="flex items-center justify-center gap-2">
-                                                    <LogIn size={18} />
-                                                    Sign In
-                                                </span>
+                                                <span>Sign Up</span>
                                             )}
                                         </Button>
 
@@ -313,7 +324,7 @@ const LoginPageComponent: React.FC = () => {
                                             </div>
                                             <div className="relative flex justify-center text-xs uppercase my-6">
                                                 <span className="px-2 bg-gray-800 text-gray-400">
-                                                    login with
+                                                    sign up with
                                                 </span>
                                             </div>
                                         </div>
@@ -341,10 +352,10 @@ const LoginPageComponent: React.FC = () => {
 
                                 <div className="text-center mt-6">
                                     <span className="text-sm text-gray-400">
-                                        Don&apos;t have an account?{' '}
+                                        Already have an account?{' '}
                                     </span>
-                                    <Link href="./signup" className="text-blue-500 hover:text-blue-700 font-medium text-sm">
-                                        Create an account
+                                    <Link href="./login" className="text-blue-500 hover:text-blue-700 font-medium text-sm">
+                                        Login here
                                     </Link>
                                 </div>
                             </div>
@@ -352,16 +363,8 @@ const LoginPageComponent: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-            {showDeviceModal && (
-                <DeviceLoginModal
-                    isOpen={showDeviceModal}
-                    onClose={() => setShowDeviceModal(false)}
-                    onProceed={handleNewDeviceLogin}
-                />
-            )}
         </div>
     );
 };
 
-export default LoginPageComponent;
+export default SignupPage;

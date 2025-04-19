@@ -34,7 +34,7 @@ const ObjectVisionDocsPage: React.FC = () => {
         { name: "Next.js", color: "bg-black text-white" },
         { name: "TypeScript", color: "bg-blue-600 text-white" },
         { name: "Tailwind CSS", color: "bg-sky-500 text-white" },
-        { name: "Shadcn/UI", color: "bg-gray-900 text-white" },
+        { name: "Shadcn/UI", color: "bg-slate-700 text-white" },
         { name: "FastAPI", color: "bg-green-600 text-white" },
         { name: "Python", color: "bg-yellow-600 text-white" },
     ];
@@ -52,19 +52,19 @@ const ObjectVisionDocsPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
+        <div className="min-h-screen bg-slate-900">
             {/* Hero Section */}
             <motion.div
-                className="py-20 bg-gray-50 dark:bg-slate-800"
+                className="py-20 bg-slate-900"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <Badge className="mb-4 px-3 py-1 bg-blue-100 dark:bg-blue-200 text-blue-800 hover:bg-blue-100">v1.0.0 Release</Badge>
+                        <Badge className="mb-4 px-3 py-1 bg-blue-200 text-blue-800 hover:bg-blue-100">v1.0.0 Release</Badge>
                         <motion.h1
-                            className="text-5xl md:text-6xl font-extrabold mb-6 py-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700 dark:bg-gradient-to-r dark:from-blue-500 dark:to-indigo-500"
+                            className="text-5xl md:text-6xl font-extrabold mb-6 py-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2, duration: 0.8 }}
@@ -72,7 +72,7 @@ const ObjectVisionDocsPage: React.FC = () => {
                             ObjectVision Documentation
                         </motion.h1>
                         <motion.p
-                            className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8"
+                            className="text-xl text-gray-400 max-w-3xl mx-auto mb-8"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.8 }}
@@ -99,18 +99,18 @@ const ObjectVisionDocsPage: React.FC = () => {
                             transition={{ delay: 0.6, duration: 0.8 }}
                         >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="flex gap-4 border-2 border-gray-800 dark:border-gray-400 p-6 rounded-lg">
-                                    <SiNextdotjs size={48} />
+                                <div className="flex gap-4 border-2 border-gray-400 p-6 rounded-lg">
+                                    <SiNextdotjs size={48} className="text-gray-300" />
                                     <div className="text-left flex-1">
-                                        <h3 className='text-xl font-medium'>Next Js</h3>
-                                        <p className='text-sm'>The React Framework for the Web</p>
+                                        <h3 className='text-xl text-gray-300 font-medium'>Next Js</h3>
+                                        <p className='text-sm text-gray-400'>The React Framework for the Web</p>
                                     </div>
                                 </div>
-                                <div className="flex gap-4 border-2 border-gray-800 dark:border-gray-400 p-6 rounded-lg">
+                                <div className="flex gap-4 border-2 border-gray-400 p-6 rounded-lg">
                                     <SiFastapi size={48} className='text-green-600' />
                                     <div className="text-left flex-1">
-                                        <h3 className='text-xl font-medium'>Fast API</h3>
-                                        <p className='text-sm'>Python framework for building APIs</p>
+                                        <h3 className='text-xl text-gray-300 font-medium'>Fast API</h3>
+                                        <p className='text-sm text-gray-400'>Python framework for building APIs</p>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@ const ObjectVisionDocsPage: React.FC = () => {
             </motion.div>
 
             {/* Documentation Overview Section */}
-            <section className="py-16 bg-white dark:bg-slate-900" id="features">
+            <section className="py-16 bg-slate-800" id="features">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         className="text-center mb-16"
@@ -128,8 +128,8 @@ const ObjectVisionDocsPage: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-4">Documentation Framework</h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                        <h2 className="text-3xl font-bold text-gray-300 mb-4">Documentation Framework</h2>
+                        <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                             ObjectVision features comprehensive documentation across both frontend and backend systems,
                             with interactive examples and thorough API references.
                         </p>
@@ -180,15 +180,15 @@ const ObjectVisionDocsPage: React.FC = () => {
                                 transition={{ duration: 0.5 }}
                                 className="relative"
                             >
-                                <Card className="h-full dark:bg-gray-800 hover:shadow-lg transition-all border-t-4" style={{ borderTopColor: getColor(index) }}>
+                                <Card className="h-full bg-slate-800 hover:shadow-lg transition-all border-white border-t-4" style={{ borderTopColor: getColor(index) }}>
                                     <CardHeader>
-                                        <CardTitle className="flex items-center gap-3">
+                                        <CardTitle className="flex items-center text-gray-300 gap-3">
                                             {feature.icon}
                                             {feature.title}
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
+                                        <p className="text-gray-400">{feature.description}</p>
                                     </CardContent>
                                 </Card>
                             </motion.div>
@@ -198,7 +198,7 @@ const ObjectVisionDocsPage: React.FC = () => {
             </section>
 
             {/* Architecture Documentation Section */}
-            <section className="py-16 bg-gray-50 dark:bg-slate-800" id="architecture">
+            <section className="py-16 bg-slate-800" id="architecture">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         className="text-center mb-12"
@@ -207,8 +207,8 @@ const ObjectVisionDocsPage: React.FC = () => {
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-4">System Architecture</h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                        <h2 className="text-3xl font-bold text-gray-300 mb-4">System Architecture</h2>
+                        <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                             Explore the comprehensive architecture documentation for ObjectVision&apos;s frontend and backend systems.
                         </p>
                     </motion.div>
@@ -218,7 +218,7 @@ const ObjectVisionDocsPage: React.FC = () => {
             </section>
 
             {/* API Documentation Section */}
-            <section className="py-16 bg-white dark:bg-slate-900" id="api-docs">
+            <section className="py-16 bg-slate-900" id="api-docs">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         className="text-center mb-12"
@@ -227,36 +227,36 @@ const ObjectVisionDocsPage: React.FC = () => {
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-4">Object Vision API Reference</h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                        <h2 className="text-3xl font-bold text-gray-300 mb-4">Object Vision API Reference</h2>
+                        <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                             Interactive documentation for our computer vision endpoints with real-time testing capabilities.
                         </p>
                     </motion.div>
 
                     {/* Object Detection API */}
                     <motion.div
-                        className="rounded-xl shadow-2xl border border-gray-200 dark:border-0 mb-8"
+                        className="rounded-xl shadow-2xl border-0 mb-8"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                     >
-                        <div className="bg-gray-900 dark:bg-black text-white px-6 py-4 flex items-center justify-between rounded-t-xl">
+                        <div className="bg-black text-white px-6 py-4 flex items-center justify-between rounded-t-xl">
                             <div className="flex items-center gap-2">
                                 <Server className="h-5 w-5 text-green-400" />
                                 <span className="font-mono text-sm">POST /api/v1/vision/detect</span>
                             </div>
                             <Badge className="bg-green-600 hover:bg-green-700">POST</Badge>
                         </div>
-                        <div className="bg-white dark:bg-gray-800 p-6">
+                        <div className="bg-gray-800 p-6">
                             <div className="grid md:grid-cols-2 gap-8 overflow-x-auto py-6 md:py-0">
                                 <div>
-                                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                                        <FileInput className="h-5 w-5 text-gray-500" />
+                                    <h3 className="text-lg text-gray-300 font-semibold mb-4 flex items-center gap-2">
+                                        <FileInput className="h-5 w-5" />
                                         Request Body
                                     </h3>
-                                    <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-md">
-                                        <pre className="text-sm text-gray-800 dark:text-gray-400">{`{
+                                    <div className="bg-gray-700 p-4 rounded-md">
+                                        <pre className="text-sm text-gray-400">{`{
   file: (binary),
   client_id: "your-client-id",
   parameters: {
@@ -273,38 +273,38 @@ const ObjectVisionDocsPage: React.FC = () => {
 }`}</pre>
                                     </div>
                                     <div className="mt-6">
-                                        <h4 className="font-medium mb-3 flex items-center gap-2">
-                                            <Settings2 className="h-4 w-4 text-gray-500" />
+                                        <h4 className="font-medium text-gray-300 mb-3 flex items-center gap-2">
+                                            <Settings2 className="h-4 w-4" />
                                             Parameters
                                         </h4>
-                                        <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                                        <ul className="space-y-3 text-sm text-gray-400">
                                             <li className="flex gap-2">
-                                                <span className="font-mono font-semibold bg-gray-100 px-2 rounded">model_size</span>
+                                                <span className="font-mono font-semibold bg-gray-100 text-gray-500 px-2 rounded">model_size</span>
                                                 <span>Pre-trained model to use (i.e. OV-model-M, OV-model-L etc)</span>
                                             </li>
                                             <li className="flex gap-2">
-                                                <span className="font-mono font-semibold bg-gray-100 px-2 rounded">confidence_threshold</span>
+                                                <span className="font-mono font-semibold bg-gray-100 text-gray-500 px-2 rounded">confidence_threshold</span>
                                                 <span>Minimum confidence score (0.0-1.0) for detections</span>
                                             </li>
                                             <li className="flex gap-2">
-                                                <span className="font-mono font-semibold bg-gray-100 px-2 rounded">service_requests</span>
+                                                <span className="font-mono font-semibold bg-gray-100 text-gray-500 px-2 rounded">service_requests</span>
                                                 <span>List of requested services (i.e. detection, pose etc)</span>
                                             </li>
                                         </ul>
 
-                                        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mt-20">
+                                        <div className="flex items-center space-x-2 text-sm text-gray-400 mt-20">
                                             <Info className="w-4 h-4" />
                                             <p>This is just demo data, for actual requests and responses refer to the documents.</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                                        <FileOutput className="h-5 w-5 text-gray-500" />
+                                    <h3 className="text-lg text-gray-300 font-semibold mb-4 flex items-center gap-2">
+                                        <FileOutput className="h-5 w-5" />
                                         Response
                                     </h3>
-                                    <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-md ">
-                                        <pre className="text-sm text-gray-800 dark:text-gray-400">{`{
+                                    <div className="bg-gray-700 p-4 rounded-md ">
+                                        <pre className="text-sm text-gray-400">{`{
   file_name: "pexels-jopwell-2422290.webp"
   file_path: "uploads/images/pexels-jopwell-2422290.webp"
   timestamp: "2025-03-15T14:32:18Z",
@@ -354,7 +354,7 @@ const ObjectVisionDocsPage: React.FC = () => {
             </section>
 
             {/* Call to Action */}
-            <section className="py-16 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-800 dark:to-indigo-800 text-white">
+            <section className="py-16 bg-gradient-to-r from-blue-800 to-indigo-800 text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         className="text-center"
