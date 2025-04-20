@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { BrainCircuit, CloudCog, Eye, EyeOff, Home, LineChart, Loader2, Lock, LogIn, Settings2, ShieldCheck, User } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Lock, LogIn, User } from 'lucide-react';
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
 
@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeviceLoginModal from '@/components/modals/device-modal';
+import WebsiteOverview from '@/components/sections/website-overview';
 
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
@@ -21,7 +22,6 @@ import { isCustomError } from '@/types/general';
 import { settings } from '@/configuration/config';
 import { LoginFormDataSchema } from '@/schemas/auth';
 import { LoginFormData } from '@/types/auth';
-import Image from 'next/image';
 
 
 const LoginPageComponent: React.FC = () => {
@@ -118,76 +118,10 @@ const LoginPageComponent: React.FC = () => {
             <div className="max-w-6xl m-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-11 gap-8 lg:gap-24 p-6 lg:px-0 lg:py-6">
                     {/* Left section - Info and decorative elements */}
-                    <div className="flex flex-col lg:col-span-6">
-                        <div className="space-y-6 my-auto">
-                            <div className="flex items-center justify-between">
-                                <Image
-                                    src={'/object-vision-logo.png'}
-                                    alt="Object Vision Logo"
-                                    width={200}
-                                    height={150}
-                                    className="h-auto object-contain -ml-4"
-                                />
-                                <Link href="/" passHref>
-                                    <Button>
-                                        <Home size={20} />
-                                        Go To Home
-                                    </Button>
-                                </Link>
-                            </div>
-
-                            <div className="space-y-4">
-                                <h2 className="text-3xl md:text-4xl font-bold text-white">Welcome Back!</h2>
-                                <p className="text-gray-300 text-lg">Sign in to access your personalized dashboard and continue your journey with us.</p>
-                            </div>
-
-                            {/* Features grid */}
-                            <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-                                <div className="bg-gray-800 p-4 rounded-lg shadow-md flex items-start space-x-3">
-                                    <div className="rounded-full bg-blue-900 p-2">
-                                        <BrainCircuit size={20} className="text-indigo-400" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-semibold text-white">Smart Detection</h3>
-                                        <p className="text-sm text-gray-300">Detect and identify objects in real-time using AI.</p>
-                                    </div>
-                                </div>
-                                <div className="bg-gray-800 p-4 rounded-lg shadow-md flex items-start space-x-3">
-                                    <div className="rounded-full bg-green-900 p-2">
-                                        <LineChart size={20} className="text-teal-400" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-semibold text-white">Visual Insights</h3>
-                                        <p className="text-sm text-gray-300">Get visual summaries and stats of detected objects.</p>
-                                    </div>
-                                </div>
-                                <div className="bg-gray-800 p-4 rounded-lg shadow-md flex items-start space-x-3">
-                                    <div className="rounded-full bg-purple-900 p-2">
-                                        <CloudCog size={20} className="text-red-400" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-semibold text-white">Secure Storage</h3>
-                                        <p className="text-sm text-gray-300">All your media are securely stored and accessible.</p>
-                                    </div>
-                                </div>
-                                <div className="bg-gray-800 p-4 rounded-lg shadow-md flex items-start space-x-3">
-                                    <div className="rounded-full bg-amber-900 p-2">
-                                        <Settings2 size={20} className="text-yellow-400" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-semibold text-white">Custom Model</h3>
-                                        <p className="text-sm text-gray-300">Train your own models for business needs.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Security notice */}
-                            <div className="flex items-center justify-center mt-6 text-gray-400 text-sm">
-                                <ShieldCheck size={16} className="mr-2" />
-                                <span>Your connection is secure and encrypted</span>
-                            </div>
-                        </div>
-                    </div>
+                    <WebsiteOverview
+                        title="Welcome Back!"
+                        subtitle="Sign in to access your dashboard and continue your journey with us."
+                    />
 
                     {/* Right section - Login form */}
                     <div className="lg:col-span-5 flex">
@@ -215,7 +149,7 @@ const LoginPageComponent: React.FC = () => {
                                                             <Input
                                                                 placeholder="example@gmail.com"
                                                                 className="text-gray-200 pl-10 focus:ring-2 focus:ring-blue-500"
-                                                                disabled={loading}
+                                                                disabled={loading.signIn}
                                                                 {...field}
                                                             />
                                                         </div>
@@ -240,7 +174,7 @@ const LoginPageComponent: React.FC = () => {
                                                                 placeholder="secure_password"
                                                                 type={showPassword ? "text" : "password"}
                                                                 className="text-gray-200 pl-10 focus:ring-2 focus:ring-blue-500"
-                                                                disabled={loading}
+                                                                disabled={loading.signIn}
                                                                 {...field}
                                                             />
                                                             <Button
@@ -292,9 +226,9 @@ const LoginPageComponent: React.FC = () => {
                                         <Button
                                             className="w-full"
                                             type="submit"
-                                            disabled={loading}
+                                            disabled={loading.signIn}
                                         >
-                                            {loading ? (
+                                            {loading.signIn ? (
                                                 <span className="flex items-center gap-2">
                                                     <Loader2 className="animate-spin h-4 w-4" />
                                                     Logging in...

@@ -9,10 +9,16 @@ const logo_url: string = settings.LOGO_URL;
 export const metadata: Metadata = {
     title: "About Us | ObjectVision",
     description: "Discover the story behind ObjectVision, our mission, and the team building powerful computer vision solutions. Learn what drives us to innovate and deliver value.",
-    robots: {
-        index: true,
-        follow: true
-    },
+    keywords: [
+        "about us",
+        "ObjectVision",
+        "about ObjectVision",
+        "ObjectVision mission",
+        "idea behind ObjectVision",
+        "ObjectVision testimonials",
+        "computer vision team",
+        "AI company mission"
+    ],
     openGraph: {
         title: "About Us | ObjectVision",
         description: "Discover the story behind ObjectVision, our mission, and the team building powerful computer vision solutions. Learn what drives us to innovate and deliver value.",

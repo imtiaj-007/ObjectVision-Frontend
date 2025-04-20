@@ -9,10 +9,19 @@ const logo_url: string = settings.LOGO_URL;
 export const metadata: Metadata = {
     title: "Pricing Plans | ObjectVision",
     description: "Explore flexible pricing plans tailored for individuals, teams, and enterprises. Choose the right plan for your needs and get started with ObjectVision today.",
-    robots: {
-        index: true,
-        follow: true
-    },
+    keywords: [
+        "pricing",
+        "object detection pricing",
+        "AI detection pricing",
+        "computer vision pricing",
+        "ObjectVision pricing plans",
+        "image analysis API pricing",
+        "AI subscription plans",
+        "machine learning service cost",
+        "custom AI pricing",
+        "enterprise vision plans",
+        "visual recognition cost"
+    ],
     openGraph: {
         title: "Pricing Plans | ObjectVision",
         description: "Explore flexible pricing plans tailored for individuals, teams, and enterprises. Choose the right plan for your needs and get started with ObjectVision today.",

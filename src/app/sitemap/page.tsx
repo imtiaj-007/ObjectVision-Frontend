@@ -9,10 +9,19 @@ const logo_url: string = settings.LOGO_URL;
 export const metadata: Metadata = {
     title: "Sitemap | ObjectVision",
     description: "Complete site navigation with all ObjectVision pages including documentation, pricing, and legal information.",
-    robots: {
-        index: false,
-        follow: true
-    },
+    keywords: [
+        "sitemap",
+        "ObjectVision sitemap",
+        "AI platform sitemap",
+        "object detection site map",
+        "computer vision sitemap",
+        "site structure for ObjectVision",
+        "ObjectVision page index",
+        "object detection pages list",
+        "ObjectVision sitemap XML",
+        "website navigation structure",
+        "sitemap for AI platform"
+    ],
     openGraph: {
         title: "Sitemap | ObjectVision",
         description: "Complete site navigation with all ObjectVision pages including documentation, pricing, and legal information.",

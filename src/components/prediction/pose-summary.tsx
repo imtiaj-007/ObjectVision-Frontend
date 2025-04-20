@@ -37,7 +37,7 @@ const PoseSummary: React.FC<PoseSummaryProps> = ({ data }) => {
                     </span>
                     <span className="hidden text-xs text-gray-500 dark:text-gray-400 md:flex items-center gap-1">
                         <Clock className="h-4 w-4" />
-                        <span>{data.processing_time.toFixed(2)}ms</span>
+                        <span>{data.processing_time.toFixed(2)}s</span>
                     </span>
                 </div>
             </div>

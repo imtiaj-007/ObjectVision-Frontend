@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, clearErrors } from '@/store/features/auth/authSlice';
+import { logout, clearErrors, setAuthState } from '@/store/features/auth/authSlice';
 import { loginUser, signupUser, verifyOtp, resendOtp } from '@/store/features/auth/authThunk';
 import type { AppDispatch, RootState } from '@/store/store';
 import type { SignupFormData, LoginFormData, OTPVerify, OTPUrlObj } from '@/types/auth';
@@ -62,7 +62,8 @@ export const useAuth = () => {
     return useMemo(() => ({
         ...authState,
         signup, login, verifyOTP, resendOTP,
-        logoutUser: ()=> dispatch(logout()),
+        setAuth: (value: boolean) => dispatch(setAuthState(value)),
+        logoutUser: ()=> dispatch(logout()),        
         clearAuthErrors: ()=> dispatch(clearErrors()),
         checkAuth: ()=> authState.isAuthenticated,
         getAccessToken,

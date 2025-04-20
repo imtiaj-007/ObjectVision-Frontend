@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CustomError } from '@/types/general';
 import { getUserProfile } from './userThunk';
 import { UserProfileDetails } from '@/types/user';
+import { storage } from '@/utils/storage';
 
 
 export interface UserState {
@@ -15,15 +16,7 @@ export interface UserState {
 const initialState: UserState = {    
     loading: false,
     error: null,
-    user_details: typeof window !== 'undefined' ? (() => {
-        try {
-            const storedUser = localStorage.getItem('user_details');
-            return storedUser ? JSON.parse(storedUser) : null;
-        } catch (error) {
-            console.log("Error parsing user from localStorage:", error);
-            return null;
-        }
-    })() : null,
+    user_details: null,
     user_activity: null,
 };
 
@@ -47,10 +40,10 @@ export const userSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(getUserProfile.fulfilled, (state, action) => {
+            .addCase(getUserProfile.fulfilled, (state, action: PayloadAction<UserProfileDetails>) => {
                 state.loading = false;
                 state.user_details = action.payload;
-                localStorage.setItem("user_details", JSON.stringify(action.payload));
+                storage.set('user_details', action.payload);
             })
             .addCase(getUserProfile.rejected, (state, action) => {
                 state.loading = false;
