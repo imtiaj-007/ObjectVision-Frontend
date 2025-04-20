@@ -9,10 +9,20 @@ const logo_url: string = settings.LOGO_URL;
 export const metadata: Metadata = {
     title: "Documentation | ObjectVision",
     description: "Get started with ObjectVision using our comprehensive documentation. Find guides, API references, setup instructions, and best practices to make the most of our platform.",
-    robots: {
-        index: true,
-        follow: true
-    },
+    keywords: [
+        "docs",
+        "API docs",
+        "documentation",
+        "API reference",
+        "API playground",
+        "code examples",
+        "developer guide",
+        "ObjectVision documentation",
+        "object detection API docs",
+        "machine learning API docs",
+        "ObjectVision developer guide",
+        "how to use ObjectVision API",
+    ],
     openGraph: {
         title: "Documentation | ObjectVision",
         description: "Get started with ObjectVision using our comprehensive documentation. Find guides, API references, setup instructions, and best practices to make the most of our platform.",

@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { toast } from '@/hooks/use-toast';
 
 interface MobileNavProps {
     navigation: {
@@ -17,8 +19,19 @@ interface MobileNavProps {
 }
 
 export const MobileNav = ({ navigation, pathname }: MobileNavProps) => {
+    const router = useRouter();
     const { logoutUser } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
+
+    const handleLogout = () => {
+        logoutUser();
+        toast({
+            variant: "success",
+            title: "Successfully logged you out.",
+            description: "Thank you for choosing ObjectVision. Have a nice day!"
+        });
+        router.push('/');
+    }
 
     return (
         <div className="lg:hidden">
@@ -92,7 +105,7 @@ export const MobileNav = ({ navigation, pathname }: MobileNavProps) => {
                                     <Button
                                         variant="ghost"
                                         className="w-3/4 mx-auto mt-2"
-                                        onClick={logoutUser}
+                                        onClick={handleLogout}
                                     >
                                         <LogOut className="size-4" />
                                         Sign Out

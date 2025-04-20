@@ -1,15 +1,4 @@
-import { CustomError } from './general';
 import { UserDetails } from './user';
-
-// Auth State for Internal Use
-export interface AuthState {
-    token: string | null;
-    token_type: string | null;
-    isAuthenticated: boolean;
-    loading: boolean;
-    error: CustomError | string | null;
-    signupSuccess: boolean;
-}
 
 // Signup Response Type
 export interface SignupResponse {
@@ -60,4 +49,10 @@ export interface OTPVerify {
 export interface OTPSuccess {
     status: string;
     message: string;
+}
+
+export interface AuthToken {
+    access_token: string;
+    refresh_token: string;
+    token_type: string;
 }

@@ -31,7 +31,7 @@ const ClassificationSummary: React.FC<ClassificationSummaryProps> = ({ data }) =
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                     <Clock className="h-4 w-4" />
-                    <span>{data.processing_time.toFixed(2)}ms</span>
+                    <span>{data.processing_time.toFixed(2)}s</span>
                 </div>
             </div>
 

@@ -232,7 +232,7 @@ const ImageProcessingComponent: React.FC = () => {
 
             <Alert variant="destructive">
                 <AlertDescription>
-                    Some advanced models are temporarily unavailable due to high demand. But don&apos;t wory, Alternate models with similar precision remain fully accessible!.
+                    Some advanced models are temporarily unavailable due to high demand. But don&apos;t wory, Alternate models with similar precision remain fully accessible !
                 </AlertDescription>
             </Alert>
 

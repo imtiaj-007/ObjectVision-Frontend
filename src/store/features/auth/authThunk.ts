@@ -29,13 +29,7 @@ export const loginUser = createAsyncThunk<AuthResponse, LoginFormData, { rejectV
     'auth/login',
     async (data, { rejectWithValue }) => {
         try {
-            const response = await authService.login(data);
-            if (response.access_token) {
-                localStorage.setItem("access_token", response.access_token ?? '');
-                localStorage.setItem("token_type", response.token_type ?? '');
-                localStorage.setItem("refresh_token", response.refresh_token ?? '');
-            }
-            return response;
+            return await authService.login(data);
         } catch (error) {
             if (isAxiosError(error)) {
                 return rejectWithValue({
