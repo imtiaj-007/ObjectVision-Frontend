@@ -9,10 +9,22 @@ const logo_url: string = settings.LOGO_URL;
 export const metadata: Metadata = {
     title: "Privacy Policy | ObjectVision",
     description: "Learn how ObjectVision collects, uses, and protects your personal information. Our Privacy Policy outlines your data rights and our commitment to transparency and security.",
-    robots: {
-        index: true,
-        follow: true
-    },
+    keywords: [
+        "privacy policy",
+        "ObjectVision privacy policy",
+        "AI platform privacy policy",
+        "data protection policy",
+        "user data privacy",
+        "object detection data security",
+        "privacy policy for AI services",
+        "data collection and usage",
+        "ObjectVision data handling",
+        "privacy rights and protection",
+        "GDPR compliance ObjectVision",
+        "AI user privacy terms",
+        "data retention policy",
+        "data security in AI services"
+    ],
     openGraph: {
         title: "Privacy Policy | ObjectVision",
         description: "Learn how ObjectVision collects, uses, and protects your personal information. Our Privacy Policy outlines your data rights and our commitment to transparency and security.",

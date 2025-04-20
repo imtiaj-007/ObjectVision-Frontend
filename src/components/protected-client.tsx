@@ -1,58 +1,78 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
-import { redirect, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import UserInfoModal from './modals/user-info-modal';
 import useUser from '@/hooks/use-user';
 import { useAuth } from '@/hooks/use-auth';
 import { useSubscriptionActivity } from '@/hooks/use-subscription-activity';
-import SessionExpiredModal from './modals/session-expired-modal';
+import { storage } from '@/utils/storage';
+import { UserProfileDetails } from '@/types/user';
+import { AuthToken } from '@/types/auth';
 
 
 export default function ProtectedClient({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
     const pathname = usePathname();
-    const { isAuthenticated } = useAuth();
-    const { user_details, fetchUserProfile, loading: userLoader } = useUser();
+    const { isAuthenticated, setAuth } = useAuth();
+    const { setUserProfile, user_details, fetchUserProfile, loading } = useUser();
     const { fetchPlansList, fetchActivePlans, fetchUserActivities } = useSubscriptionActivity();
     const [showUserInfoModal, setShowUserInfoModal] = useState<boolean>(false);
-    const [showSessionExpiredModal, setShowSessionExpiredModal] = useState<boolean>(false);
 
-    const userAuthenticated = useMemo(()=> {
-        const auth_token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : null;
-        return auth_token && isAuthenticated;
-    }, [isAuthenticated]);
 
     useEffect(() => {
-        if (!userAuthenticated) {
-            setShowSessionExpiredModal(true);
-            setTimeout(()=> redirect('/auth/login'), 5000);
-        }
-        else if (!user_details || !user_details?.user) {
-            fetchUserProfile();
-        }
-        else if (!user_details?.user?.username) {
-            setShowUserInfoModal(true);
-        }
-    }, [fetchUserProfile, userAuthenticated, isAuthenticated, user_details]);
+        const initializeAuth = async () => {
+            try {
+                const token: AuthToken | null = storage.getToken();
+                const user: UserProfileDetails | null = storage.get('user_details');
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            fetchPlansList();
-            fetchActivePlans();
-            fetchUserActivities();
+                if (!token) {
+                    router.push('/auth/error?type=unauthorized');
+                    return;
+                }
+                setAuth(true);
+
+                if (!user) {
+                    await fetchUserProfile();
+                } else if (!user_details) {
+                    setUserProfile(user);
+                } else if (!user_details?.user?.username) {
+                    setShowUserInfoModal(true);
+                }
+            } catch (error) {
+                console.error("Authentication initialization error:", error);
+                router.push('/auth/error?type=unauthorized');
+            }
         };
-    }, [pathname, isAuthenticated]);
+
+        initializeAuth();
+    }, [router, user_details]);
+
+    useEffect(() => {
+        if (isAuthenticated && !loading) {
+            const fetchSubscriptionData = async () => {
+                try {
+                    await Promise.all([
+                        fetchPlansList(),
+                        fetchActivePlans(),
+                        fetchUserActivities()
+                    ]);
+                } catch (error) {
+                    console.error("Failed to fetch subscription data:", error);
+                }
+            };
+
+            fetchSubscriptionData();
+        }
+    }, [isAuthenticated, loading, pathname]);
 
     return (
         <>
             {children}
-            {!userLoader && showUserInfoModal &&
+            {!loading && showUserInfoModal &&
                 <UserInfoModal
                     open={showUserInfoModal}
                     onClose={() => setShowUserInfoModal(false)}
                 />
-            }
-            {!isAuthenticated && showSessionExpiredModal &&
-                <SessionExpiredModal />
             }
         </>
     );

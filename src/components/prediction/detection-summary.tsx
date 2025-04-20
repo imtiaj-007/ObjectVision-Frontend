@@ -42,7 +42,7 @@ const ObjectDetectionSummary: React.FC<ObjectDetectionSummaryProps> = ({ title, 
                     </span>
                     <span className="hidden text-xs text-gray-500 dark:text-gray-400 md:flex items-center gap-1">
                         <Clock className="h-4 w-4" />
-                        {data.processing_time.toFixed(2)}ms
+                        {data.processing_time.toFixed(2)}s
                     </span>
                 </div>
             </div>

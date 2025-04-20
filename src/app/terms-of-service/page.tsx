@@ -9,10 +9,19 @@ const logo_url: string = settings.LOGO_URL;
 export const metadata: Metadata = {
     title: "Terms of Service | ObjectVision",
     description: "Read the official Terms of Service for ObjectVision AI. Learn about your rights, responsibilities, and our policies for using our platform, services, and content.",
-    robots: {
-        index: true,
-        follow: true
-    },
+    keywords: [
+        "terms of service",
+        "terms and conditions",
+        "object detection usage terms",
+        "service agreement",
+        "ObjectVision legal policy",
+        "acceptable use policy",
+        "user agreement for ObjectVision",
+        "AI API usage guidelines",
+        "terms for using ObjectVision",
+        "ObjectVision platform rules",
+        "legal terms and conditions",
+    ],
     openGraph: {
         title: "Terms of Service | ObjectVision",
         description: "Read the official Terms of Service for ObjectVision AI. Learn about your rights, responsibilities, and our policies for using our platform, services, and content.",

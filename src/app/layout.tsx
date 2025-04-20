@@ -17,7 +17,19 @@ const google_verification_id: string = settings.GOOGLE_VERIFICATION_CODE;
 export const metadata: Metadata = {
     title: "ObjectVision - Advanced Object Detection AI",
     description: "Transform your images into actionable insights with our state-of-the-art object detection technology. Industry-specific solutions for retail, security, healthcare, and manufacturing.",
-    keywords: "object detection, computer vision, AI, AI detection, image recognition, visual AI, ML, machine learning",
+    keywords: [
+        "ObjectVision",
+        "object detection",
+        "computer vision",
+        "AI",
+        "AI detection",
+        "image detection",
+        "video detection",
+        "real time detection",
+        "visual AI",
+        "ML",
+        "machine learning"
+    ],
     applicationName: "ObjectVision",
     authors: { name: "SK Imtiaj Uddin", url: "https://sk-imtiaj-uddin-portfolio.netlify.app/" },
     openGraph: {
@@ -54,9 +66,13 @@ export const metadata: Metadata = {
     robots: {
         index: true,
         follow: true,
+        noarchive: true,
+        nocache: true,
         googleBot: {
             index: true,
             follow: true,
+            noarchive: true,
+            nocache: true,
             "max-video-preview": -1,
             "max-image-preview": "large",
             "max-snippet": -1,

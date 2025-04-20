@@ -6,6 +6,7 @@ import axios, {
     AxiosError
 } from "axios";
 import { settings } from "@/configuration/config";
+import { storage } from "@/utils/storage";
 
 
 const baseURL: string | undefined = settings.API_BASE_URL;
@@ -22,7 +23,7 @@ const axiosInstance: AxiosInstance = axios.create({
 // Request interceptor
 axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-        const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+        const accessToken = storage.getToken()?.access_token;
 
         const internalConfig: InternalAxiosRequestConfig = {
             ...config,
@@ -48,11 +49,16 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse): AxiosResponse => {
         const newAccessToken = response.headers["authorization"];
-        
+
         if (newAccessToken) {
             const token = newAccessToken.replace("Bearer ", "");
             if (typeof window !== "undefined") {
-                localStorage.setItem("access_token", token);
+                const prev_token = storage.getToken();
+                if (!prev_token) {
+                    window.location.replace('/auth/error?type=unauthorized');
+                } else {
+                    storage.setToken({ ...prev_token, access_token: token });
+                }
             }
         }
 
@@ -64,12 +70,11 @@ axiosInstance.interceptors.response.use(
             return Promise.reject(error);
         }
         else if (error.status === 401) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('token_type');
-            localStorage.removeItem('refresh_token');
-            localStorage.removeItem('user_details');
+            storage.clearToken();
+            storage.remove('user_details');
+            window.location.replace('/auth/error?type=unauthorized');
         }
-        
+
         return Promise.reject(error);
     }
 );

@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useDetection } from '@/hooks/use-detection'
 import { Search, Filter, ListVideo, ImageIcon } from 'lucide-react'
+import { TbCircuitBattery } from "react-icons/tb";
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -51,7 +52,13 @@ const MediaPredictions: React.FC = () => {
     return (
         <div className="container mx-auto px-4">
             <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                <h1 className="text-3xl font-bold tracking-tight">Predictions</h1>
+                <div>
+                    <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight mb-1">
+                        <TbCircuitBattery size={28} />
+                        Predictions
+                    </h2>
+                    <p className="text-sm font-medium">It may take upto 5 minutes for newer images to be available, please try after some times or reload the page.</p>
+                </div>
                 <div className="flex items-center gap-2">
                     <Button variant="outline">
                         <Filter className="mr-2 h-4 w-4" />

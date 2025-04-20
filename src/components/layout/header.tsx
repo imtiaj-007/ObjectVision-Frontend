@@ -1,18 +1,14 @@
 import React, { useMemo } from 'react';
 import { Search } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ThemeToggle } from '../themes/theme-toggle';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, Image as ImageIcon, Video } from "lucide-react";
 import { useAuth } from '@/hooks/use-auth';
 import { MobileNav } from './mobile-navigation';
 import { SiTask } from 'react-icons/si';
+import { toast } from '@/hooks/use-toast';
 
 const navigation = [
     {
@@ -39,6 +35,7 @@ const navigation = [
 
 
 const Header = () => {
+    const router = useRouter();
     const pathname = usePathname();
     const { logoutUser } = useAuth();
 
@@ -46,6 +43,16 @@ const Header = () => {
         navigation.find(nav => pathname.startsWith(nav.href)),
         [pathname]
     );
+
+    const handleLogout = () => {
+        logoutUser();
+        toast({
+            variant: "success",
+            title: "Successfully logged you out.",
+            description: "Thank you for choosing ObjectVision. Have a nice day!"
+        });
+        router.push('/');
+    }
 
     return (
         <header className="h-16 bg-nav flex items-center justify-between p-2 lg:px-8 z-50 rounded-xl border mb-2">
@@ -78,7 +85,7 @@ const Header = () => {
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem>Profile</DropdownMenuItem>
                         <DropdownMenuItem>Settings</DropdownMenuItem>
-                        <DropdownMenuItem onClick={logoutUser}>Sign out</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleLogout}>Sign out</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
