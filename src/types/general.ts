@@ -19,6 +19,9 @@ export interface AppSettings {
     GOOGLE_TAG: string;
     GOOGLE_VERIFICATION_CODE: string;
     RAZORPAY_KEY: string;
+    EMAIL_SERVICE_ID: string;
+    EMAIL_PUBLIC_KEY: string;
+    EMAIL_TEMPLATE_ID: string;
 }
 
 

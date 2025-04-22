@@ -29,7 +29,7 @@ const staggerContainer = {
 
 const TermsOfServicePage: React.FC = () => {
     return (
-        <div className="bg-gradient-to-b from-slate-900 to-slate-800 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="bg-slate-900 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <motion.div
                 className="max-w-5xl mx-auto"
                 initial="hidden"
@@ -343,7 +343,7 @@ const TermsOfServicePage: React.FC = () => {
                                 If you have any questions about these Terms of Service, please contact us at:
                             </p>
                             <Link
-                                href="mailto:imtiaj.dev.kol@gmail.com"
+                                href="/contact-us"
                                 className={cn(
                                     "flex items-center justify-center mt-4 p-4 rounded-lg",
                                     "bg-blue-300",
@@ -353,7 +353,7 @@ const TermsOfServicePage: React.FC = () => {
                             >
                                 <Mail className="h-5 w-5 text-blue-700 mr-3" />
                                 <span className="text-blue-700 font-medium">
-                                    imtiaj.dev.kol@gmail.com
+                                    contact@ObjectVision.ai
                                 </span>
                             </Link>
                         </CardContent>

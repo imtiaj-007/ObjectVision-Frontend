@@ -44,18 +44,18 @@ const DeviceLoginModal: React.FC<DeviceLoginModalProps> = ({ isOpen, onClose, on
                         <AlertDialogTitle>New Device Detected</AlertDialogTitle>
                     </div>
                     <AlertDialogDescription className="space-y-4">
-                        <span className="block bg-slate-50 p-4 rounded-lg space-y-3">
+                        <span className="block bg-slate-200 dark:bg-black/50 p-4 rounded-lg space-y-3">
                             <span className="inline-flex items-center gap-2">
-                                <Laptop2 className="h-5 w-5 text-slate-600" />
-                                <span className="font-medium text-slate-900">Current Device</span>
+                                <Laptop2 className="h-5 w-5 text-slate-800 dark:text-gray-300" />
+                                <span className="font-medium text-slate-900 dark:text-gray-300">Current Device</span>
                             </span>
-                            <span className="block text-sm space-y-1 text-slate-600 ml-7">
+                            <span className="block text-sm space-y-1 text-slate-700 dark:text-gray-400 ml-7">
                                 <span className="block">Device: {deviceInfo.deviceType}</span>
                                 <span className="block">Browser: {deviceInfo.browser}</span>
                             </span>
                         </span>
 
-                        <span className="block text-slate-600">
+                        <span className="block text-slate-700 dark:text-gray-400">
                             We&apos;ve noticed you&apos;re trying to log in from a new device.
                             Please confirm if you want to proceed with this device.
                         </span>
@@ -63,7 +63,7 @@ const DeviceLoginModal: React.FC<DeviceLoginModalProps> = ({ isOpen, onClose, on
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel
-                        className="border-slate-200 text-slate-700 hover:bg-slate-100"
+                        className="border-slate-300 text-slate-700 dark:text-gray-400 hover:bg-slate-100 dark:hover:text-slate-700"
                     >
                         Cancel
                     </AlertDialogCancel>

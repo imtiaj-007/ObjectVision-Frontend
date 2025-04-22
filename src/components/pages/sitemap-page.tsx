@@ -2,8 +2,7 @@
 import Link from 'next/link';
 import {
     Home, Info, DollarSign, FileText, Code, BookOpen,
-    HelpCircle, Map, Lock, Shield, ChevronRight, ExternalLink,
-    Layers, User
+    HelpCircle, Map, Lock, Shield, ChevronRight, ExternalLink, Layers, Phone
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
@@ -43,7 +42,7 @@ const SitemapPage: React.FC = () => {
                             <SitemapLink href="/terms-of-service" icon={<FileText />} label="Terms of Service" />
                             <SitemapLink href="/privacy-policy" icon={<Shield />} label="Privacy Policy" />
                             <SitemapLink href="/sitemap" icon={<Map />} label="Sitemap" highlight={true} />
-                            <SitemapLink href="/user/profile" icon={<User />} label="My Account" />
+                            <SitemapLink href="/contact-us" icon={<Phone />} label="Contact Us" />
                         </ul>
                     </CategoryCard>
 
@@ -73,7 +72,8 @@ const SitemapPage: React.FC = () => {
 
                 <div className="mt-16 text-center">
                     <p className="text-gray-400">
-                        Can&apos;t find what you&apos;re looking for? <Link href="mailto:imtiaj.dev.kol@gmail.com" className="text-blue-400 hover:underline">Contact us</Link>
+                        Can&apos;t find what you&apos;re looking for? 
+                        <Link href="/contact-us" className="block text-center text-blue-400 hover:underline">Contact us</Link>
                     </p>
                 </div>
             </main>

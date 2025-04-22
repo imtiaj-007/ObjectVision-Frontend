@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
                         <ul className="space-y-2">
                             <li><Link href="https://www.linkedin.com/in/sk-imtiaj-uddin-b26432254/" className="hover:text-white">LinkedIn</Link></li>
                             <li><Link href="https://sk-imtiaj-uddin-portfolio.netlify.app/" className="hover:text-white">Portfolio</Link></li>
-                            <li><Link href="mailto:imtiaj.dev.kol@gmail.com" className="hover:text-white">Contact Us</Link></li>
+                            <li><Link href="/contact-us" className="hover:text-white">Contact Us</Link></li>
                         </ul>
                     </div>
                 </div>

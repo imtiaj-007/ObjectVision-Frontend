@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -55,7 +56,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ open, onClose }) => {
                 setError(error instanceof(Error) ? error.message : 'Failed to fetch Country List');
             }
         }
-        getCountries();
+        // getCountries();
         getUsernames();        
     }, []);
 
@@ -199,10 +200,12 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ open, onClose }) => {
                         </div>
 
                         <div className="w-24 flex justify-end">
-                            {step === 3 ? (
+                            {step === 1 ? (
+                            // {step === 3 ? (
                                 <Button
                                     onClick={handleSubmit}
-                                    disabled={!isPhoneNumberValid}
+                                    // disabled={!isPhoneNumberValid}
+                                    disabled={!isUsernameValid}
                                 >
                                     Submit
                                 </Button>

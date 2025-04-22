@@ -69,7 +69,7 @@ axiosInstance.interceptors.response.use(
         if (!axios.isAxiosError(error) || !error.config) {
             return Promise.reject(error);
         }
-        else if (error.status === 401) {
+        else if (error.status === 401 && !window.location.pathname.startsWith('/auth')) {
             storage.clearToken();
             storage.remove('user_details');
             window.location.replace('/auth/error?type=unauthorized');

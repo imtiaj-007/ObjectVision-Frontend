@@ -16,6 +16,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import DeviceLoginModal from '@/components/modals/device-modal';
 import WebsiteOverview from '@/components/sections/website-overview';
 
+import useUser from '@/hooks/use-user';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { isCustomError } from '@/types/general';
@@ -28,6 +29,7 @@ const LoginPageComponent: React.FC = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { login, loading, clearAuthErrors } = useAuth();
+    const { fetchUserProfile } = useUser();
     const { toast } = useToast();
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showDeviceModal, setShowDeviceModal] = useState<boolean>(false);
@@ -103,6 +105,7 @@ const LoginPageComponent: React.FC = () => {
 
         try {
             await login(data);
+            await fetchUserProfile();
             redirectToNextPage();
         } catch (err: unknown) {
             if (isCustomError(err) && err.status_code === 409) {
