@@ -173,6 +173,7 @@ const ImageDetectionResult: React.FC<ImageDetectionResultProps> = (
             if (imageInfo.preview) {
                 URL.revokeObjectURL(imageInfo.preview);
             }
+            dispatch(resetSocketState());
             resetErrors();
         };
     }, []);

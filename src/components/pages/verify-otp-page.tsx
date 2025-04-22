@@ -210,6 +210,7 @@ const OTPVerification: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-11 gap-8 lg:gap-24 p-6 lg:px-0 lg:py-6">
                     {/* Left section - Reusing the SidebarComponent */}
                     <WebsiteOverview
+                        type="otp-page"
                         title="Verify Your Account"
                         subtitle="Enter the OTP sent to your email to complete the verification process."
                     />

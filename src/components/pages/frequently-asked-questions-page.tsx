@@ -100,7 +100,8 @@ const faqData = [
         question: "How can I get support?",
         answer: (
             <p>
-                You can reach us at <Link href="mailto:imtiaj.dev.kol@gmail.com" className="font-medium text-blue-600">imtiaj.dev.kol@gmail.com</Link>, or use the contact form on our site.
+                You can reach us at <Link href="mailto:imtiaj.dev.kol@gmail.com" className="font-medium text-blue-600">contact@ObjectVision.ai</Link>, 
+                or use the <Link href="/contact-us" className="font-medium text-blue-600" >contact</Link> form on our site.
             </p>
         ),
         icon: <LifeBuoy className="text-indigo-500" />
@@ -121,7 +122,7 @@ const FAQPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-slate-900 px-4 py-12 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -227,7 +228,7 @@ const FAQPage: React.FC = () => {
                     <p className="mb-4">
                         Our support team is here to help with any other questions you might have.
                     </p>
-                    <Link href="mailto:imtiaj.dev.kol@gmail.com" passHref>
+                    <Link href="/contact-us" passHref>
                         <Button size="lg" variant="outline" className="min-w-72 border-white hover:bg-transparent hover:text-white">
                             Contact Us
                         </Button>
