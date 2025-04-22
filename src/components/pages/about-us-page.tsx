@@ -56,7 +56,7 @@ const AboutUsPage: React.FC = () => {
                                             <p className="text-gray-400 text-sm">
                                                 Full-stack developer specializing in the <strong>MERN stack (MongoDB, Express.js, React.js, Node.js)</strong> along with <strong>Next.js & TypeScript</strong>.
                                                 Proficient in <strong>C++, Python, Java, and JavaScript</strong> with experience in both <strong>SQL (MySQL, PostgreSQL)
-                                                and NoSQL (MongoDB)</strong> databases. Additional skills in <strong>FastAPI, AWS, Docker, and Git</strong> for building scalable,
+                                                and NoSQL (MongoDB)</strong> databases. Additional skills in <strong>FastAPI, AWS, Docker, Redis and Git</strong> for building scalable,
                                                 production-ready applications.
                                             </p>
                                         </div>
@@ -69,8 +69,8 @@ const AboutUsPage: React.FC = () => {
                                         <div>
                                             <h4 className="font-medium text-gray-300 my-1">Professional Experience</h4>
                                             <div className="text-gray-400 text-sm space-y-1">
-                                                <p><span className="font-semibold">Project Developer Intern (NIT Durgapur):</span> Developed a comprehensive telemedicine platform using MERN stack featuring video consultations, IoT medical device integration, medicine inventory management, and automated prescription generation.</p>
-                                                <p><span className="font-semibold">Software Developer Intern (WorkWise):</span> Fullstack Developer intern worked with Next.js and PostgreSQL to build robust applications, collaborating with cross-functional teams to deliver seamless user experiences.</p>
+                                                <p><strong>Project Developer Intern (NIT Durgapur):</strong> Developed a comprehensive telemedicine platform using MERN stack featuring video consultations, IoT medical device integration, medicine inventory management, and automated prescription generation.</p>
+                                                <p><strong>Software Developer Intern (WorkWise):</strong> Fullstack Developer intern worked with Next.js and PostgreSQL to build robust applications, collaborating with cross-functional teams to deliver seamless user experiences.</p>
                                             </div>
                                         </div>
                                     </div>

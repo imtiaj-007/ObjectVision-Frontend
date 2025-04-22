@@ -374,7 +374,7 @@ const ObjectVisionDocsPage: React.FC = () => {
                                     Get Started <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </Link>
-                            <Link href="mailto:imtiaj.dev.kol@gmail.com" passHref>
+                            <Link href="/contact-us" passHref>
                                 <Button size="lg" variant="outline" className="min-w-72 border-white hover:bg-transparent hover:text-white">
                                     Contact Us
                                 </Button>

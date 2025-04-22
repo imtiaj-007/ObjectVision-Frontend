@@ -22,6 +22,10 @@ export const settings: AppSettings = {
     GOOGLE_OAUTH_URL: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URL || "http://localhost:8000/api/oauth",
     
     RAZORPAY_KEY: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "your-razorpay-key",
+
+    EMAIL_SERVICE_ID: process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID || "your-emailjs-service-id",
+    EMAIL_PUBLIC_KEY: process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY || "your-emailjs-public-key",
+    EMAIL_TEMPLATE_ID: process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID || "your-emailjs-template-id",
 };
 
 const environmentEmojis = {

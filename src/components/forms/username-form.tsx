@@ -56,13 +56,13 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
     return (
         <Form {...form}>
             <form className="space-y-6">
-                <Alert variant="outline" className="bg-slate-50 border-slate-200">
+                <Alert variant="outline" className="bg-slate-50 dark:bg-black/20 border-slate-200 dark:border-black/30">
                     <InfoIcon className="h-4 w-4" />
                     <AlertDescription>
-                        <p className="text-sm text-muted-foreground mb-2">
+                        <p className="font-medium text-muted-foreground mt-1 mb-2">
                             Your username must follow these rules:
                         </p>
-                        <ul className="list-disc list-inside text-sm text-gray-500">
+                        <ul className="list-disc list-inside text-sm text-gray-500 dark:text-gray-400">
                             <li>Must be between <strong>4-10 characters</strong> long.</li>
                             <li>Can contain <strong>a-z, A-Z, 0-9, ! @ # $ _ -</strong> only.</li>
                             <li>No spaces or special characters other than the allowed ones.</li>
