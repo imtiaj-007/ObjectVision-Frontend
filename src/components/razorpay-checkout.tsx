@@ -120,7 +120,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
                 title: `Transaction ${paymentResult.captured ? 'Completed' : 'Failed'}`,
                 description: paymentResult.description
             });
-            router.push('/auth/success?paymentVerified=true');
+            router.push('/auth/success?type=payment-success');
         }
     }, [paymentResult, router]);
 

@@ -219,7 +219,7 @@ const LoginPageComponent: React.FC = () => {
                                                 )}
                                             />
                                             <Link
-                                                href="/auth/forgot-password"
+                                                href="/auth/password-reset"
                                                 className="text-sm text-blue-500 hover:text-blue-700 font-medium"
                                             >
                                                 Forgot password?

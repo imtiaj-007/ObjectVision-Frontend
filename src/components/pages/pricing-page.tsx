@@ -186,29 +186,29 @@ const PricingPage: React.FC = () => {
                                                         </span>
                                                     </div>
 
-                                                    {/* Animated content container */}
-                                                    <motion.div
-                                                        initial={expandedCards[plan.name] ? "expanded" : "collapsed"}
-                                                        animate={expandedCards[plan.name] ? "expanded" : "collapsed"}
-                                                        variants={contentVariants}
-                                                        className="overflow-hidden"
-                                                    >
-                                                        <div className="space-y-6">
-                                                            {plan.feature_groups.map((featureGroup: FeatureGroupType) => (
-                                                                <div key={`feature_group_${featureGroup.id}`}>
-                                                                    <h3 className="font-medium text-gray-400 mb-2">{featureGroup.title}</h3>
-                                                                    <ul className="space-y-2 px-4 text-gray-400">
-                                                                        {featureGroup.features.map((feature: FeatureType) => (
-                                                                            renderFeatureItem(feature)
-                                                                        ))}
-                                                                    </ul>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </motion.div>
-
-                                                    {/* Toggle button for mobile */}
+                                                    {/* Mobile view - Collapsible content */}
                                                     <div className="md:hidden">
+                                                        <motion.div
+                                                            initial={expandedCards[plan.name] ? "expanded" : "collapsed"}
+                                                            animate={expandedCards[plan.name] ? "expanded" : "collapsed"}
+                                                            variants={contentVariants}
+                                                            className="overflow-hidden"
+                                                        >
+                                                            <div className="space-y-6">
+                                                                {plan.feature_groups.map((featureGroup: FeatureGroupType) => (
+                                                                    <div key={`feature_group_${featureGroup.id}`}>
+                                                                        <h3 className="font-medium text-gray-400 mb-2">{featureGroup.title}</h3>
+                                                                        <ul className="space-y-2 px-4 text-gray-400">
+                                                                            {featureGroup.features.map((feature: FeatureType) => (
+                                                                                renderFeatureItem(feature)
+                                                                            ))}
+                                                                        </ul>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </motion.div>
+
+                                                        {/* Toggle button for mobile */}
                                                         <Button
                                                             className="w-full bg-transparent shadow-none font-medium text-blue-400 underline underline-offset-2 hover:bg-transparent hover:text-blue-400 hover:scale-100"
                                                             onClick={() => toggleCardExpansion(plan.name)}
@@ -228,6 +228,22 @@ const PricingPage: React.FC = () => {
                                                                 )}
                                                             </motion.span>
                                                         </Button>
+                                                    </div>
+
+                                                    {/* Desktop view - Always expanded content */}
+                                                    <div className="hidden md:block">
+                                                        <div className="space-y-6">
+                                                            {plan.feature_groups.map((featureGroup: FeatureGroupType) => (
+                                                                <div key={`feature_group_${featureGroup.id}`}>
+                                                                    <h3 className="font-medium text-gray-400 mb-2">{featureGroup.title}</h3>
+                                                                    <ul className="space-y-2 px-4 text-gray-400">
+                                                                        {featureGroup.features.map((feature: FeatureType) => (
+                                                                            renderFeatureItem(feature)
+                                                                        ))}
+                                                                    </ul>
+                                                                </div>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                 </CardContent>
                                                 <CardFooter>

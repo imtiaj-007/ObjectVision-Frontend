@@ -4,7 +4,7 @@
 
 ObjectVision is a cutting-edge object detection platform that leverages advanced machine learning techniques for real-time object identification and analysis. The frontend of ObjectVision is built using **Next.js 15**, **TypeScript**, and **ShadCN** for the UI components, making it a modern and robust solution for interacting with the platform.
 
-[![Portal Image](https://object-vision-frontend.vercel.app/home-page.png)]
+<img src="https://https://object-vision-frontend.vercel.app/home-page.png" alt="ObjectVision Portal Image" width="100%" height="auto" />
 
 ---
 
