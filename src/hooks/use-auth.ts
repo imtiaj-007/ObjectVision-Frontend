@@ -51,6 +51,11 @@ export const useAuth = () => {
         }
     }, [dispatch]);
 
+    // Resend OTP handler
+    const requestPasswordReset = useCallback(async (email: string) => {
+        return email;
+    }, []);
+
     // Get access token
     const getAccessToken = useCallback(() => {
         if (typeof window !== 'undefined') {
@@ -61,11 +66,11 @@ export const useAuth = () => {
 
     return useMemo(() => ({
         ...authState,
-        signup, login, verifyOTP, resendOTP,
+        signup, login, verifyOTP, resendOTP, requestPasswordReset,
         setAuth: (value: boolean) => dispatch(setAuthState(value)),
         logoutUser: ()=> dispatch(logout()),        
         clearAuthErrors: ()=> dispatch(clearErrors()),
         checkAuth: ()=> authState.isAuthenticated,
         getAccessToken,
-    }), [authState, signup, login, verifyOTP, resendOTP, getAccessToken, dispatch]);
+    }), [authState, signup, login, verifyOTP, resendOTP, requestPasswordReset, getAccessToken, dispatch]);
 };

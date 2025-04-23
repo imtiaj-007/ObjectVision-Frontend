@@ -85,7 +85,7 @@ const OTPVerification: React.FC = () => {
                 const res = await verifyOTP(payload);
 
                 if (res) {
-                    router.push('/auth/success?otpVerified=true');
+                    router.push('/auth/success?type=otp-verified');
                 } else {
                     setOtp(new Array(6).fill(""));
                     toast({

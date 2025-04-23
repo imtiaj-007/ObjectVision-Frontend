@@ -11,6 +11,7 @@ export interface AuthState {
         signUp: boolean;
         verifyOTP: boolean;
         resendOTP: boolean;
+        resetPassword: boolean;
     };
     error: CustomError | string | null;
     signupSuccess: boolean;
@@ -22,7 +23,8 @@ const initialState: AuthState = {
         signIn: false,
         signUp: false,
         verifyOTP: false,
-        resendOTP: false
+        resendOTP: false,
+        resetPassword: false
     },
     error: null,
     signupSuccess: false,
