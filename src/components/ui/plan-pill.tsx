@@ -15,15 +15,19 @@ const PlanPill: React.FC<PlanPillProps> = ({ plan, className }) => {
     };
 
     return (
-        <span
-            className={cn(
-                "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium",
-                planStyles[plan],
-                className
-            )}
-        >
-            {plan.charAt(0) + plan.substring(1).toLowerCase()}
-        </span>
+        <div className={cn(
+            "flex items-center justify-center",
+            className
+        )}>
+            <span
+                className={cn(
+                    "py-1 px-3 rounded-full text-xs font-medium whitespace-nowrap",
+                    planStyles[plan]
+                )}
+            >
+                {plan.charAt(0) + plan.substring(1).toLowerCase()}
+            </span>
+        </div>
     );
 };
 
