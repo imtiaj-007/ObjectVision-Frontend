@@ -22,10 +22,11 @@ import {
 import LoadingScreen from "@/components/ui/screen_loader";
 
 import { Check } from "lucide-react";
-import { PaymentResult, RazorpayOptions } from "@/types/payment";
+import { PaymentResult, PromoCodeMap, RazorpayOptions } from "@/types/payment";
 import { isCustomError } from "@/types/general";
 import { formatCurrency } from "@/utils/general";
 import { CurrencyEnum } from "@/types/enums";
+import { resetPaymentState } from "@/store/features/payment/paymentSlice";
 
 
 interface RazorpayCheckoutProps {
@@ -49,9 +50,9 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
         setIsApplying(true);
 
         setTimeout(() => {
-            const isValid = promoCode.toLowerCase() === "discount90";
-            if (isValid) {
-                setAppliedPromo({ code: promoCode, discount: 90 });
+            const promoValue = PromoCodeMap.get(promoCode.toLowerCase());
+            if (promoValue) {
+                setAppliedPromo({ code: promoCode, discount: promoValue });
             } else {
                 setAppliedPromo(null);
             }
@@ -94,6 +95,7 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
         document.body.appendChild(script);
 
         return () => {
+            dispatch(resetPaymentState());
             document.body.removeChild(script);
         };
     }, []);
@@ -133,11 +135,11 @@ const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({ planDetails }) => {
 
         const options: RazorpayOptions = {
             key: settings.RAZORPAY_KEY as string,
-            amount: finalAmount * 100,
+            amount: currentOrder.amount,
             currency: "INR",
             name: "Object Vision",
             description: planDetails.name,
-            image: "/object-vision-logo.png",
+            image: settings.LOGO_URL || "/object-vision-logo.png",
             order_id: currentOrder.razorpay_order_id,
             handler: (response: PaymentResult) => {
                 dispatch(

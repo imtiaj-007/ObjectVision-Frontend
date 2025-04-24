@@ -7,20 +7,20 @@ import { Image as ImageIcon, UploadCloud, X, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import PlanPill from "@/components/ui/plan-pill";
 
-import { cn } from "@/lib/utils";
-import { useSubscriptionActivity } from "@/hooks/use-subscription-activity";
+import { DetectionRequestSchema } from "@/schemas/detection";
 import { AVAILABLE_MODELS, DetectionOperation, ModelResponse, OPERATIONS } from "@/types/detection";
 import { ActivityTypeEnum, ModelSizeEnum, SubscriptionPlansEnum } from "@/types/enums";
 import { UserActivityResponse } from "@/types/subscription_activity";
 import { toast } from "@/hooks/use-toast";
-import { DetectionRequestSchema } from "@/schemas/detection";
 import { useDetection } from "@/hooks/use-detection";
+import { useSubscriptionActivity } from "@/hooks/use-subscription-activity";
+import { cn } from "@/lib/utils";
 import { base64Hash } from "@/utils/hash";
 import { File_Storage } from "../../../cache/file_storage";
-import { Alert, AlertDescription } from "../ui/alert";
 
 
 
@@ -245,7 +245,7 @@ const ImageProcessingComponent: React.FC = () => {
                                 Upload Image
                                 <div className="text-sm font-normal text-gray-500 dark:text-gray-300 mt-2 md:flex items-center md:space-x-4">
                                     <p>Supported formats: JPG, JPEG, PNG, WEBP.</p>
-                                    <p>Max size: 5MB.</p>
+                                    <p>Max size: 3 MB.</p>
                                 </div>
                             </div>
                             {imagePreview &&
@@ -326,22 +326,27 @@ const ImageProcessingComponent: React.FC = () => {
                                                 value={model.name}
                                                 disabled={!isModelAvailable(model.name)}
                                             >
-                                                <div className="flex items-center space-x-3">
-                                                    <div className="hidden md:block w-4 h-4">{<model.icon className="w-4 h-4" />}</div>
-                                                    <div className="flex flex-col items-start">
-                                                        <div className="font-medium">{model.label}</div>
-                                                        <div className="text-xs text-muted-foreground">
-                                                            {model.description}
-                                                            {model.name === "ov-model-m" && (activePlans && activePlans[0].plan_name == SubscriptionPlansEnum.SILVER) && (
-                                                                <PlanPill plan={SubscriptionPlansEnum.SILVER} className="ml-8" />
-                                                            )}
-                                                            {model.name === "ov-model-l" && (activePlans &&
-                                                                [SubscriptionPlansEnum.BASIC, SubscriptionPlansEnum.SILVER].some(ele => ele === activePlans[0].plan_name)) && (
-                                                                    <PlanPill plan={SubscriptionPlansEnum.GOLD} className="ml-2" />
+                                                <div className="flex items-center space-x-3 w-full">
+                                                    <div className="hidden md:flex md:items-center md:justify-center w-4 h-4">
+                                                        {<model.icon className="w-4 h-4" />}
+                                                    </div>
+                                                    <div className="flex flex-1 items-start w-full">
+                                                        <div className="grid grid-cols-12 gap-2 w-[250px] md:w-[320px]">
+                                                            <div className="col-span-10 space-y-1">
+                                                                <p className="font-medium">{model.label}</p>
+                                                                <p className="text-xs text-muted-foreground">{model.description}</p>
+                                                            </div>
+                                                            <div className="col-span-2 flex items-center justify-center">
+                                                                {model.name === "ov_model_m" && !isModelAvailable(model.name) && (
+                                                                    <PlanPill plan={SubscriptionPlansEnum.SILVER} />
                                                                 )}
-                                                            {model.name === "ov-model-x" && (
-                                                                <span className="text-xs text-yellow-600 ml-1">(Coming Soon)</span>
-                                                            )}
+                                                                {model.name === "ov_model_l" && !isModelAvailable(model.name) && (
+                                                                    <PlanPill plan={SubscriptionPlansEnum.GOLD} />
+                                                                )}
+                                                                {model.name === "ov_model_x" && (
+                                                                    <span className="text-xs text-center text-yellow-500">Coming Soon</span>
+                                                                )}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
