@@ -164,6 +164,12 @@ export interface RazorpayPaymentDetails {
     upi: unknown;
 }
 
+export const PromoCodeMap: Map<string, number> = new Map([
+    ["welcome5", 5],
+    ["welcome10", 10],
+    ["lucky90", 90]
+]);
+
 export function isRazorpayPaymentDetails(obj: unknown): obj is RazorpayPaymentDetails {
     if (typeof obj !== "object" || obj === null) {
         return false;

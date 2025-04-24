@@ -8,11 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { storage } from '@/utils/storage';
+import { AuthToken } from '@/types/auth';
 
-interface TokenData {
-    access_token: string | null;
-    token_type: string | null;
-}
 
 type SuccessConfig = {
     title: string;
@@ -90,7 +87,7 @@ const SUCCESS_CONFIGS: Record<string, SuccessConfig> = {
         details: [
             'Transaction has been confirmed and recorded',
             'Receipt has been sent to your email',
-            'Your subscription is now active'
+            'Your new plan will auto-activate once your current one expires.'
         ],
         icon: <FaCreditCard className="h-16 w-16" />,
         color: 'bg-purple-500',
@@ -264,20 +261,16 @@ const SuccessPage: React.FC = () => {
         if (hash) {
             try {
                 const params = new URLSearchParams(hash);
-                const tokenData: TokenData = {
+                const tokenData  = {
                     access_token: params.get('access_token'),
+                    refresh_token: params.get('refresh_token'),
                     token_type: params.get('token_type')
                 };
 
-                if (!tokenData.access_token) {
-                    throw new Error('No access token found');
+                if (!tokenData.access_token || !tokenData.refresh_token || !tokenData.token_type) {
+                    throw new Error('Invalid access token');
                 }
-
-                // Store token in localStorage
-                storage.set('access_token', tokenData.access_token);
-                if (tokenData.token_type) {
-                    storage.set('token_type', tokenData.token_type);
-                }
+                storage.setToken(tokenData as AuthToken);
 
                 timer = startCountdownAndRedirect(
                     successConfig.redirectUrl || '/user/dashboard',
