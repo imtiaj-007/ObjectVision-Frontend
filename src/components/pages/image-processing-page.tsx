@@ -7,7 +7,7 @@ import { Image as ImageIcon, UploadCloud, X, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+// import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import PlanPill from "@/components/ui/plan-pill";
 
@@ -230,11 +230,11 @@ const ImageProcessingComponent: React.FC = () => {
                 </h2>
             </div>
 
-            <Alert variant="destructive">
+            {/* <Alert variant="destructive">
                 <AlertDescription>
                     Some advanced models are temporarily unavailable due to high demand. But don&apos;t wory, Alternate models with similar precision remain fully accessible !
                 </AlertDescription>
-            </Alert>
+            </Alert> */}
 
             <div className="grid gap-6 md:grid-cols-2">
                 {/* Upload Section */}

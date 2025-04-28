@@ -69,7 +69,7 @@ const ImageInfo: React.FC<ImageInfoProps> = ({
                     {/* Column 3: Services */}
                     <div className="col-span-2 md:col-span-3">
                         <p className="text-sm font-semibold text-gray-500">Services</p>
-                        <div className="flex gap-2 mt-1">
+                        <div className="flex flex-wrap gap-2 mt-1">
                             {services.length > 0 ? (
                                 services.map((service, index) => (
                                     <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
