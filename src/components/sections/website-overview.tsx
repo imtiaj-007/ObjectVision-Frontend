@@ -3,7 +3,6 @@ import Link from "next/link";
 import { BrainCircuit, LineChart, CloudCog, Settings2, ShieldCheck, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WebsiteLogo from "@/components/website-logo";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 
 interface WebsiteOverviewProps {
@@ -13,7 +12,7 @@ interface WebsiteOverviewProps {
 }
 
 
-const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({ type, title, subtitle }) => {
+const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({ title, subtitle }) => {
     return (
         <div className="flex flex-col lg:col-span-6">
             <div className="space-y-6 my-auto">
@@ -77,15 +76,6 @@ const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({ type, title, subtitle
                     <ShieldCheck size={16} className="mr-2" />
                     <span>Your connection is secure and encrypted</span>
                 </div>
-
-                {type !== "otp-page" &&
-                    <Alert variant="destructive">
-                        <AlertTitle className="font-medium">We&apos;re currently experiencing an issue with OAuth</AlertTitle>
-                        <AlertDescription className="text-xs">
-                            Our team is actively working to resolve it. In the meantime, email sign-in/sign-up is working as expected — please use that instead.
-                        </AlertDescription>
-                    </Alert>
-                }
             </div>
         </div>
     );
