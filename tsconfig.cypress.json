@@ -1,0 +1,21 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "types": [
+            "cypress",
+            "cypress-file-upload"
+        ]
+    },
+    "include": [
+        "**/*.cy.ts",
+        "**/*.cy.tsx",
+        "cypress.config.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "__tests__",
+        "jest.setup.ts",
+        "**/*.test.ts",
+        "**/*.test.tsx"
+    ]
+}
